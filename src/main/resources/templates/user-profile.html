@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head th:replace="/fragments/fragments::head"></head>
+<body>
+<header th:replace="/fragments/fragments::navbar"></header>
+<main class="main">
+    <div id="containerDetails">
+        <div class="row d-inline-flex mb-3" th:object="${user}">
+
+            <div id="description" class="col">
+                <p class="h1 fw-bold" th:text="|*{firstName} *{lastName}|">Title</p>
+                <dl class="d-block">
+                    <dt class="col-sm-3">Email</dt>
+                    <dd class="col-sm-9" th:text="*{email}">.....</dd>
+
+                    <dt class="col-sm-3">Phone</dt>
+                    <dd class="col-sm-9" th:text="*{phoneNumber}">................
+                    </dd>
+                </dl>
+                <div th:if="${isOwner}" class="d-grid gap-2 d-md-inline-flex">
+                    <a class="btn btn-success fw-bold" th:href="@{/users/edit-profile}" role="button">Edit
+                        Profile</a>
+                </div>
+                <form sec:authorize="hasRole('ADMIN')" th:action="@{/users/change-roles/{id}(id=${id})}"
+                      th:method="PATCH" th:object="${roleChangeBindingModel}">
+                    <div class="row d-inline-block">
+                        <div class="form-group col-md-6 mb-3">
+                            <label for="user" class="text-dark font-weight-bold">USER</label>
+                            <input type="checkbox" id="user" name="user"
+                                   th:value="${T(com.example.foodplanner.enumeration.RoleEnum).USER}"
+                                   th:checked="${user.roles.contains('USER')}">
+                        </div>
+                        <div class="form-group col-md-6 mb-3">
+                            <label for="hotelOwner" class="text-dark font-weight-bold">HOTEL OWNER</label>
+                            <input type="checkbox" id="hotelOwner" name="hotelOwner"
+                                   th:value="${T(com.example.foodplanner.enumeration.RoleEnum).RECIPE_OWNER}"
+                                   th:checked="${user.roles.contains('RECIPE_OWNER')}">
+                        </div>
+                        <div class="form-group col-md-6 mb-3">
+                            <label for="admin" class="text-dark font-weight-bold">ADMIN</label>
+                            <input type="checkbox" id="admin" name="admin"
+                                   th:value="${T(com.example.foodplanner.enumeration.RoleEnum).ADMIN}"
+                                   th:checked="${user.roles.contains('ADMIN')}">
+                        </div>
+                        <div class="form-group col-md-6 mb-3">
+                            <input type="submit" value="Save Roles" class="btn btn-warning">
+                        </div>
+
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</main>
+<footer th:replace="/fragments/fragments::footer"></footer>
+</body>
+</html>

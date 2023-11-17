@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="en"
+	  xmlns:th="http://www.thymeleaf.org"
+	  xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+	<meta name="_csrf" content="${_csrf.token}"/>
+	<!-- default header name is X-CSRF-TOKEN -->
+	<meta name="_csrf_header" content="${_csrf.headerName}"/>
+	<script src="/js/jquery-3.3.1.min.js"></script>
+	<script src="/js/bootstrap.min.js"></script>
+	<link rel="stylesheet" href="/css/bootstrap.min.css"/>
+	<link href="/css/bootstrap.min.css" rel="stylesheet">
+	<link rel="stylesheet" href="/css/reset-css.css"/>
+	<link rel="stylesheet" href="/css/styles.css">
+	<link href="/css/carousel.css" rel="stylesheet">
+	<link href="/css/recipes-main.css" rel="stylesheet">
+	<!-- Bootstrap CSS -->
+	<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.13.1/css/bootstrap-select.css" />
+	<!-- Bootstrap tags plugin -->
+	<link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-tagsinput/0.8.0/bootstrap-tagsinput.css" rel="stylesheet">
+	<!-- Google fonts -->
+	<link href="https://fonts.googleapis.com/css?family=Caveat|Sacramento&display=swap" rel="stylesheet">
+
+	<link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.css" />
+	<link rel="canonical" href="https://getbootstrap.com/docs/5.0/examples/carousel/">
+
+	<!-- Bootstrap core CSS -->
+	<link href="/css/bootstrap.min.css" rel="stylesheet">
+
+
+
+	<!-- Custom styles for this template -->
+	<link href="/css/carousel.css" rel="stylesheet">
+	<link rel="stylesheet" href="/css/reset-css.css"/>
+	<link rel="stylesheet" href="/css/bootstrap.min.css"/>
+	<script src="/js/jquery-3.3.1.min.js"></script>
+	<script src="/js/bootstrap.min.js"></script>
+</head>
+<body>
+<header th:replace="/fragments/fragments::navbar"></header>
+	<body>
+		<div id="landing-cover" class="container-fluid p-0">
+			<div id="landing-page-title">
+				 	<br>
+
+			</div>
+			<div id="landing-page-login">
+
+			</div>
+			<a id="scroll-down-link">
+			<img src="/images/arrow-circle-down-solid.svg">
+			</a>
+		</div>
+		<div id="reasonsToPlan" class="container white-bg">
+			<h1 class="py-5">
+				<br>
+
+				Why should you plan your food?</h1>
+			<div class="row">
+				<div class="col-md">
+					<h2>MONEY SAVING</h2>
+					<p>Planning your meals for the week means no unnecessary supermarket purchases. Scouring the shops looking for inspiration and picking random ingredients can end up producing waste.
+				</div>
+				<div class="col-md">
+					<h2>HEALTHIER EATING</h2>
+					<p>For a body that looks and functions at its best, it’s simply a matter of choosing cleaner foods and developing healthy eating habits.</p>
+				</div>
+			</div>
+			<div class="row">
+				<div class="col-md">
+					<h2>LESS WASTEFUL</h2>
+					<p>Food waste is a huge problem, with the UK binning approximately £13 billion worth of food in 2015. Not only will you save money, stress and eat healthier. You’ll also have the satisfaction of knowing you’re being less wasteful..</p>
+				</div>
+				<div class="col-md">
+					<h2>GET PLANNING</h2>
+					<p>Meal planning is asking the “what do I want for dinner?” question a week in advance. It’s deciding your meals for the week and buying all the necessary ingredients in one shop.
+
+						It’s also preparing ingredients in advance as much as possible. Then you won’t have the, “I can’t face peeling those now, I’m starving” dilemmas.</p>
+				</div>
+			</div>
+		</div>
+		<div id="planningTools" class="container white-bg">
+			<h1 class="py-5">How do I Get Started with Meal Planning?</h1>
+			<div id="carouselExampleCaptions" class="carousel slide" data-ride="carousel">
+			  <ol class="carousel-indicators">
+			    <li data-target="#carouselExampleCaptions" data-slide-to="0" class="active"></li>
+			    <li data-target="#carouselExampleCaptions" data-slide-to="1"></li>
+			    <li data-target="#carouselExampleCaptions" data-slide-to="2"></li>
+			  </ol>
+			  <div class="carousel-inner">
+			    <div class="carousel-item active">
+				<picture class="d-block w-100">
+					 <source type="image/webp" srcset="/images/screenshot-slide1.webp">
+					 <img src="/images/screenshot-slide1.jpeg" >
+				</picture>
+			      <div class="carousel-caption d-none d-md-block">
+
+			      </div>
+			    </div>
+			    <div class="carousel-item">
+			    <picture class="d-block w-100">
+					 <source type="image/webp" srcset="/images/screenshot-plan.webp" >
+					 <img src="/images/screenshot-plan.PNG"  >
+				</picture>
+			      <div class="carousel-caption d-none d-md-block">
+			        <h5>Second slide label</h5>
+			        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
+			      </div>
+			    </div>
+			    <div class="carousel-item">
+			    <picture class="d-block w-100">
+					 <source type="image/webp" srcset="/images/screenshot-choose-meal.webp" >
+					 <img src="/images/screenshot-choose-meal.PNG"  >
+				</picture>
+			      <div class="carousel-caption d-none d-md-block">
+			        <h5>Third slide label</h5>
+			        <p>PLorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
+			      </div>
+			    </div>
+			  </div>
+			  <a class="carousel-control-prev" href="#carouselExampleCaptions" role="button" data-slide="prev">
+			    <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+			    <span class="sr-only">Previous</span>
+			  </a>
+			  <a class="carousel-control-next" href="#carouselExampleCaptions" data-bs-target="#carouselExampleCaptions" type="button" data-slide="next">
+			    <span class="carousel-control-next-icon" aria-hidden="true"></span>
+			    <span class="visually-hidden">Next</span>
+			  </a>
+			</div>
+
+
+		</div>
+		<div id="aboutUs" class="container white-bg px-5 pb-5">
+			<h1 class="py-5">Contact us!</h1>
+			<form action="sendMail" method="POST">
+				<div class="row">
+					<div class="col-md">
+						<input type="text" class="form-control form-control-lg" placeholder="Your name">
+					</div>
+					<div class="col-md">
+						<input type="email" class="form-control form-control-lg" placeholder="E-Mail">
+					</div>
+				</div>	    
+				<textarea class="form-control form-control-lg" placeholder="Message" rows="5"></textarea>
+			    <button type="submit" class="btn btn-primary btn-lg" disabled>Send</button>
+			</form>
+			
+		</div>
+		
+		
+		<%@ include file="footer.jsp" %>
+	</body>
+</html>
