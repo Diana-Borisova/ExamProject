@@ -3,50 +3,86 @@
 	  xmlns:th="http://www.thymeleaf.org"
 	  xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 <head th:replace="/fragments/fragments::head"></head>
-<body>
+<body class="bg">
 <header th:replace="/fragments/fragments::navbar"></header>
-	<div class="container-fluid top-container mx-auto">
-		<div id="plan-today">
-			<picture id="home-cover">
-		  		<source srcset="/images/calendar.webp" type="image/webp">
-		  		<source srcset="/images/calendar.jpg" type="image/jpeg"> 
-		  		<img src="/images/calendar.jpg" alt="Alt Text!">
-			</picture>
-			<h1 class="text-center my-5">Day plans</h1>
-			<div class="row">
-				<c:forEach var="mealType" items="${mealTypes}">
-					<div class="col"><h2 class="text-center">${mealType.label}</h2></div>
-				</c:forEach>
+
+	<div class="container">
+		<div class="jumbotron">
+			<h1 ></h1>
+			<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed
+				do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut
+				enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi
+				ut aliquip ex ea commodo consequat. Duis aute irure dolor in
+				reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla
+				pariatur. Excepteur sint occaecat cupidatat non proident, sunt in
+				culpa qui officia deserunt mollit anim id est laborum.</p>
+		</div>
+		<div class="row text-center text-lg-left">
+
+			<div class="col-lg-3 col-md-4 col-6">
+				<a href="#" class="d-block mb-4 h-100"> <img
+					class="img-fluid img-thumbnail"
+					src="https://www.nps.gov/subjects/camping/images/recipe_1.jpg?maxwidth=1200&maxheight=1200&autorotate=false"
+					alt="">
+				</a>
 			</div>
-			<div class="row">
-				<c:forEach var="mealType" items="${mealTypes}">
-					<div class="col text-center">
-					<c:forEach var="meal" items="${meals}">
-						<c:if test="${mealType == meal.mealType}">
-							<c:forEach var="mealDish" items="${meal.mealDishes}">
-								<c:if test="${mealDish.dish['class'].simpleName == 'Recipe'}">
-									<a class='recipe-modal-link' data-toggle='modal' href='#recipeModal' data-recipe-id='${mealDish.dish.id}'><h3 class="text-center">${mealDish.dish.title}</h3></a>
-								</c:if>
-								<c:if test="${mealDish.dish['class'].simpleName == 'SingleDishProduct'}">
-									<h4 class="text-center">${mealDish.dish.title}</h4>	
-								</c:if>
-							</c:forEach>
-						</c:if>
-					</c:forEach>
-					</div>
-				</c:forEach>
+			<div class="col-lg-3 col-md-4 col-6">
+				<a href="#" class="d-block mb-4 h-100"> <img
+					class="img-fluid img-thumbnail"
+					src="https://musthavemom.com/wp-content/uploads/2017/08/easy-bbq-kabobs.jpg"
+					alt="">
+				</a>
 			</div>
-			<div class="w-100 text-center">
-				<a class="btn btn-primary px-5 mt-5" href='plan/meals?id=${planId}'>See the full plan</a>
+			<div class="col-lg-3 col-md-4 col-6">
+				<a href="#" class="d-block mb-4 h-100"> <img
+					class="img-fluid img-thumbnail"
+					src="https://upload.wikimedia.org/wikipedia/commons/0/05/Classic-spaghetti-carbonara.jpg"
+					alt="">
+				</a>
 			</div>
-			<br>
+			<div class="col-lg-3 col-md-4 col-6">
+				<a href="#" class="d-block mb-4 h-100"> <img
+					class="img-fluid img-thumbnail"
+					src="https://i2.wp.com/tmrblog.com/wp-content/uploads/2019/10/Food3-2.jpg?fit=960%2C720&ssl=1"
+					alt="">
+				</a>
+			</div>
+		</div>
+		<div class="row text-center text-lg-left">
+
+			<div class="col-lg-3 col-md-4 col-6">
+				<a href="#" class="d-block mb-4 h-100"> <img
+					class="img-fluid img-thumbnail"
+					src="https://encrypted-tbn0.gstatic.com/images?q=tbn%3AANd9GcQALv-myBstflTpmF1VERlwstlVS4WF0n3tPqyedk2DmtAIYsnp&usqp=CAU"
+					alt="">
+				</a>
+			</div>
+			<div class="col-lg-3 col-md-4 col-6">
+				<a href="#" class="d-block mb-4 h-100"> <img
+					class="img-fluid img-thumbnail"
+					src="https://upload.wikimedia.org/wikipedia/commons/6/60/Sushi_platter.jpg"
+					alt="">
+				</a>
+			</div>
+			<div class="col-lg-3 col-md-4 col-6">
+				<a href="#" class="d-block mb-4 h-100"> <img
+					class="img-fluid img-thumbnail"
+					src="https://storage.needpix.com/rsynced_images/a-chunk-of-beef-2.jpg"
+					alt="">
+				</a>
+			</div>
+			<div class="col-lg-3 col-md-4 col-6">
+				<a href="#" class="d-block mb-4 h-100"> <img
+					class="img-fluid img-thumbnail"
+					src="https://www.publicdomainpictures.net/pictures/290000/velka/raw-meats.jpg"
+					alt="">
+				</a>
+			</div>
 		</div>
 	</div>
-	<%@ include file="kitchen.jsp"%>
-	<%@ include file="recipe-modal.jsp" %>
-	<%@ include file="footer.jsp"%>
-	
-	<script src="/js/home.js"></script>
-	
+
+	<script
+		src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+	<script th:href="@{/js/bootstrap.js}"></script>
 </body>
 </html>

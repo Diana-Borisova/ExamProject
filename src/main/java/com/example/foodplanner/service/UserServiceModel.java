@@ -1,7 +1,5 @@
 package com.example.foodplanner.service;
 
-import org.springframework.web.multipart.MultipartFile;
-
 import java.time.LocalDate;
 
 public class UserServiceModel {
@@ -80,6 +78,7 @@ public class UserServiceModel {
         this.password = password;
         return this;
     }
+
 
 
 

@@ -7,6 +7,7 @@ public class UserEditViewModel {
     private String email;
     private String phoneNumber;
     private String planStyle;
+
     public UserEditViewModel() {
     }
 
@@ -46,6 +47,7 @@ public class UserEditViewModel {
         this.phoneNumber = phoneNumber;
         return this;
     }
+
     public String getPlanStyle() {
         return planStyle;
     }

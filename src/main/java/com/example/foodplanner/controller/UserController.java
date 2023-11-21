@@ -1,9 +1,8 @@
 package com.example.foodplanner.controller;
 
-
-import com.example.foodplanner.model.dto.RoleChangeBindingModel;
-import com.example.foodplanner.model.dto.UserEditBindingModel;
-import com.example.foodplanner.model.dto.UserRegisterBindingModel;
+import com.example.foodplanner.model.binding.RoleChangeBindingModel;
+import com.example.foodplanner.model.binding.UserEditBindingModel;
+import com.example.foodplanner.model.binding.UserRegisterBindingModel;
 import com.example.foodplanner.model.entity.User;
 import com.example.foodplanner.model.enumeration.RoleEnum;
 import com.example.foodplanner.service.UserService;
@@ -107,7 +106,7 @@ public class UserController {
                         map(r -> r.getName().toString()).
                         collect(Collectors.toList()));
         model.addAttribute("user", userProfileViewModel);
-        model.addAttribute("isOwner", userService.getUserByEmail(principal.getUsername()).getId()).equals(user.getId());
+        model.addAttribute("isOwner", userService.getUserByEmail(principal.getUsername()).getId().equals(user.getId()));
         return "user-profile";
     }
 

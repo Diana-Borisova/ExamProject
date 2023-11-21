@@ -1,14 +1,17 @@
 package com.example.foodplanner.service.impl;
 
-import com.example.foodplanner.repository.UserRepository;
-import com.example.foodplanner.repository.UserRoleRepository;
+
 import com.example.foodplanner.model.entity.User;
 import com.example.foodplanner.model.enumeration.RoleEnum;
+import com.example.foodplanner.repository.UserRepository;
+import com.example.foodplanner.repository.UserRoleRepository;
 import com.example.foodplanner.service.UserService;
 import com.example.foodplanner.service.UserServiceModel;
 import com.example.foodplanner.view.UserRoleViewModel;
 import jakarta.persistence.EntityNotFoundException;
 import org.modelmapper.ModelMapper;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -96,13 +99,10 @@ public class UserServiceImpl implements UserService {
         User user = userRepository.findById(userServiceModel.getId()).
                 orElseThrow(() -> new EntityNotFoundException("User"));
         user.setFirstName(userServiceModel.getFirstName());
+        user.setLastName(userServiceModel.getLastName());
         user.setEmail(userServiceModel.getEmail());
+        user.setPhoneNumber(userServiceModel.getPhoneNumber());
         user.setPlanStyle(userServiceModel.getPlanStyle());
-                user.setLastName(userServiceModel.getLastName());
-
-
-
-
         userRepository.save(user);
     }
 
@@ -136,6 +136,27 @@ public class UserServiceImpl implements UserService {
                 map(re -> userRoleRepository.getUserRoleByName(re).orElseThrow(() -> new EntityNotFoundException("Role")))
                 .collect(Collectors.toList()));
         userRepository.save(user);
+    }
+
+    @Override
+    public User getCurrentUser() {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        String currentPrincipalName = authentication.getName();
+        return userRepository.findByEmail(authentication.getName()).orElseThrow();
+    }
+
+    @Override
+    public Long getCurrentUserId() {
+        User user = getCurrentUser();
+        return user.getId();
+    }
+
+
+    @Override
+    public boolean hasCurrentUserRole(String role) {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        boolean hasUserRole = authentication.getAuthorities().stream().anyMatch(r -> r.getAuthority().equals(role));
+        return hasUserRole;
     }
 
 

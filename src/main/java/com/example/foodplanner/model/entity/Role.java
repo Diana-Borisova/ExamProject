@@ -1,16 +1,10 @@
 package com.example.foodplanner.model.entity;
 
+
+
 import com.example.foodplanner.model.enumeration.RoleEnum;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
-
-
 import jakarta.persistence.*;
 
-@Getter
-@Setter
-@NoArgsConstructor
 @Entity
 @Table(name = "roles")
 public class Role extends BaseEntity{
@@ -21,6 +15,15 @@ public class Role extends BaseEntity{
 	@Enumerated(EnumType.STRING)
 	private RoleEnum name;
 
+	public Role() {
+	}
 
+	public RoleEnum getName() {
+		return name;
+	}
 
+	public Role setName(RoleEnum name) {
+		this.name = name;
+		return this;
+	}
 }

@@ -1,8 +1,10 @@
 package com.example.foodplanner.service;
 
-import com.example.foodplanner.repository.UserRepository;
+
 import com.example.foodplanner.model.entity.Role;
 import com.example.foodplanner.model.entity.User;
+import com.example.foodplanner.repository.UserRepository;
+
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;

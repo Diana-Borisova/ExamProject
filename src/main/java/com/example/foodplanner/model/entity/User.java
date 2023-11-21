@@ -1,12 +1,8 @@
 package com.example.foodplanner.model.entity;
 
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
-
 
 import jakarta.persistence.*;
-import java.util.Collection;
+
 import java.util.List;
 
 @Entity

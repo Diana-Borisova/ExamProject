@@ -1,0 +1,128 @@
+package com.example.foodplanner.service.impl;
+
+
+import com.example.foodplanner.model.entity.Log;
+import com.example.foodplanner.model.entity.User;
+import com.example.foodplanner.repository.LogRepository;
+import com.example.foodplanner.service.LogService;
+import com.example.foodplanner.service.UserService;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.stereotype.Service;
+
+import java.time.DayOfWeek;
+import java.time.LocalDateTime;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Locale;
+import java.util.Map;
+
+@Service
+public class LogServiceImpl implements LogService {
+
+    private final LogRepository logRepository;
+    private final UserService userService;
+
+    public LogServiceImpl(LogRepository logRepository, UserService userService) {
+        this.logRepository = logRepository;
+        this.userService = userService;
+    }
+
+    @Override
+    public void createLog(String action, String exception) {
+        Authentication principal = SecurityContextHolder
+                .getContext()
+                .getAuthentication();
+        User user;
+        if (principal == null) {
+            user = null;
+        } else {
+            user = userService.getUserByEmail(principal.getName());
+        }
+        Log log = new Log().
+                setException(exception).
+                setAction(action).
+                setDateTime(LocalDateTime.now()).
+                setUser(user);
+        logRepository.save(log);
+    }
+
+    @Override
+    public void createRegisterLog(Long id) {
+        Log log = new Log().
+                setAction("register").
+                setDateTime(LocalDateTime.now()).
+                setUser(userService.getUserById(id));
+        logRepository.save(log);
+    }
+
+    @Override
+    public void cleanLog() {
+        logRepository.deleteLogsByExceptionIsNull();
+    }
+
+    @Override
+    public void cleanExceptions() {
+        logRepository.deleteLogsByExceptionNotNull();
+    }
+
+    @Override
+    public List<Log> getRegisterLog() {
+        return logRepository.getLogsByExceptionIsNull();
+    }
+
+    @Override
+    public List<Log> getExceptionLog() {
+        return logRepository.getLogsByExceptionNotNull();
+    }
+
+    @Override
+    public Map<String, Integer> getRegisterStats() {
+        Map<String, Integer> stats = new HashMap<>();
+        stats.put(DayOfWeek.MONDAY.toString().toLowerCase(Locale.ROOT), 0);
+        stats.put(DayOfWeek.TUESDAY.toString().toLowerCase(Locale.ROOT), 0);
+        stats.put(DayOfWeek.WEDNESDAY.toString().toLowerCase(Locale.ROOT), 0);
+        stats.put(DayOfWeek.THURSDAY.toString().toLowerCase(Locale.ROOT), 0);
+        stats.put(DayOfWeek.FRIDAY.toString().toLowerCase(Locale.ROOT), 0);
+        stats.put(DayOfWeek.SATURDAY.toString().toLowerCase(Locale.ROOT), 0);
+        stats.put(DayOfWeek.SUNDAY.toString().toLowerCase(Locale.ROOT), 0);
+
+        List<Log> logs = logRepository.
+                getLogsByExceptionIsNull();
+
+        for (Log l : logs) {
+            switch (l.getDateTime().getDayOfWeek()) {
+                case MONDAY:
+                    stats.put(DayOfWeek.MONDAY.toString().toLowerCase(Locale.ROOT),
+                            stats.get(DayOfWeek.MONDAY.toString().toLowerCase(Locale.ROOT)) + 1);
+                    break;
+                case TUESDAY:
+                    stats.put(DayOfWeek.TUESDAY.toString().toLowerCase(Locale.ROOT),
+                            stats.get(DayOfWeek.TUESDAY.toString().toLowerCase(Locale.ROOT)) + 1);
+                    break;
+                case WEDNESDAY:
+                    stats.put(DayOfWeek.WEDNESDAY.toString().toLowerCase(Locale.ROOT),
+                            stats.get(DayOfWeek.WEDNESDAY.toString().toLowerCase(Locale.ROOT)) + 1);
+                    break;
+                case THURSDAY:
+                    stats.put(DayOfWeek.THURSDAY.toString().toLowerCase(Locale.ROOT),
+                            stats.get(DayOfWeek.THURSDAY.toString().toLowerCase(Locale.ROOT)) + 1);
+                    break;
+                case FRIDAY:
+                    stats.put(DayOfWeek.FRIDAY.toString().toLowerCase(Locale.ROOT),
+                            stats.get(DayOfWeek.FRIDAY.toString().toLowerCase(Locale.ROOT)) + 1);
+                    break;
+                case SATURDAY:
+                    stats.put(DayOfWeek.SATURDAY.toString().toLowerCase(Locale.ROOT),
+                            stats.get(DayOfWeek.SATURDAY.toString().toLowerCase(Locale.ROOT)) + 1);
+                    break;
+                case SUNDAY:
+                    stats.put(DayOfWeek.SUNDAY.toString().toLowerCase(Locale.ROOT),
+                            stats.get(DayOfWeek.SUNDAY.toString().toLowerCase(Locale.ROOT)) + 1);
+                    break;
+            }
+        }
+        return stats;
+    }
+
+}

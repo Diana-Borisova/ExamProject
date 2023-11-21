@@ -4,7 +4,7 @@ import com.fasterxml.jackson.annotation.JsonFormat;
 
 @JsonFormat(shape = JsonFormat.Shape.OBJECT)
 public enum FoodType {
-	VEGETABLE("Vegetabe"),
+	VEGETABLE("Vegetable"),
 	FRUIT("Fruit"),
 	GRAINS_BEANS_NUTS("Grains, beans, nuts"),
 	MEAT_POULTRY("Meat"),

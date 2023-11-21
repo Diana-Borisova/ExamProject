@@ -1,8 +1,8 @@
 package com.example.foodplanner.config;
 
 
+
 import com.example.foodplanner.repository.UserRepository;
-import com.example.foodplanner.model.enumeration.RoleEnum;
 import com.example.foodplanner.service.FoodPlannerUserDetailsService;
 import org.springframework.boot.actuate.autoconfigure.security.servlet.EndpointRequest;
 import org.springframework.boot.autoconfigure.security.servlet.PathRequest;
@@ -19,7 +19,8 @@ import org.springframework.security.web.SecurityFilterChain;
 public class SecurityConfiguration {
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity httpSecurity) throws Exception {
-        return httpSecurity.authorizeHttpRequests(
+        return httpSecurity.
+                authorizeHttpRequests(
                 // Define which urls are visible by which users
                 authorizeRequests -> authorizeRequests
                         // All static resources which are situated in js, images, css are available for anyone
@@ -27,21 +28,29 @@ public class SecurityConfiguration {
                         // allow actuator endpoints
                         .requestMatchers( EndpointRequest.toAnyEndpoint()).permitAll()
                         // Allow anyone to see the home page, the registration page and the login form
-                        .requestMatchers("/", "/users/login", "/users/register", "/users/login-error").permitAll()
-                        .requestMatchers("/offers/all").permitAll()
-                        .requestMatchers("/api/currency/convert").permitAll()
-                        .requestMatchers(HttpMethod.GET, "/offer/**").permitAll()
+                        .requestMatchers(
+                                "/",
+                                "/users/login",
+                                "/users/register",
+                                "/users/login-error",
+                                "/users/sendMail").permitAll()
+                        .requestMatchers(HttpMethod.GET, "/recipe/**").permitAll()
                         .requestMatchers("/error").permitAll()
-                        .requestMatchers("/brands").hasRole(RoleEnum.ADMIN.name())
-                        // all other requests are authenticated.
+                        .requestMatchers(
+                                "/recipe/edit/**",
+                                "/recipe/my-recipes",
+                                "/recipe/api/owned",
+                                "/picture/delete").hasRole("RECIPE_OWNER")
+                        .requestMatchers(
+                                "/admin/**",
+                                "/users/change-roles/**",
+                                "/users/all",
+                                "/foodProduct/add-food").hasRole("ADMIN")
                         .anyRequest().authenticated()
         ).formLogin(
                 formLogin -> {
                     formLogin
-                            // redirect here when we access something which is not allowed.
-                            // also this is the page where we perform login.
                             .loginPage("/users/login")
-                            // The names of the input fields (in our case in auth-login1.html)
                             .usernameParameter("email")
                             .passwordParameter("password")
                             .defaultSuccessUrl("/")
@@ -55,10 +64,14 @@ public class SecurityConfiguration {
                             // where to go when logged out?
                             .logoutSuccessUrl("/")
                             // invalidate the HTTP session
-                            .invalidateHttpSession(true);
+                            .invalidateHttpSession(true)
+                            .deleteCookies("JSESSIONID");
                 }
         ).build();
     }
+
+
+
 
     @Bean
     public UserDetailsService userDetailsService(UserRepository userRepository) {

@@ -1,6 +1,8 @@
 package com.example.foodplanner.service;
 
 
+
+
 import com.example.foodplanner.model.entity.User;
 import com.example.foodplanner.model.enumeration.RoleEnum;
 import com.example.foodplanner.view.UserRoleViewModel;
@@ -30,6 +32,9 @@ public interface UserService{
 
 	void setUserRoles(Long userId, List<RoleEnum> roles);
 
+	public User getCurrentUser();
+	public Long getCurrentUserId();
 
+	public boolean hasCurrentUserRole(String role);
 
 }

@@ -1,9 +1,8 @@
 package com.example.foodplanner.service.impl;
 
-
-import com.example.foodplanner.repository.UserRoleRepository;
 import com.example.foodplanner.model.entity.Role;
 import com.example.foodplanner.model.enumeration.RoleEnum;
+import com.example.foodplanner.repository.UserRoleRepository;
 import com.example.foodplanner.service.UserRoleService;
 import org.springframework.stereotype.Service;
 

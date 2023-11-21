@@ -8,7 +8,8 @@
 <main class="main">
     <div id="containerDetails">
         <div class="row d-inline-flex mb-3" th:object="${user}">
-
+<!--            <img th:src="*{profilePicture}"-->
+<!--                 class="d-block profile-pic">-->
             <div id="description" class="col">
                 <p class="h1 fw-bold" th:text="|*{firstName} *{lastName}|">Title</p>
                 <dl class="d-block">
@@ -29,19 +30,19 @@
                         <div class="form-group col-md-6 mb-3">
                             <label for="user" class="text-dark font-weight-bold">USER</label>
                             <input type="checkbox" id="user" name="user"
-                                   th:value="${T(com.example.foodplanner.enumeration.RoleEnum).USER}"
+                                   th:value="${T(com.example.foodplanner.model.enumeration.RoleEnum).USER}"
                                    th:checked="${user.roles.contains('USER')}">
                         </div>
                         <div class="form-group col-md-6 mb-3">
-                            <label for="hotelOwner" class="text-dark font-weight-bold">HOTEL OWNER</label>
-                            <input type="checkbox" id="hotelOwner" name="hotelOwner"
-                                   th:value="${T(com.example.foodplanner.enumeration.RoleEnum).RECIPE_OWNER}"
+                            <label for="recipeOwner" class="text-dark font-weight-bold">RECIPE OWNER</label>
+                            <input type="checkbox" id="recipeOwner" name="recipeOwner"
+                                   th:value="${T(com.example.foodplanner.model.enumeration.RoleEnum).RECIPE_OWNER}"
                                    th:checked="${user.roles.contains('RECIPE_OWNER')}">
                         </div>
                         <div class="form-group col-md-6 mb-3">
                             <label for="admin" class="text-dark font-weight-bold">ADMIN</label>
                             <input type="checkbox" id="admin" name="admin"
-                                   th:value="${T(com.example.foodplanner.enumeration.RoleEnum).ADMIN}"
+                                   th:value="${T(com.example.foodplanner.model.enumeration.RoleEnum).ADMIN}"
                                    th:checked="${user.roles.contains('ADMIN')}">
                         </div>
                         <div class="form-group col-md-6 mb-3">

@@ -72,16 +72,18 @@
                             </p>
                         </div>
                     </div>
-                    <div class="form-group col-md-6 mb-3">
-                        <label for="planStyle" class="text-white font-weight-bold">Choose a plan style:</label>
-                        <input id="planStyle" type="tel" class="form-control" th:field="*{planStyle}"
-                               th:errorclass="is-invalid" required minlength="7" maxlength="15"
-                               placeholder="Plan style">
+                    <div class="row">
+                        <div class="form-group col-md-12 mb-3">
+                            <label for="planStyle" class="text-white font-weight-bold">Planstyle</label>
+                            <input id="planStyle" type="text" name="planStyle" th:value="${userData.planStyle}"
+                                   th:errorclass="is-invalid" min="2"
+                                   max="20" class="form-control text-center"
+                                   placeholder="PlanStyle"/>
+                            <p class="errors alert alert-danger invalid-feedback">
+                                PlanStyle is required.
+                            </p>
+                        </div>
                     </div>
-
-            <div class="row">
-
-            </div>
                     <div class="row">
                         <div class="col col-md-4">
                             <div class="button-holder d-flex">
@@ -89,6 +91,7 @@
                             </div>
                         </div>
                     </div>
+
                 </form>
             </div>
         </div>
