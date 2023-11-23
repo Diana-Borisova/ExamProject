@@ -25,6 +25,7 @@ spring:
 
 
 cloudinary:
-  cloud-name: dborisova
-  api-key: 473911158751132
-  api-secret: 7GcFso7a545YwdVfew6GxyXFlhQ
+
+  cloud_name: "dmd3mttpc"
+  api_key: "799357567129288"
+  api_secret: "-0ZR-Nt4ESQJ_BVBqAzyryTUAO0"

@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head th:replace="/fragments/fragments::head"></head>
+<body>
+<header th:replace="/fragments/fragments::navbar"></header>
+
+<main class="p-5 align-content-center bg-blur main">
+    <h1 class="text-light border-bottom mb-5">Post Your Recipe</h1>
+    <div class="card text-center">
+        <div class="card-header">
+            <ul class="nav nav-tabs card-header-tabs">
+                <li class="nav-item">
+                    <a class="nav-link active disabled" href="#">Post recipe</a>
+                </li>
+            </ul>
+        </div>
+        <div class="card-body bg-primary">
+            <div class="container">
+                <h2 class="text-center text-white">Create a recipe</h2>
+                <form th:action="@{/recipes/create}" method="POST" th:object = "${recipeCreateBindingModel}"
+                      enctype="multipart/form-data"
+                      class="main-form mx-auto col-md-8 d-flex flex-column justify-content-center">
+                    <div class="row">
+                        <div class="form-group col-md-6 mb-3">
+                            <label for="title" class="text-white font-weight-bold">Title</label>
+                            <input th:field="*{title}" th:errorclass="is-invalid" required id="title" type="text"
+                                   minlength="2"
+                                   maxlength="20" class="form-control"
+                                   placeholder="Title"/>
+                            <p class="errors alert alert-danger invalid-feedback">
+                                Title name is required.
+                            </p>
+                        </div>
+                        <div class="form-group col-md-6 mb-3">
+                            <label for="stars" class="text-white font-weight-bold">Rating</label>
+                            <select id="stars" required class="form-control" th:field="*{stars}"
+                                    th:errorclass="is-invalid">
+                                <option value="">- Choose a rating -</option>
+                                <option th:each="s:${T(com.example.foodplanner.model.enumeration.StarEnum).values()}"
+                                        th:value="${s}"
+                                        th:text="${s}"></option>
+                            </select>
+                            <p class="errors alert alert-danger invalid-feedback">
+                                Rating required.
+                            </p>
+                        </div>
+                    </div>
+
+                    <div class="form-group col-md-6 mb-3">
+                            <label for="pictures" class="text-white font-weight-bold">Add pictures of your recipe</label>
+                            <input type="file"
+                                   id="pictures" name="pictures" th:field="*{pictures}" required
+                                   th:errorclass="is-invalid"
+                                   accept="image/png, image/jpeg" class="form-control" multiple>
+                            <p class="errors alert alert-danger invalid-feedback">
+                                Upload at least one picture.
+                            </p>
+                        </div>
+
+                    <div class="row">
+                        <div class="form-group col-md-6 mb-3">
+                            <label for="image" class="text-white font-weight-bold">image</label>
+                            <input id="image" type="text" class="form-control" th:field="*{image}"
+                                   th:errorclass="is-invalid"
+                                   minlength="5" maxlength="50"
+                                   placeholder="watch?v={YOUR CODE}"/>
+                            <p class="errors alert alert-danger invalid-feedback">
+                                image is not valid
+                            </p>
+                        </div>
+                        <div class="form-group col-md-6 mb-3">
+                            <label for="preparation" class="text-white font-weight-bold">Preparation</label>
+                            <input id="preparation" type="text" class="form-control" th:field="*{preparation}"
+                                   th:errorclass="is-invalid"
+                                   required
+                                   minlength="5" maxlength="50"
+                                   placeholder="Preparation time in minutes"/>
+                            <p class="errors alert alert-danger invalid-feedback">
+                                Preparation time must be valid.
+                            </p>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="form-group mb-3">
+                            <label for="description" class="text-white font-weight-bold">Description</label>
+                            <textarea id="description" class="form-control" th:field="*{description}"
+                                      minlength="15" maxlength="500" required
+                                      th:errorclass="is-invalid"
+                                      placeholder="Description..."></textarea>
+                            <p class="errors alert alert-danger invalid-feedback">
+                                Description must be between 15 and 500 characters.
+                            </p>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="form-group col-md-6 mb-3">
+                            <label for="shared" class="text-white font-weight-bold">Share my recipes</label>
+                            <input type="checkbox" th:field="*{shared}" th:errorclass="is-invalid"
+                                   id="shared" name="shared"
+                                   value=true>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col col-md-4">
+                            <div class="button-holder d-flex">
+                                <input type="submit" class="btn btn-info btn-lg" value="Create Recipe"/>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</main>
+<footer class="footer bg-blur" th:replace="/fragments/fragments::footer">
+</footer>
+</body>
+</html>

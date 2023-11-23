@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="en"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head th:replace="/fragments/fragments::head"></head>
+<body>
+<header th:replace="/fragments/fragments::navbar"></header>
+
+<main class="p-5 align-content-center bg-blur main">
+    <h1 class="text-light border-bottom mb-5">Edit Your Recipe</h1>
+    <div class="card text-center">
+        <div class="card-header">
+            <ul class="nav nav-tabs card-header-tabs">
+                <li class="nav-item">
+                    <a class="nav-link active disabled" href="#">Edit Recipe</a>
+                </li>
+            </ul>
+        </div>
+        <div class="card-body bg-primary">
+            <div class="container">
+                <h2 class="text-center text-white">Edit Recipe</h2>
+                <form th:action="@{/recipes/edit/{id}(id=${id})}" th:method="patch" th:object="${recipeData}"
+                      enctype="multipart/form-data"
+                      class="main-form mx-auto col-md-8 d-flex flex-column justify-content-center">
+                    <div class="row">
+                        <div class="form-group col-md-6 mb-3">
+                            <label for="title" class="text-white font-weight-bold">Title</label>
+                            <input th:value="${recipeData.title}" name="name" th:errorclass="is-invalid" required
+                                   id="title" type="text"
+                                   minlength="2"
+                                   maxlength="20" class="form-control"
+                                   placeholder="Title"/>
+                            <p class="errors alert alert-danger invalid-feedback">
+                                title name is required.
+                            </p>
+                        </div>
+                        <div class="form-group col-md-6 mb-3">
+                            <label for="stars" class="text-white font-weight-bold">Stars</label>
+                            <select id="stars" required class="form-control"
+                                    name="stars"
+                                    th:errorclass="is-invalid">
+                                <option th:value="${recipeData.stars}" th:text="${recipeData.stars}">- Choose stars count
+                                    -
+                                </option>
+                                <option th:each="s:${T(com.example.foodplanner.model.enumeration.StarEnum).values()}"
+                                        th:value="${s}"
+                                        th:text="${s}"></option>
+                            </select>
+                            <p class="errors alert alert-danger invalid-feedback">
+                                Star count is required.
+                            </p>
+                        </div>
+                    </div>
+                    <div class="row">
+
+
+                        <div class="form-group col-md-6 mb-3">
+                            <label for="pictures" class="text-white font-weight-bold">Add more pictures of your
+                                recipe</label>
+                            <input type="file"
+                                   id="pictures" name="pictures" th:field="*{pictures}"
+                                   th:errorclass="is-invalid"
+                                   accept="image/png, image/jpeg" class="form-control" multiple>
+                            <p class="errors alert alert-danger invalid-feedback">
+                                Upload at least one picture.
+                            </p>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="form-group col-md-6 mb-3">
+                            <label for="image" class="text-white font-weight-bold">YouTube Video</label>
+                            <input id="image" name="videoUrl" type="text" class="form-control"
+                                   th:value="${recipeData.image}"
+                                   th:errorclass="is-invalid"
+                                   minlength="5" maxlength="50"
+                                   placeholder="watch?v={YOUR CODE}"/>
+                            <p class="errors alert alert-danger invalid-feedback">
+                                Video url is not valid
+                            </p>
+                        </div>
+                        <div class="form-group col-md-6 mb-3">
+                            <label for="preparation" class="text-white font-weight-bold">Recipe preparation</label>
+                            <input id="preparation" name="preparation" type="text" class="form-control"
+                                   th:value="${recipeData.preparation}"
+                                   th:errorclass="is-invalid"
+                                   required
+                                   minlength="5" maxlength="50"
+                                   placeholder="ex. Country, City, Street..."/>
+                            <p class="errors alert alert-danger invalid-feedback">
+                                Recipe preparation must be valid.
+                            </p>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="form-group mb-3">
+                            <label for="description" class="text-white font-weight-bold">Description</label>
+                            <textarea name="description" th:text="${recipeData.description}" id="description"
+                                      class="form-control"
+                                      minlength="15" maxlength="500" required
+                                      th:errorclass="is-invalid"
+                                      placeholder="Description..."></textarea>
+                            <p class="errors alert alert-danger invalid-feedback">
+                                Description must be between 15 and 500 characters.
+                            </p>
+                        </div>
+                    </div>
+                    <div>
+                        <label class="text-white font-weight-bold">Uploaded images</label>
+                        <ul class="row-cols-auto">
+                            <li th:each="i:${recipeData.image}" class="image-cont">
+                                <img th:src="${i}"
+                                     alt="Avatar" class="image">
+                                <div class="middle">
+                                    <button type="button" id="removeBtn" class="text text-white">Remove</button>
+                                </div>
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="row">
+                        <div class="col col-md-4">
+                            <div class="button-holder d-flex">
+                                <input type="submit" class="btn btn-warning btn-lg" value="Save Changes"/>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</main>
+<footer class="footer bg-blur" th:replace="/fragments/fragments::footer">
+</footer>
+<script>
+    document.querySelectorAll("#removeBtn").forEach(e => e.addEventListener('click', removeImage));
+
+    function removeImage(e) {
+        fetch('http://localhost:8080/picture/delete',
+            {
+                method: 'delete',
+                body: e.target.parentElement.parentElement.children.item(0).getAttribute('src')
+
+            }).then(res => {
+            console.log(res);
+            e.target.parentElement.parentElement.remove();
+        });
+    }
+</script>
+</body>
+</html>

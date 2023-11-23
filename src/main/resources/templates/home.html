@@ -1,88 +1,45 @@
 <!DOCTYPE html>
 <html lang="en"
-	  xmlns:th="http://www.thymeleaf.org"
-	  xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 <head th:replace="/fragments/fragments::head"></head>
-<body class="bg">
-<header th:replace="/fragments/fragments::navbar"></header>
-
-	<div class="container">
-		<div class="jumbotron">
-			<h1 ></h1>
-			<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed
-				do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut
-				enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi
-				ut aliquip ex ea commodo consequat. Duis aute irure dolor in
-				reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla
-				pariatur. Excepteur sint occaecat cupidatat non proident, sunt in
-				culpa qui officia deserunt mollit anim id est laborum.</p>
-		</div>
-		<div class="row text-center text-lg-left">
-
-			<div class="col-lg-3 col-md-4 col-6">
-				<a href="#" class="d-block mb-4 h-100"> <img
-					class="img-fluid img-thumbnail"
-					src="https://www.nps.gov/subjects/camping/images/recipe_1.jpg?maxwidth=1200&maxheight=1200&autorotate=false"
-					alt="">
-				</a>
-			</div>
-			<div class="col-lg-3 col-md-4 col-6">
-				<a href="#" class="d-block mb-4 h-100"> <img
-					class="img-fluid img-thumbnail"
-					src="https://musthavemom.com/wp-content/uploads/2017/08/easy-bbq-kabobs.jpg"
-					alt="">
-				</a>
-			</div>
-			<div class="col-lg-3 col-md-4 col-6">
-				<a href="#" class="d-block mb-4 h-100"> <img
-					class="img-fluid img-thumbnail"
-					src="https://upload.wikimedia.org/wikipedia/commons/0/05/Classic-spaghetti-carbonara.jpg"
-					alt="">
-				</a>
-			</div>
-			<div class="col-lg-3 col-md-4 col-6">
-				<a href="#" class="d-block mb-4 h-100"> <img
-					class="img-fluid img-thumbnail"
-					src="https://i2.wp.com/tmrblog.com/wp-content/uploads/2019/10/Food3-2.jpg?fit=960%2C720&ssl=1"
-					alt="">
-				</a>
-			</div>
-		</div>
-		<div class="row text-center text-lg-left">
-
-			<div class="col-lg-3 col-md-4 col-6">
-				<a href="#" class="d-block mb-4 h-100"> <img
-					class="img-fluid img-thumbnail"
-					src="https://encrypted-tbn0.gstatic.com/images?q=tbn%3AANd9GcQALv-myBstflTpmF1VERlwstlVS4WF0n3tPqyedk2DmtAIYsnp&usqp=CAU"
-					alt="">
-				</a>
-			</div>
-			<div class="col-lg-3 col-md-4 col-6">
-				<a href="#" class="d-block mb-4 h-100"> <img
-					class="img-fluid img-thumbnail"
-					src="https://upload.wikimedia.org/wikipedia/commons/6/60/Sushi_platter.jpg"
-					alt="">
-				</a>
-			</div>
-			<div class="col-lg-3 col-md-4 col-6">
-				<a href="#" class="d-block mb-4 h-100"> <img
-					class="img-fluid img-thumbnail"
-					src="https://storage.needpix.com/rsynced_images/a-chunk-of-beef-2.jpg"
-					alt="">
-				</a>
-			</div>
-			<div class="col-lg-3 col-md-4 col-6">
-				<a href="#" class="d-block mb-4 h-100"> <img
-					class="img-fluid img-thumbnail"
-					src="https://www.publicdomainpictures.net/pictures/290000/velka/raw-meats.jpg"
-					alt="">
-				</a>
-			</div>
-		</div>
-	</div>
-
-	<script
-		src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
-	<script th:href="@{/js/bootstrap.js}"></script>
+<body>
+<nav th:replace="/fragments/fragments::navbar"></nav>
+<main class="main container">
+    <div class="container bg-white p-4 rounded-1">
+        <div class="row">
+            <div class="form-group col-md-3 mb-3">
+                <label for="title" class="text-black-50 font-weight-bold"></label>
+                <input id="title" type="search" min="2" max="20" class="form-control"
+                       placeholder="Title"/>
+            </div>
+            <div class="form-group col-md-3 mb-3">
+                <label for="stars" class="text-black-50 font-weight-bold"></label>
+                <select id="stars" class="form-control">
+                    <option value="">- Choose a rating -</option>
+                    <option th:each="s:${T(com.example.foodplanner.model.enumeration.StarEnum).values()}"
+                            th:value="${s.name()}"
+                            th:text="${s}"></option>
+                </select>
+            </div>
+            <div class="form-group col-md-5 mb-3">
+                <label for="preparation" class="text-black-50 font-weight-bold"></label>
+                <input id="preparation" type="search" min="2" max="20" class="form-control"
+                       placeholder="Preparation"/>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col col-md-4">
+                <div class="button-holder d-flex">
+                    <input id="searchBtn" type="button" class="btn btn-info btn-lg" value="Search"/>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div id="cardsList">
+    </div>
+</main>
+<footer th:replace="/fragments/fragments::footer"></footer>
+<script src="/js/search-bar.js"></script>
 </body>
 </html>

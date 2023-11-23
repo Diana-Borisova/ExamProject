@@ -18,7 +18,7 @@
         </div>
         <div id="form-card" class="card-body bg-primary">
             <div class="container">
-                <h2 class="text-center text-white">Edit Profile</h2>
+                <h2 class="text-center text-white"></h2>
                 <form th:action="@{/users/edit-profile}" th:method="PATCH" th:object="${userEditBindingModel}"
                       enctype="multipart/form-data"
                       class="main-form mx-auto col-md-8 d-flex flex-column justify-content-center">
@@ -74,7 +74,7 @@
                     </div>
                     <div class="row">
                         <div class="form-group col-md-12 mb-3">
-                            <label for="planStyle" class="text-white font-weight-bold">Planstyle</label>
+                            <label for="planStyle" class="text-white font-weight-bold">Profession</label>
                             <input id="planStyle" type="text" name="planStyle" th:value="${userData.planStyle}"
                                    th:errorclass="is-invalid" min="2"
                                    max="20" class="form-control text-center"

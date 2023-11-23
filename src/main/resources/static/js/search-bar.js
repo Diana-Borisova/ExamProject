@@ -1,70 +1,109 @@
-const hotelsList = document.getElementById('cardsList');
-const nameInput = document.getElementById('hotelName');
+const recipesList = document.getElementById('cardsList');
+const titleInput = document.getElementById('title');
 const starsInput = document.getElementById('stars');
-const addressInput = document.getElementById('address');
+const preparationInput = document.getElementById('preparation');
 const searchBtn = document.getElementById('searchBtn');
-const allHotels = [];
-fetch("http://localhost:8080/hotels/all")
+const allRecipes = [];
+fetch("http://localhost:8080/recipes/all")
     .then(response => response.json())
     .then(data => {
         for (let d of data) {
-            allHotels.push(d);
+            allRecipes.push(d);
         }
     })
-    .then(() => displayHotels(allHotels)) // Move displayHotels inside the final then block
+    .then(() => displayRecipes(allRecipes)) // Move displayHotels inside the final then block
     .catch(error => {
         console.error('Error fetching data:', error);
     });
 
 searchBtn.addEventListener('click', (e) => {
-    const hotelsSearchingCharacters = nameInput.value.toLowerCase();
-    const addressSearchingCharacters = addressInput.value.toLowerCase();
+    const recipeSearchingCharacters = titleInput.value.toLowerCase();
+    const preparationSearchingCharacters = preparationInput.value.toLowerCase();
     const stars = starsInput.value;
-    console.log(allHotels);
-    let filteredHotels = allHotels.filter(hotel => {
+    console.log(allRecipes);
+    let filteredRecipes = allRecipes.filter(recipe => {
         if (stars === '') {
-            return hotel.name.toLowerCase().includes(hotelsSearchingCharacters)
-                && hotel.address.toLowerCase().includes(addressSearchingCharacters);
+            return recipe.title.toLowerCase().includes(recipeSearchingCharacters)
+                 && recipe.preparation.toLowerCase().includes(preparationSearchingCharacters);
         }
-        return hotel.name.toLowerCase().includes(hotelsSearchingCharacters)
-            && hotel.address.toLowerCase().includes(addressSearchingCharacters)
-            && hotel.stars === stars;
+        return recipe.title.toLowerCase().includes(recipeSearchingCharacters)
+          && recipe.preparation.toLowerCase().includes(preparationSearchingCharacters)
+            && recipe.stars === stars;
     });
-    console.log(filteredHotels);
-    displayHotels(filteredHotels);
+    console.log(filteredRecipes);
+    displayRecipes(filteredRecipes);
 });
 
 
-const displayHotels = (hotels) => {
-    hotelsList.innerHTML = '';
+const displayRecipes = (recipes) => {
+    recipesList.innerHTML = '';
     let row = [];
-    for (let i = 0; i < hotels.length; i++) {
+    for (let i = 0; i < recipes.length; i++) {
         let card = document.createElement('div');
         card.classList.add('card');
         card.classList.add('my-card');
+
+        // Apply flex styles for centering
+        card.style.display = 'flex';
+        card.style.flexDirection = 'column';
+        card.style.justifyContent = 'center';
+        card.style.alignItems = 'center';
+
+        // Add margin to create space between cards
+        card.style.marginBottom = '20px'; // Adjust the value to set your desired space
+
         let img = document.createElement('img');
         img.className = 'card-img-top card-image';
-        img.src = hotels[i].mainPictureUrl;
+        img.src = recipes[i].image;
         img.alt = 'Card image cap';
+
+        // Set specific width and height
+        img.width = 200;
+        img.height = 250;
+
         let cardBody = document.createElement('div');
         cardBody.className = 'card-body';
+
+        let textContainer = document.createElement('div');
+        textContainer.style.display = 'flex';
+        textContainer.style.flexDirection = 'column';
+        textContainer.style.alignItems = 'center';
+
         let cardTitle = document.createElement('h5');
         cardTitle.className = 'card-title';
-        cardTitle.innerText = hotels[i].name;
+        cardTitle.innerText = recipes[i].title;
+        cardTitle.style.fontWeight = 'bold';
+        cardTitle.style.fontSize = '28px';
+
         let cardText = document.createElement('p');
         cardText.className = 'card-text';
-        cardText.innerText = hotels[i].address;
+        cardText.innerText = recipes[i].preparation;
+
+        let buttonContainer = document.createElement('div');
+        buttonContainer.style.display = 'flex';
+        buttonContainer.style.justifyContent = 'center'; // Center the button horizontally
+        buttonContainer.style.marginTop = '10px'; // Adjust the value to set your desired space
+
         let a = document.createElement('a');
-        a.className = 'btn btn-primary';
-        a.href = '/hotels/details/' + hotels[i].id;
-        a.innerText = 'Visit';
-        cardBody.appendChild(cardTitle);
-        cardBody.appendChild(cardText);
-        cardBody.appendChild(a);
+        a.className = 'btn btn-success';
+        a.href = '/recipes/details/' + recipes[i].id;
+        a.innerText = 'See more...';
+
+        // Apply flex styles for centering
+        cardTitle.style.margin = '0'; // Reset default margin
+        cardText.style.margin = '0';
+
+        textContainer.appendChild(cardTitle);
+        textContainer.appendChild(cardText);
+        buttonContainer.appendChild(a);
+
+        cardBody.appendChild(textContainer);
+        cardBody.appendChild(buttonContainer);
         card.appendChild(img);
         card.appendChild(cardBody);
         row.push(card);
-        if ((i + 1) % 3 === 0 || hotels.length - i === 1) {
+
+        if ((i + 1) % 3 === 0 || recipes.length - i === 1) {
             let cardGroup = document.createElement('div');
             cardGroup.classList.add('card-group');
             cardGroup.classList.add('align-content-center');
@@ -72,10 +111,9 @@ const displayHotels = (hotels) => {
             for (let j = 0; j < row.length; j++) {
                 cardGroup.appendChild(row[j]);
             }
-            hotelsList.appendChild(cardGroup);
+            recipesList.appendChild(cardGroup);
             row = [];
         }
     }
 }
-
 

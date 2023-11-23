@@ -37,9 +37,9 @@ public class SecurityConfiguration {
                         .requestMatchers(HttpMethod.GET, "/recipe/**").permitAll()
                         .requestMatchers("/error").permitAll()
                         .requestMatchers(
-                                "/recipe/edit/**",
-                                "/recipe/my-recipes",
-                                "/recipe/api/owned",
+                                "/recipes/edit/**",
+                                "/recipes/my-recipes",
+                                "/recipes/api/owned",
                                 "/picture/delete").hasRole("RECIPE_OWNER")
                         .requestMatchers(
                                 "/admin/**",

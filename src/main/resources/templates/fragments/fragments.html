@@ -17,7 +17,7 @@
 <header th:fragment="navbar">
     <nav class="navbar navbar-expand-md navbar-dark fixed-top bg-primary">
         <div class="container-fluid">
-            <a class="navbar-brand" href="/">🌱 Meal Planning</a>
+            <a class="navbar-brand" href="/"> <span class="spinner-border">🌱 </span> Meal Planning</a>
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse"
                     aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
@@ -32,8 +32,8 @@
                     <li class="nav-item m-auto col-md-4" sec:authorize="isAuthenticated()">
                         <a class="nav-link active" aria-current="page" href="/">Recipes</a>
                     </li>
-                    <li class="nav-item m-auto col-md-4" sec:authorize="hasRole('RECIPE_OWNER')">
-                        <a class="nav-link active" href="/recipe/create">List&nbsp;Hotel</a>
+                    <li class="nav-item m-auto col-md-4" sec:authorize="isAuthenticated()">
+                        <a class="nav-link active" href="/recipes/create">Post Recipe</a>
                     </li>
                     <li class="nav-item col-md-4 m-auto " sec:authorize="!isAuthenticated()">
                         <a class="nav-link active " href="/users/register">Register</a>
@@ -51,12 +51,12 @@
                         </a>
                         <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
                             <li><a class="dropdown-item" href="/users/my-profile">My Profile</a></li>
-                            <li><a class="dropdown-item" href="/users/reservations">My Reservations</a></li>
+                            <li><a class="dropdown-item" href="/recipes/owned">My Recipes</a></li>
                             <li>
                                 <hr class="dropdown-divider">
                             </li>
                             <th:block sec:authorize="hasRole('RECIPE_OWNER')">
-                                <li><a class="dropdown-item" href="/hotels/owned">My Hotels</a></li>
+                                <li><a class="dropdown-item" href="/recipes/owned">My Recipes</a></li>
                                 <li>
                                     <hr class="dropdown-divider">
                                 </li>
