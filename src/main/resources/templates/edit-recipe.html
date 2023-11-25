@@ -19,16 +19,16 @@
         <div class="card-body bg-primary">
             <div class="container">
                 <h2 class="text-center text-white">Edit Recipe</h2>
-                <form th:action="@{/recipes/edit/{id}(id=${id})}" th:method="patch" th:object="${recipeData}"
+                <form th:action="@{/recipes/edit/{id}(id=${id})}" th:method="patch" th:object="${recipe}"
                       enctype="multipart/form-data"
                       class="main-form mx-auto col-md-8 d-flex flex-column justify-content-center">
                     <div class="row">
                         <div class="form-group col-md-6 mb-3">
                             <label for="title" class="text-white font-weight-bold">Title</label>
-                            <input th:value="${recipeData.title}" name="name" th:errorclass="is-invalid" required
+                            <input th:value="${recipe.title}" name="title" th:errorclass="is-invalid" required
                                    id="title" type="text"
                                    minlength="2"
-                                   maxlength="20" class="form-control"
+                                   maxlength="50" class="form-control"
                                    placeholder="Title"/>
                             <p class="errors alert alert-danger invalid-feedback">
                                 title name is required.
@@ -39,7 +39,7 @@
                             <select id="stars" required class="form-control"
                                     name="stars"
                                     th:errorclass="is-invalid">
-                                <option th:value="${recipeData.stars}" th:text="${recipeData.stars}">- Choose stars count
+                                <option th:value="${recipe.stars}" th:text="${recipe.stars}">- Rating
                                     -
                                 </option>
                                 <option th:each="s:${T(com.example.foodplanner.model.enumeration.StarEnum).values()}"
@@ -67,25 +67,25 @@
                         </div>
                     </div>
                     <div class="row">
+<!--                        <div class="form-group col-md-6 mb-3">-->
+<!--                            <label for="image" class="text-white font-weight-bold">YouTube Video</label>-->
+<!--                            <input id="image" name="videoUrl" type="text" class="form-control"-->
+<!--                                   th:value="${recipeData.image}"-->
+<!--                                   th:errorclass="is-invalid"-->
+<!--                                   minlength="5" maxlength="50"-->
+<!--                                   placeholder="watch?v={YOUR CODE}"/>-->
+<!--                            <p class="errors alert alert-danger invalid-feedback">-->
+<!--                                Video url is not valid-->
+<!--                            </p>-->
+<!--                        </div>-->
                         <div class="form-group col-md-6 mb-3">
-                            <label for="image" class="text-white font-weight-bold">YouTube Video</label>
-                            <input id="image" name="videoUrl" type="text" class="form-control"
-                                   th:value="${recipeData.image}"
-                                   th:errorclass="is-invalid"
-                                   minlength="5" maxlength="50"
-                                   placeholder="watch?v={YOUR CODE}"/>
-                            <p class="errors alert alert-danger invalid-feedback">
-                                Video url is not valid
-                            </p>
-                        </div>
-                        <div class="form-group col-md-6 mb-3">
-                            <label for="preparation" class="text-white font-weight-bold">Recipe preparation</label>
-                            <input id="preparation" name="preparation" type="text" class="form-control"
-                                   th:value="${recipeData.preparation}"
+                            <label for="cookingTime" class="text-white font-weight-bold">Recipe preparation</label>
+                            <input id="cookingTime" name="cookingTime" type="text" class="form-control"
+                                   th:value="${recipe.cookingTime}"
                                    th:errorclass="is-invalid"
                                    required
-                                   minlength="5" maxlength="50"
-                                   placeholder="ex. Country, City, Street..."/>
+                                   minlength="1"
+                                   placeholder="Cooking time"/>
                             <p class="errors alert alert-danger invalid-feedback">
                                 Recipe preparation must be valid.
                             </p>
@@ -94,9 +94,9 @@
                     <div class="row">
                         <div class="form-group mb-3">
                             <label for="description" class="text-white font-weight-bold">Description</label>
-                            <textarea name="description" th:text="${recipeData.description}" id="description"
+                            <textarea name="description" th:text="${recipe.description}" id="description"
                                       class="form-control"
-                                      minlength="15" maxlength="500" required
+                                      minlength="15" maxlength="1000" required
                                       th:errorclass="is-invalid"
                                       placeholder="Description..."></textarea>
                             <p class="errors alert alert-danger invalid-feedback">
@@ -104,10 +104,30 @@
                             </p>
                         </div>
                     </div>
+                    <div class="row">
+                        <div class="form-group mb-3">
+                            <label for="products" class="text-white font-weight-bold">Needed Products:</label>
+                            <textarea id="products" class="form-control" th:field="*{products}"
+                                      minlength="15" maxlength="1000" required
+                                      th:errorclass="is-invalid"
+                                      placeholder="List needed products here..."></textarea>
+                            <p class="errors alert alert-danger invalid-feedback">
+                                Description must be between 15 and 1000 characters.
+                            </p>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="form-group col-md-6 mb-3">
+                            <label for="shared" class="text-white font-weight-bold">Share this recipe</label>
+                            <input type="checkbox" th:field="*{shared}" th:errorclass="is-invalid"
+                                   id="shared" name="shared"
+                                   value=true>
+                        </div>
+                    </div>
                     <div>
                         <label class="text-white font-weight-bold">Uploaded images</label>
                         <ul class="row-cols-auto">
-                            <li th:each="i:${recipeData.image}" class="image-cont">
+                            <li th:each="i:${recipe.pictures}" class="image-cont">
                                 <img th:src="${i}"
                                      alt="Avatar" class="image">
                                 <div class="middle">

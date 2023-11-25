@@ -16,11 +16,14 @@ public class Recipe extends BaseEntity {
 	@Column(name = "title")
 	private String title;
 
-	@Column(name = "description")
+	@Column(name = "description", columnDefinition = "TEXT")
 	private String description;
 
-	@Column(name = "preparation")
-	private String preparation;
+	@Column(name = "products", columnDefinition = "TEXT")
+	private String products;
+
+	@Column(name = "cooking_time")
+	private int cookingTime;
 
 	@Column(name = "star")
 	@Enumerated(EnumType.STRING)
@@ -41,59 +44,75 @@ public class Recipe extends BaseEntity {
 
 	}
 
-	public String getTitle() {
-		return title;
-	}
+    public String getTitle() {
+        return title;
+    }
 
-	public void setTitle(String title) {
-		this.title = title;
-	}
+    public Recipe setTitle(String title) {
+        this.title = title;
+        return this;
+    }
 
-	public String getDescription() {
-		return description;
-	}
+    public String getDescription() {
+        return description;
+    }
 
-	public void setDescription(String description) {
-		this.description = description;
-	}
+    public Recipe setDescription(String description) {
+        this.description = description;
+        return this;
+    }
 
-	public String getPreparation() {
-		return preparation;
-	}
+    public String getProducts() {
+        return products;
+    }
 
-	public void setPreparation(String preparation) {
-		this.preparation = preparation;
-	}
+    public Recipe setProducts(String products) {
+        this.products = products;
+        return this;
+    }
 
-	public StarEnum getStars() {
-		return stars;
-	}
+    public int getCookingTime() {
+        return cookingTime;
+    }
 
-	public void setStars(StarEnum stars) {
-		this.stars = stars;
-	}
+    public Recipe setCookingTime(int cookingTime) {
+        this.cookingTime = cookingTime;
+        return this;
+    }
 
-	public String getImage() {
-		return image;
-	}
+    public StarEnum getStars() {
+        return stars;
+    }
 
-	public void setImage(String image) {
-		this.image = image;
-	}
+    public Recipe setStars(StarEnum stars) {
+        this.stars = stars;
+        return this;
+    }
 
-	public User getRecipeOwner() {
-		return recipeOwner;
-	}
+    public String getImage() {
+        return image;
+    }
 
-	public void setRecipeOwner(User recipeOwner) {
-		this.recipeOwner = recipeOwner;
-	}
+    public Recipe setImage(String image) {
+        this.image = image;
+        return this;
+    }
 
-	public boolean isShared() {
-		return shared;
-	}
+    public User getRecipeOwner() {
+        return recipeOwner;
+    }
 
-	public void setShared(boolean shared) {
-		this.shared = shared;
-	}
+    public Recipe setRecipeOwner(User recipeOwner) {
+        this.recipeOwner = recipeOwner;
+        return this;
+    }
+
+    public boolean isShared() {
+        return shared;
+    }
+
+    public Recipe setShared(boolean shared) {
+        this.shared = shared;
+        return this;
+    }
 }

@@ -27,7 +27,7 @@
                             <label for="title" class="text-white font-weight-bold">Title</label>
                             <input th:field="*{title}" th:errorclass="is-invalid" required id="title" type="text"
                                    minlength="2"
-                                   maxlength="20" class="form-control"
+                                   maxlength="50" class="form-control"
                                    placeholder="Title"/>
                             <p class="errors alert alert-danger invalid-feedback">
                                 Title name is required.
@@ -47,7 +47,7 @@
                             </p>
                         </div>
                     </div>
-
+                    <div class="row">
                     <div class="form-group col-md-6 mb-3">
                             <label for="pictures" class="text-white font-weight-bold">Add pictures of your recipe</label>
                             <input type="file"
@@ -57,11 +57,9 @@
                             <p class="errors alert alert-danger invalid-feedback">
                                 Upload at least one picture.
                             </p>
-                        </div>
-
-                    <div class="row">
+                    </div>
                         <div class="form-group col-md-6 mb-3">
-                            <label for="image" class="text-white font-weight-bold">image</label>
+                            <label for="image" class="text-white font-weight-bold">Video Url</label>
                             <input id="image" type="text" class="form-control" th:field="*{image}"
                                    th:errorclass="is-invalid"
                                    minlength="5" maxlength="50"
@@ -70,15 +68,17 @@
                                 image is not valid
                             </p>
                         </div>
-                        <div class="form-group col-md-6 mb-3">
-                            <label for="preparation" class="text-white font-weight-bold">Preparation</label>
-                            <input id="preparation" type="text" class="form-control" th:field="*{preparation}"
+                    </div>
+                    <div class="row">
+                        <div class="form-group mb-3">
+                            <label for="cookingTime" class="text-white font-weight-bold">Cooking time</label>
+                            <input id="cookingTime" type="number" class="form-control" th:field="*{cookingTime}"
                                    th:errorclass="is-invalid"
                                    required
-                                   minlength="5" maxlength="50"
-                                   placeholder="Preparation time in minutes"/>
+                                   minlength="1"
+                                   placeholder="Cooking time in minutes"/>
                             <p class="errors alert alert-danger invalid-feedback">
-                                Preparation time must be valid.
+                                Cooking time must be valid.
                             </p>
                         </div>
                     </div>
@@ -86,17 +86,29 @@
                         <div class="form-group mb-3">
                             <label for="description" class="text-white font-weight-bold">Description</label>
                             <textarea id="description" class="form-control" th:field="*{description}"
-                                      minlength="15" maxlength="500" required
+                                      minlength="15" maxlength="1000" required
                                       th:errorclass="is-invalid"
                                       placeholder="Description..."></textarea>
                             <p class="errors alert alert-danger invalid-feedback">
-                                Description must be between 15 and 500 characters.
+                                Description must be between 15 and 1000 characters.
+                            </p>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="form-group mb-3">
+                            <label for="products" class="text-white font-weight-bold">Needed Products:</label>
+                            <textarea id="products" class="form-control" th:field="*{products}"
+                                      minlength="15" maxlength="1000" required
+                                      th:errorclass="is-invalid"
+                                      placeholder="List needed products here..."></textarea>
+                            <p class="errors alert alert-danger invalid-feedback">
+                                Description must be between 15 and 1000 characters.
                             </p>
                         </div>
                     </div>
                     <div class="row">
                         <div class="form-group col-md-6 mb-3">
-                            <label for="shared" class="text-white font-weight-bold">Share my recipes</label>
+                            <label for="shared" class="text-white font-weight-bold">Share this recipe</label>
                             <input type="checkbox" th:field="*{shared}" th:errorclass="is-invalid"
                                    id="shared" name="shared"
                                    value=true>
@@ -109,6 +121,7 @@
                             </div>
                         </div>
                     </div>
+
                 </form>
             </div>
         </div>

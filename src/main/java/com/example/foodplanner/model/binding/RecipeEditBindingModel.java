@@ -1,8 +1,6 @@
 package com.example.foodplanner.model.binding;
 
-import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.NotNull;
-import jakarta.validation.constraints.Size;
+import jakarta.validation.constraints.*;
 import org.springframework.web.multipart.MultipartFile;
 
 
@@ -10,17 +8,22 @@ import java.util.List;
 
 public class RecipeEditBindingModel {
     @NotBlank(message = "Field cannot be blank")
-    @Size(min = 2,max = 20,message = "Length must be between 2 and 20 characters")
+    @Size(min = 2,max = 50,message = "Length must be between 2 and 50 characters")
     private String title;
     @NotNull(message = "Field cannot be blank")
     private String stars;
     @NotBlank(message = "Field cannot be blank")
-    @Size(min = 15,max = 500,message = "Length must be between 15 and 500 characters")
+    @Size(min = 15,max = 1000,message = "Length must be between 15 and 1000 characters")
     private String description;
 
+    @NotNull(message = "Field cannot be blank")
+    @Positive(message = "Must be positive number")
+    @Min(1)
+    private int cookingTime;
+
     @NotBlank(message = "Field cannot be blank")
-    @Size(min = 15,max = 1000,message = "Length must be between 15 and 500 characters")
-    private String preparation;
+    @Size(min = 15,max = 1000,message = "Length must be between 15 and 1000 characters")
+    private String products;
     @Size(min = 0,max = 50)
     private String image;
 
@@ -58,12 +61,21 @@ public class RecipeEditBindingModel {
         return this;
     }
 
-    public String getPreparation() {
-        return preparation;
+    public int getCookingTime() {
+        return cookingTime;
     }
 
-    public RecipeEditBindingModel setPreparation(String preparation) {
-        this.preparation = preparation;
+    public RecipeEditBindingModel setCookingTime(int cookingTime) {
+        this.cookingTime = cookingTime;
+        return this;
+    }
+
+    public String getProducts() {
+        return products;
+    }
+
+    public RecipeEditBindingModel setProducts(String products) {
+        this.products = products;
         return this;
     }
 

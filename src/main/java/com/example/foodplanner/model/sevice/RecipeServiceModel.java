@@ -10,7 +10,8 @@ public class RecipeServiceModel {
     private StarEnum stars;
     private String description;
 
-    private String preparation;
+    private String products;
+    private int cookingTime;
     private String image;
     private User recipeOwner;
 
@@ -37,9 +38,6 @@ public class RecipeServiceModel {
         return this;
     }
 
-
-
-
     public StarEnum getStars() {
         return stars;
     }
@@ -58,6 +56,24 @@ public class RecipeServiceModel {
         return this;
     }
 
+    public String getProducts() {
+        return products;
+    }
+
+    public RecipeServiceModel setProducts(String products) {
+        this.products = products;
+        return this;
+    }
+
+    public int getCookingTime() {
+        return cookingTime;
+    }
+
+    public RecipeServiceModel setCookingTime(int cookingTime) {
+        this.cookingTime = cookingTime;
+        return this;
+    }
+
     public String getImage() {
         return image;
     }
@@ -73,16 +89,6 @@ public class RecipeServiceModel {
 
     public RecipeServiceModel setRecipeOwner(User recipeOwner) {
         this.recipeOwner = recipeOwner;
-        return this;
-
-    }
-
-    public String getPreparation() {
-        return preparation;
-    }
-
-    public RecipeServiceModel setPreparation(String preparation) {
-        this.preparation = preparation;
         return this;
     }
 

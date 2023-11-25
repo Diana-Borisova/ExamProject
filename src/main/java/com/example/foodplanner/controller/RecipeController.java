@@ -4,6 +4,8 @@ package com.example.foodplanner.controller;
 import com.example.foodplanner.model.binding.RecipeCreateBindingModel;
 import com.example.foodplanner.model.binding.RecipeEditBindingModel;
 import com.example.foodplanner.model.entity.Recipe;
+import com.example.foodplanner.model.entity.Role;
+import com.example.foodplanner.model.enumeration.RoleEnum;
 import com.example.foodplanner.model.enumeration.StarEnum;
 import com.example.foodplanner.model.sevice.RecipeServiceModel;
 import com.example.foodplanner.service.PictureService;
@@ -11,6 +13,7 @@ import com.example.foodplanner.service.RecipeService;
 import com.example.foodplanner.service.UserService;
 import com.example.foodplanner.view.RecipeDetailsViewModel;
 import com.example.foodplanner.view.RecipeEditViewModel;
+import jakarta.persistence.EntityNotFoundException;
 import jakarta.validation.Valid;
 import org.modelmapper.ModelMapper;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -83,41 +86,50 @@ public class RecipeController {
         RecipeServiceModel recipeServiceModel = modelMapper.map(recipeCreateBindingModel, RecipeServiceModel.class);
         setStarEnum(recipeCreateBindingModel.getStars(), recipeServiceModel);
         recipeServiceModel.setRecipeOwner(userService.getUserByEmail(principal.getUsername()));
+        recipeServiceModel.getRecipeOwner().setRoles(List.of(userService.getUserRoleByName(RoleEnum.RECIPE_OWNER)));
+        userService.getUserById(recipeServiceModel.getRecipeOwner().getId())
+                .setRoles(List.of(userService.getUserRoleByName(RoleEnum.RECIPE_OWNER)));
+        setShared(recipeCreateBindingModel.isShared(), recipeServiceModel);
         Long recipeId = recipeService.createRecipe(recipeServiceModel);
         pictureService.uploadRecipeImages(recipeCreateBindingModel.getPictures(), recipeId);
 
         return "redirect:/";
     }
 
-//    @GetMapping("/foods/manage/{recipeId}")
-//    public String manageFoods(Model model, @PathVariable Long recipeId) {
-//        HotelRoomTableViewModel hotelViewModel = modelMapper.map(hotelService.getHotelById(hotelId), HotelRoomTableViewModel.class);
-//        model.addAttribute("hotel", hotelViewModel);
-//        return "manage-rooms";
-//    }
+    @GetMapping("/details/manage/{recipeId}")
+    public String manageRecipes(Model model, @PathVariable Long recipeId) {
+        RecipeEditViewModel recipeEditViewModel = modelMapper.map(recipeService.getRecipeById(recipeId), RecipeEditViewModel.class);
+        model.addAttribute("recipe", recipeEditViewModel);
+        return "manage-recipes";
+    }
 
-//    @GetMapping("/edit-room/{id}")
-//    private String editRoom(RoomAddBindingModel roomAddBindingModel, Model model, @PathVariable Long id) {
-//        RoomTableViewModel room = modelMapper.map(roomService.getRoomById(id), RoomTableViewModel.class);
-//        model.addAttribute("room", room);
-//        return "edit-room";
-//    }
-//
-//    @PatchMapping("/edit-room/{roomId}")
-//    public String editRoomPatch(@Valid RoomAddBindingModel roomAddBindingModel,
-//                                BindingResult bindingResult,
-//                                RedirectAttributes redirectAttributes,
-//                                @PathVariable Long roomId) {
-//        if (bindingResult.hasErrors()) {
-//            redirectAttributes.addFlashAttribute("roomAddBindingModel", roomAddBindingModel);
-//            redirectAttributes.addFlashAttribute("org.springframework.validation.BindingResult.roomAddBindingModel", bindingResult);
-//            return "redirect:/hotels/edit-room/" + roomId;
-//        }
-//        RoomServiceModel room = modelMapper.map(roomAddBindingModel, RoomServiceModel.class);
-//        room.setId(roomId);
-//        Long hotelId = roomService.patchChanges(room);
-//        return "redirect:/hotels/rooms/manage/" + hotelId;
-//    }
+    @GetMapping("/edit/{id}")
+    private String editRoom(RecipeEditViewModel recipeEditViewModel, Model model, @PathVariable Long id) {
+        RecipeEditViewModel recipe = modelMapper.map(recipeService.getRecipeById(id), RecipeEditViewModel.class);
+        model.addAttribute("recipe", recipe);
+        return "edit-recipe";
+    }
+
+    @PatchMapping("/edit/{recipeId}")
+    public String editRoomPatch(@Valid RecipeCreateBindingModel recipeCreateBindingModel,
+                                BindingResult bindingResult,
+                                RedirectAttributes redirectAttributes,
+                                @PathVariable Long recipeId) {
+        if (bindingResult.hasErrors()) {
+            redirectAttributes.addFlashAttribute("recipeCreateBindingModel", recipeCreateBindingModel);
+            redirectAttributes.addFlashAttribute("org.springframework.validation.BindingResult.recipeCreateBindingModel", bindingResult);
+            return "redirect:/users/edit-recipe/" + recipeId;
+        }
+        RecipeServiceModel recipe = modelMapper.map(recipeCreateBindingModel, RecipeServiceModel.class);
+        recipe.setId(recipeId);
+        recipe.setShared(recipeCreateBindingModel.isShared());
+        recipe.setDescription(recipeCreateBindingModel.getDescription());
+        setStarEnum(recipeCreateBindingModel.getStars(), recipe);
+        recipe.setImage(recipeCreateBindingModel.getImage());
+
+         recipeService.patchChanges(recipe);
+        return "redirect:/";
+    }
 //
 //    @GetMapping("/add-room/{id}")
 //    public String addRoom(@PathVariable String id, Model model) {
@@ -159,6 +171,8 @@ public class RecipeController {
         }
         model.addAttribute("isOwner", userService.getUserByEmail(userDetails.getUsername()).getId().equals(recipe.getRecipeOwner().getId()));
         model.addAttribute("recipe", recipeDetailsViewModel);
+        model.addAttribute("isAdmin", userService.getCurrentUser().getId() == 1);
+
 //        model.addAttribute("foods", foodService.getHotelsRooms(id).
 //                stream().
 //                map(r -> modelMapper.map(r, RoomReserveViewModel.class)).
@@ -228,12 +242,20 @@ public class RecipeController {
 //        return "hotel-reservations";
 //    }
 
-    private void setStarEnum(String bindedStars, RecipeServiceModel recipeServiceModel) {
+    private void setStarEnum(String stars, RecipeServiceModel recipeServiceModel) {
         Arrays.stream(StarEnum.values()).forEach(v -> {
-            if (bindedStars.equals(v.toString())) {
+            if (stars.equals(v.toString())) {
                 recipeServiceModel.setStars(v);
             }
         });
+    }
+
+    private void setShared(boolean shared, RecipeServiceModel recipeServiceModel) {
+        if(shared){
+            recipeServiceModel.setShared(true);
+        } else {
+            recipeServiceModel.setShared(false);
+        }
     }
 
 

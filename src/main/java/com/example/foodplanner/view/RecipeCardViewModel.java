@@ -14,12 +14,11 @@ public class RecipeCardViewModel {
     private String title;
     private StarEnum stars;
 
-    private String preparation;
+    private int cookingTime;
     private String image;
 
     public RecipeCardViewModel() {
     }
-
 
     public Long getId() {
         return id;
@@ -27,15 +26,6 @@ public class RecipeCardViewModel {
 
     public RecipeCardViewModel setId(Long id) {
         this.id = id;
-        return this;
-    }
-
-    public String getPreparation() {
-        return preparation;
-    }
-
-    public RecipeCardViewModel setPreparation(String preparation) {
-        this.preparation = preparation;
         return this;
     }
 
@@ -48,17 +38,6 @@ public class RecipeCardViewModel {
         return this;
     }
 
-    public String getImage() {
-        return image;
-    }
-
-    public RecipeCardViewModel setImage(String image) {
-        this.image = image;
-        return this;
-    }
-
-
-
     public StarEnum getStars() {
         return stars;
     }
@@ -68,7 +47,21 @@ public class RecipeCardViewModel {
         return this;
     }
 
+    public int getCookingTime() {
+        return cookingTime;
+    }
 
+    public RecipeCardViewModel setCookingTime(int cookingTime) {
+        this.cookingTime = cookingTime;
+        return this;
+    }
 
+    public String getImage() {
+        return image;
+    }
 
+    public RecipeCardViewModel setImage(String image) {
+        this.image = image;
+        return this;
+    }
 }

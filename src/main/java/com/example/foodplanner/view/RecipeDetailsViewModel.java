@@ -10,8 +10,8 @@ public class RecipeDetailsViewModel {
 
     private String description;
 
-
-    private String preparation;
+    private String products;
+    private int cookingTime;
 
     private String image;
 
@@ -22,12 +22,21 @@ public class RecipeDetailsViewModel {
     public RecipeDetailsViewModel() {
     }
 
-    public List<String> getPictures() {
-        return pictures;
+    public String getTitle() {
+        return title;
     }
 
-    public RecipeDetailsViewModel setPictures(List<String> pictures) {
-        this.pictures = pictures;
+    public RecipeDetailsViewModel setTitle(String title) {
+        this.title = title;
+        return this;
+    }
+
+    public String getStars() {
+        return stars;
+    }
+
+    public RecipeDetailsViewModel setStars(String stars) {
+        this.stars = stars;
         return this;
     }
 
@@ -40,32 +49,21 @@ public class RecipeDetailsViewModel {
         return this;
     }
 
-    public String getTitle() {
-        return title;
+    public String getProducts() {
+        return products;
     }
 
-    public RecipeDetailsViewModel setTitle(String title) {
-        this.title = title;
+    public RecipeDetailsViewModel setProducts(String products) {
+        this.products = products;
         return this;
     }
 
-
-    public String getStars() {
-        return stars;
+    public int getCookingTime() {
+        return cookingTime;
     }
 
-    public RecipeDetailsViewModel setStars(String stars) {
-        this.stars = stars;
-        return this;
-    }
-
-
-    public String getPreparation() {
-        return preparation;
-    }
-
-    public RecipeDetailsViewModel setPreparation(String preparation) {
-        this.preparation = preparation;
+    public RecipeDetailsViewModel setCookingTime(int cookingTime) {
+        this.cookingTime = cookingTime;
         return this;
     }
 
@@ -78,14 +76,21 @@ public class RecipeDetailsViewModel {
         return this;
     }
 
-
-
     public boolean isShared() {
         return shared;
     }
 
     public RecipeDetailsViewModel setShared(boolean shared) {
         this.shared = shared;
+        return this;
+    }
+
+    public List<String> getPictures() {
+        return pictures;
+    }
+
+    public RecipeDetailsViewModel setPictures(List<String> pictures) {
+        this.pictures = pictures;
         return this;
     }
 }

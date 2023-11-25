@@ -1,36 +1,36 @@
 const tbody = document.querySelector('tbody');
-const allRooms = [];
-const id = document.getElementById('hotel').getAttribute('hotelid');
-fetch('http://localhost:8080/hotels/rooms/'+id).then(r => r.json()).then(data => {
+const allRecipes = [];
+const id = document.getElementById('recipe').getAttribute('recipeId');
+fetch('http://localhost:8080/recipes/details/manage/'+id).then(r => r.json()).then(data => {
     for (let d of data) {
-        allRooms.push(d);
+        allRecipes.push(d);
     }
-}).then(p => showRooms(allRooms));
+}).then(p => showRecipes(allRecipes));
 
 
 
-function showRooms(rooms) {
+function showRecipes(recipes) {
     tbody.innerHTML = '';
-    for (let r of rooms) {
+    for (let r of recipes) {
         const id = document.createElement('td');
         id.innerText = r.id;
         const type = document.createElement('td');
-        type.innerText = r.type;
+        type.innerText = r.title;
         const name = document.createElement('td');
-        name.innerText = r.name;
+        name.innerText = r.shared;
         const price = document.createElement('td');
-        price.innerText = r.price;
+        price.innerText = r.cookingTime;
         const singleBeds = document.createElement('td');
-        singleBeds.innerText = r.singleBedsCount;
-        const twinBeds = document.createElement('td');
-        twinBeds.innerText = r.twinBedsCount;
-        const count = document.createElement('td');
-        count.innerText = r.count;
+        singleBeds.innerText = r.description;
+        // const twinBeds = document.createElement('td');
+        // twinBeds.innerText = r.products;
+        // const count = document.createElement('td');
+        // count.innerText = r.count;
         const btn = document.createElement('td');
         const a = document.createElement('a');
         a.type = 'button';
         a.className = 'btn btn-danger w-100';
-        a.href = '/hotels/edit-room/' + r.id;
+        a.href = '/recipes/edit-recipe/' + r.id;
         a.innerText = 'EDIT';
         btn.appendChild(a);
         const tr = document.createElement('tr');
@@ -39,8 +39,8 @@ function showRooms(rooms) {
         tr.appendChild(name);
         tr.appendChild(price);
         tr.appendChild(singleBeds);
-        tr.appendChild(twinBeds);
-        tr.appendChild(count);
+        // tr.appendChild(twinBeds);
+        // tr.appendChild(count);
         tr.appendChild(btn);
         tbody.appendChild(tr);
     }

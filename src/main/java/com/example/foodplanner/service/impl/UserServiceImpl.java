@@ -1,6 +1,7 @@
 package com.example.foodplanner.service.impl;
 
 
+import com.example.foodplanner.model.entity.Role;
 import com.example.foodplanner.model.entity.User;
 import com.example.foodplanner.model.enumeration.RoleEnum;
 import com.example.foodplanner.repository.UserRepository;
@@ -157,6 +158,12 @@ public class UserServiceImpl implements UserService {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         boolean hasUserRole = authentication.getAuthorities().stream().anyMatch(r -> r.getAuthority().equals(role));
         return hasUserRole;
+    }
+
+    @Override
+    public Role getUserRoleByName(RoleEnum roleEnum) {
+
+        return new Role().setName(roleEnum);
     }
 
 

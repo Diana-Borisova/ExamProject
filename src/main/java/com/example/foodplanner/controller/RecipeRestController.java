@@ -4,11 +4,13 @@ package com.example.foodplanner.controller;
 import com.example.foodplanner.service.PictureService;
 import com.example.foodplanner.service.RecipeService;
 import com.example.foodplanner.view.RecipeCardViewModel;
+import com.example.foodplanner.view.RecipeDetailsViewModel;
 import org.modelmapper.ModelMapper;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -62,15 +64,15 @@ public class RecipeRestController {
         return ResponseEntity.ok().body(recipeCardViewModels);
     }
 
-//    @GetMapping("/rooms/{hotelId}")
-//    public ResponseEntity<List<RoomTableViewModel>> getRoomsByHotelId(@PathVariable Long hotelId) {
-//        List<RoomTableViewModel> rooms = roomService.
-//                getHotelsRooms(hotelId).
-//                stream().
-//                map(r -> modelMapper.map(r, RoomTableViewModel.class)).
-//                collect(Collectors.toList());
-//
-//        return ResponseEntity.ok().body(rooms);
-//    }
+    @GetMapping("/recipes/{userId}")
+    public ResponseEntity<List<RecipeDetailsViewModel>> getRecipesByUserId(@PathVariable Long userId) {
+        List<RecipeDetailsViewModel> recipes = recipeService.
+                getUsersRecipes(userId).
+                stream().
+                map(r -> modelMapper.map(r, RecipeDetailsViewModel.class)).
+                collect(Collectors.toList());
+
+        return ResponseEntity.ok().body(recipes);
+    }
 
 }

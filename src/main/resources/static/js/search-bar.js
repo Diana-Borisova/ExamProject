@@ -1,7 +1,7 @@
 const recipesList = document.getElementById('cardsList');
 const titleInput = document.getElementById('title');
 const starsInput = document.getElementById('stars');
-const preparationInput = document.getElementById('preparation');
+const preparationInput = document.getElementById('cookingTime');
 const searchBtn = document.getElementById('searchBtn');
 const allRecipes = [];
 fetch("http://localhost:8080/recipes/all")
@@ -18,17 +18,18 @@ fetch("http://localhost:8080/recipes/all")
 
 searchBtn.addEventListener('click', (e) => {
     const recipeSearchingCharacters = titleInput.value.toLowerCase();
-    const preparationSearchingCharacters = preparationInput.value.toLowerCase();
+    const preparationSearchingCharacters = preparationInput.value;
     const stars = starsInput.value;
     console.log(allRecipes);
     let filteredRecipes = allRecipes.filter(recipe => {
+
         if (stars === '') {
-            return recipe.title.toLowerCase().includes(recipeSearchingCharacters)
-                 && recipe.preparation.toLowerCase().includes(preparationSearchingCharacters);
+            return recipe.title.toLowerCase().includes(recipeSearchingCharacters) &&
+                ((recipe.cookingTime && recipe.cookingTime.toString()) || '').includes(preparationSearchingCharacters);
         }
-        return recipe.title.toLowerCase().includes(recipeSearchingCharacters)
-          && recipe.preparation.toLowerCase().includes(preparationSearchingCharacters)
-            && recipe.stars === stars;
+        return recipe.title.toLowerCase().includes(recipeSearchingCharacters) &&
+            ((recipe.cookingTime && recipe.cookingTime.toString()) || '').includes(preparationSearchingCharacters) &&
+            recipe.stars === stars;
     });
     console.log(filteredRecipes);
     displayRecipes(filteredRecipes);
@@ -74,10 +75,15 @@ const displayRecipes = (recipes) => {
         cardTitle.innerText = recipes[i].title;
         cardTitle.style.fontWeight = 'bold';
         cardTitle.style.fontSize = '28px';
+        cardTitle.style.paddingBottom = '15px';
 
         let cardText = document.createElement('p');
         cardText.className = 'card-text';
-        cardText.innerText = recipes[i].preparation;
+        let cookingTimeIcon = document.createElement('i');
+        cookingTimeIcon.className = 'fa-regular fa-clock';
+        cookingTimeIcon.style.marginRight = '5px';
+        let cookingTimeText = document.createElement('span');
+        cookingTimeText.innerText = ` ${recipes[i].cookingTime} min.`; // Add a space before cookingTime
 
         let buttonContainer = document.createElement('div');
         buttonContainer.style.display = 'flex';
@@ -95,6 +101,8 @@ const displayRecipes = (recipes) => {
 
         textContainer.appendChild(cardTitle);
         textContainer.appendChild(cardText);
+        cardText.appendChild(cookingTimeIcon);
+        cardText.appendChild(cookingTimeText);
         buttonContainer.appendChild(a);
 
         cardBody.appendChild(textContainer);

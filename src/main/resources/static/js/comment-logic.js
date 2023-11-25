@@ -7,7 +7,7 @@ commentBtn.addEventListener('click', postComment);
 window.addEventListener('load', loadAllComments);
 
 function postComment(e) {
-    fetch('http://localhost:8080/hotels/' + commentBtn.value + '/add-comment',
+    fetch('http://localhost:8080/recipes/' + commentBtn.value + '/add-comment',
         {
             method: 'POST',
             body: commentInput.value
@@ -19,7 +19,7 @@ function postComment(e) {
 
 function loadAllComments() {
     const allComments = [];
-    fetch('http://localhost:8080/hotels/' + commentBtn.value + '/comments').then(r => r.json())
+    fetch('http://localhost:8080/recipes/' + commentBtn.value + '/comments').then(r => r.json())
         .then(data => {
             for (let d of data) {
                 allComments.push(d);
@@ -35,19 +35,19 @@ function loadAllComments() {
             const div3 = document.createElement('div');
             div3.className = 'user d-flex flex-row align-items-center gap-1';
             const image = document.createElement('img');
-            image.src = c.userPic;
+            image.src = c.image;
             image.className = 'user-img rounded-circle mr-2';
             image.width = 30;
             const span = document.createElement('span');
             span.className='gap-2 align-items-center d-flex flex-row';
             const smallUsername = document.createElement('small');
             smallUsername.className = 'font-weight-bold text-primary'
-            smallUsername.innerText = c.userNames;
+            smallUsername.innerText = c.username;
             const smallContent = document.createElement('small');
             smallContent.className = 'font-weight-bold';
             smallContent.innerText = c.content;
             const smallPostedOn = document.createElement('small');
-            smallPostedOn.innerText = c.postedOn;
+            smallPostedOn.innerText = c.now;
             div1.appendChild(div2);
             div2.appendChild(div3);
             div3.appendChild(image);

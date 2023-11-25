@@ -1,8 +1,7 @@
 package com.example.foodplanner.model.binding;
 
-import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.NotNull;
-import jakarta.validation.constraints.Size;
+import jakarta.persistence.Column;
+import jakarta.validation.constraints.*;
 import org.springframework.web.multipart.MultipartFile;
 
 
@@ -10,17 +9,22 @@ import java.util.List;
 
 public class RecipeCreateBindingModel {
     @NotBlank(message = "Field cannot be blank")
-    @Size(min = 2,max = 20,message = "Length must be between 2 and 20 characters")
+    @Size(min = 2,max = 50,message = "Length must be between 2 and 50 characters")
     private String title;
     @NotNull(message = "Field cannot be blank")
     private String stars;
     @NotBlank(message = "Field cannot be blank")
-    @Size(min = 15,max = 500,message = "Length must be between 15 and 500 characters")
+    @Size(min = 15,max = 1000,message = "Length must be between 15 and 1000 characters")
     private String description;
 
+    @NotNull(message = "Field cannot be blank")
+    @Positive(message = "Must be positive number")
+    @Min(1)
+    private int cookingTime;
+
     @NotBlank(message = "Field cannot be blank")
-    @Size(min = 15,max = 1000,message = "Length must be between 15 and 500 characters")
-    private String preparation;
+    @Size(min = 15,max = 1000,message = "Length must be between 15 and 1000 characters")
+    private String products;
     @Size(min = 0,max = 50)
     private String image;
 
@@ -29,15 +33,6 @@ public class RecipeCreateBindingModel {
     private List<MultipartFile> pictures;
 
     public RecipeCreateBindingModel() {
-    }
-
-    public String getDescription() {
-        return description;
-    }
-
-    public RecipeCreateBindingModel setDescription(String description) {
-        this.description = description;
-        return this;
     }
 
     public String getTitle() {
@@ -49,7 +44,6 @@ public class RecipeCreateBindingModel {
         return this;
     }
 
-
     public String getStars() {
         return stars;
     }
@@ -59,13 +53,30 @@ public class RecipeCreateBindingModel {
         return this;
     }
 
-
-    public String getPreparation() {
-        return preparation;
+    public String getDescription() {
+        return description;
     }
 
-    public RecipeCreateBindingModel setPreparation(String preparation) {
-        this.preparation = preparation;
+    public RecipeCreateBindingModel setDescription(String description) {
+        this.description = description;
+        return this;
+    }
+
+    public int getCookingTime() {
+        return cookingTime;
+    }
+
+    public RecipeCreateBindingModel setCookingTime(int cookingTime) {
+        this.cookingTime = cookingTime;
+        return this;
+    }
+
+    public String getProducts() {
+        return products;
+    }
+
+    public RecipeCreateBindingModel setProducts(String products) {
+        this.products = products;
         return this;
     }
 
@@ -78,21 +89,21 @@ public class RecipeCreateBindingModel {
         return this;
     }
 
-    public List<MultipartFile> getPictures() {
-        return pictures;
-    }
-
-    public RecipeCreateBindingModel setPictures(List<MultipartFile> pictures) {
-        this.pictures = pictures;
-        return this;
-    }
-
     public boolean isShared() {
         return shared;
     }
 
     public RecipeCreateBindingModel setShared(boolean shared) {
         this.shared = shared;
+        return this;
+    }
+
+    public List<MultipartFile> getPictures() {
+        return pictures;
+    }
+
+    public RecipeCreateBindingModel setPictures(List<MultipartFile> pictures) {
+        this.pictures = pictures;
         return this;
     }
 }

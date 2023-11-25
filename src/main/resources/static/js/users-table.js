@@ -24,7 +24,7 @@ function showUsers(users) {
         const isUser = document.createElement('td');
         isUser.innerText = u.roles.includes('USER');
         const isOwner = document.createElement('td');
-        isOwner.innerText = u.roles.includes('HOTEL_OWNER');
+        isOwner.innerText = u.roles.includes('RECIPE_OWNER');
         const isAdmin = document.createElement('td');
         isAdmin.innerText = u.roles.includes('ADMIN');
         const btn = document.createElement('td');
