@@ -6,6 +6,7 @@ import com.example.foodplanner.validation.FieldsMatch;
 import com.example.foodplanner.validation.IsAdult;
 import jakarta.validation.constraints.*;
 import org.springframework.format.annotation.DateTimeFormat;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.time.LocalDate;
 
@@ -20,11 +21,7 @@ public class UserRegisterBindingModel {
     @NotEmpty(message = "Field must be filled")
     @Email
     private String email;
-    @Past
-    @IsAdult
-    @NotNull(message = "Date must be chosen")
-    @DateTimeFormat(pattern = "yyyy-MM-dd")
-    private LocalDate birthDate;
+
     @NotEmpty(message = "Field must be filled")
     @Pattern(regexp = "\\+*[0-9]{10,12}")
     private String phoneNumber;
@@ -35,8 +32,8 @@ public class UserRegisterBindingModel {
     @Size(min = 5, max = 20, message = "Length must be between 2 and 20 characters")
     private String confirmPassword;
 
-
-    private String planStyle;
+    private MultipartFile profilePicture;
+    private String profession;
     private boolean recipeOwner;
 
     public UserRegisterBindingModel() {
@@ -97,16 +94,6 @@ public class UserRegisterBindingModel {
     }
 
 
-
-    public LocalDate getBirthDate() {
-        return birthDate;
-    }
-
-    public UserRegisterBindingModel setBirthDate(LocalDate birthDate) {
-        this.birthDate = birthDate;
-        return this;
-    }
-
     public boolean isRecipeOwner() {
         return recipeOwner;
     }
@@ -116,12 +103,21 @@ public class UserRegisterBindingModel {
         return this;
     }
 
-    public String getPlanStyle() {
-        return planStyle;
+    public String getProfession() {
+        return profession;
     }
 
-    public UserRegisterBindingModel setPlanStyle(String planStyle) {
-        this.planStyle = planStyle;
+    public UserRegisterBindingModel setProfession(String profession) {
+        this.profession = profession;
+        return this;
+    }
+
+    public MultipartFile getProfilePicture() {
+        return profilePicture;
+    }
+
+    public UserRegisterBindingModel setProfilePicture(MultipartFile profilePicture) {
+        this.profilePicture = profilePicture;
         return this;
     }
 }

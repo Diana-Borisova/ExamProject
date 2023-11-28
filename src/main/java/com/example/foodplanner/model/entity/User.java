@@ -17,12 +17,29 @@ public class User extends BaseEntity {
 	private String phoneNumber;
 	@Column(nullable = false)
 	private String password;
-	@Column(nullable = false)
-	private String planStyle;
+
+	private String profession;
+
+	private String profilePicture;
 	@ManyToMany(fetch = FetchType.EAGER)
 	private List<Role> roles;
 
+	@ManyToMany
+	@JoinTable(
+			name = "user_favorite_recipes",
+			joinColumns = @JoinColumn(name = "user_id"),
+			inverseJoinColumns = @JoinColumn(name = "recipe_id"))
+	private List<Recipe> favoriteRecipes;
 	public User() {
+	}
+
+	public List<Recipe> getFavoriteRecipes() {
+		return favoriteRecipes;
+	}
+
+	public User setFavoriteRecipes(List<Recipe> favoriteRecipes) {
+		this.favoriteRecipes = favoriteRecipes;
+		return this;
 	}
 
 	public String getFirstName() {
@@ -61,6 +78,15 @@ public class User extends BaseEntity {
 		return this;
 	}
 
+	public String getProfilePicture() {
+		return profilePicture;
+	}
+
+	public User setProfilePicture(String profilePicture) {
+		this.profilePicture = profilePicture;
+		return this;
+	}
+
 	public String getPassword() {
 		return password;
 	}
@@ -71,12 +97,12 @@ public class User extends BaseEntity {
 	}
 
 
-	public String getPlanStyle() {
-		return planStyle;
+	public String getProfession() {
+		return profession;
 	}
 
-	public User setPlanStyle(String planStyle) {
-		this.planStyle = planStyle;
+	public User setProfession(String profession) {
+		this.profession = profession;
 		return this;
 	}
 

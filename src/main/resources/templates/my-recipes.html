@@ -50,12 +50,12 @@
             visitBtn.className = 'btn btn-primary';
             visitBtn.href = '/recipes/details/' + recipes[i].id;
             visitBtn.innerText = 'Visit';
-            let reservationsBtn = document.createElement('a');
-            reservationsBtn.className = 'btn btn-danger m-1';
-            reservationsBtn.href = '/recipes/owned/' + recipes[i].id;
-            reservationsBtn.innerText = 'Reservations';
+            let favoriteBtn = document.createElement('a');
+            favoriteBtn.className = 'btn btn-danger m-1';
+            favoriteBtn.href = 'users/favorites' + recipes[i].id;
+            favoriteBtn.innerText = 'Favorites';
             buttonRow.appendChild(visitBtn);
-            buttonRow.appendChild(reservationsBtn);
+            buttonRow.appendChild(favoriteBtn);
             cardBody.appendChild(cardTitle);
             cardBody.appendChild(cardText);
             cardBody.appendChild(buttonRow);

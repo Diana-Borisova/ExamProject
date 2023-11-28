@@ -6,7 +6,7 @@ public class UserEditViewModel {
     private String lastName;
     private String email;
     private String phoneNumber;
-    private String planStyle;
+    private String profession;
 
     public UserEditViewModel() {
     }
@@ -48,12 +48,12 @@ public class UserEditViewModel {
         return this;
     }
 
-    public String getPlanStyle() {
-        return planStyle;
+    public String getProfession() {
+        return profession;
     }
 
-    public UserEditViewModel setPlanStyle(String planStyle) {
-        this.planStyle = planStyle;
+    public UserEditViewModel setProfession(String profession) {
+        this.profession = profession;
         return this;
     }
 }

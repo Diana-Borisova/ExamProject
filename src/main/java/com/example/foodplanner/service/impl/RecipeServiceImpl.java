@@ -48,7 +48,7 @@ public class RecipeServiceImpl implements RecipeService {
         recipe.setTitle(recipeServiceModel.getTitle());
         recipe.setDescription(recipeServiceModel.getDescription());
         recipe.setStars(recipeServiceModel.getStars());
-        recipe.setRecipeOwner(recipeServiceModel.getRecipeOwner());
+       // recipe.setRecipeOwner(recipeServiceModel.getRecipeOwner());
         recipe.setImage(recipeServiceModel.getImage());
         recipe.setCookingTime(recipeServiceModel.getCookingTime());
         recipe.setShared(recipeServiceModel.isShared());
@@ -89,7 +89,7 @@ public class RecipeServiceImpl implements RecipeService {
                 orElseThrow(() -> new EntityNotFoundException("Recipe"));
         Long userId = recipe.getRecipeOwner().getId();
        if(recipe.getRecipeOwner() == null){
-           recipe.setRecipeOwner(userService.getUserById(1l));
+           recipe.setRecipeOwner(userService.getCurrentUser());
        }
         modelMapper.map(recipeServiceModel, recipe);
         recipe.setRecipeOwner(userService.getUserById(userId));

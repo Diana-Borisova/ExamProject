@@ -8,7 +8,8 @@ public class UserProfileViewModel {
     private String lastName;
     private String email;
     private String phoneNumber;
-    private String planStyle;
+    private String profession;
+    private String profilePicture;
     private List<String> roles;
 
     public UserProfileViewModel() {
@@ -61,12 +62,21 @@ public class UserProfileViewModel {
         return this;
     }
 
-    public String getPlanStyle() {
-        return planStyle;
+    public String getProfession() {
+        return profession;
     }
 
-    public UserProfileViewModel setPlanStyle(String planStyle) {
-        this.planStyle = planStyle;
+    public UserProfileViewModel setProfession(String profession) {
+        this.profession = profession;
+        return this;
+    }
+
+    public String getProfilePicture() {
+        return profilePicture;
+    }
+
+    public UserProfileViewModel setProfilePicture(String profilePicture) {
+        this.profilePicture = profilePicture;
         return this;
     }
 }

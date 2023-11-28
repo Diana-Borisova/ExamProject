@@ -59,17 +59,5 @@ function loadAllComments() {
         }
     });
 
-    /* <div class="card p-3 mt-2">
-                    <div class="d-flex justify-content-between align-items-center">
-                        <div class="user d-flex flex-row align-items-center">
-                            <img src="https://i.imgur.com/C4egmYM.jpg" width="30"
-                                    class="user-img rounded-circle mr-2">
-                            <span>
-                                <small class="font-weight-bold text-primary">olan_sams</small>
-                                <small class="font-weight-bold">Loving your work and profile! </small>
-                            </span>
-                        </div>
-                        <small>3 days ago</small>
-                    </div>
-                </div>*/
+
 }

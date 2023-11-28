@@ -1,18 +1,22 @@
-package com.example.foodplanner.service;
+package com.example.foodplanner.model.sevice;
+
+import com.example.foodplanner.model.entity.Recipe;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.time.LocalDate;
+import java.util.List;
 
 public class UserServiceModel {
     private Long id;
     private String firstName;
     private String lastName;
     private String email;
-    private LocalDate birthDate;
     private String phoneNumber;
     private String password;
-    private String planStyle;
-    private boolean owner;
-
+    private String profession;
+    private boolean recipeOwner;
+    private MultipartFile profilePicture;
+    private List<Recipe> favoriteRecipes;
     public UserServiceModel() {
     }
 
@@ -52,14 +56,7 @@ public class UserServiceModel {
         return this;
     }
 
-    public LocalDate getBirthDate() {
-        return birthDate;
-    }
 
-    public UserServiceModel setBirthDate(LocalDate birthDate) {
-        this.birthDate = birthDate;
-        return this;
-    }
 
     public String getPhoneNumber() {
         return phoneNumber;
@@ -79,26 +76,39 @@ public class UserServiceModel {
         return this;
     }
 
-
-
-
-
-
-    public boolean isOwner() {
-        return owner;
+    public String getProfession() {
+        return profession;
     }
 
-    public UserServiceModel setOwner(boolean isOwner) {
-        this.owner = owner;
+    public UserServiceModel setProfession(String profession) {
+        this.profession = profession;
         return this;
     }
 
-    public String getPlanStyle() {
-        return planStyle;
+    public boolean isRecipeOwner() {
+        return recipeOwner;
     }
 
-    public UserServiceModel setPlanStyle(String planStyle) {
-        this.planStyle = planStyle;
+    public UserServiceModel setRecipeOwner(boolean recipeOwner) {
+        this.recipeOwner = recipeOwner;
+        return this;
+    }
+
+    public MultipartFile getProfilePicture() {
+        return profilePicture;
+    }
+
+    public UserServiceModel setProfilePicture(MultipartFile profilePicture) {
+        this.profilePicture = profilePicture;
+        return this;
+    }
+
+    public List<Recipe> getFavoriteRecipes() {
+        return favoriteRecipes;
+    }
+
+    public UserServiceModel setFavoriteRecipes(List<Recipe> favoriteRecipes) {
+        this.favoriteRecipes = favoriteRecipes;
         return this;
     }
 }

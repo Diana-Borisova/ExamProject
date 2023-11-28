@@ -1,5 +1,7 @@
 package com.example.foodplanner.view;
 
+import com.example.foodplanner.model.entity.User;
+
 import java.util.List;
 
 public class RecipeEditViewModel {
@@ -18,7 +20,9 @@ public class RecipeEditViewModel {
 
     private boolean shared;
     private List<String> pictures;
+    private List<String> imageUrls;
 
+    private User recipeOwner;
 
     public RecipeEditViewModel() {
     }
@@ -101,6 +105,24 @@ public class RecipeEditViewModel {
 
     public RecipeEditViewModel setId(Long id) {
         this.id = id;
+        return this;
+    }
+
+    public List<String> getImageUrls() {
+        return imageUrls;
+    }
+
+    public RecipeEditViewModel setImageUrls(List<String> imageUrls) {
+        this.imageUrls = imageUrls;
+        return this;
+    }
+
+    public User getRecipeOwner() {
+        return recipeOwner;
+    }
+
+    public RecipeEditViewModel setRecipeOwner(User recipeOwner) {
+        this.recipeOwner = recipeOwner;
         return this;
     }
 }

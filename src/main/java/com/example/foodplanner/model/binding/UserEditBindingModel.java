@@ -4,23 +4,28 @@ import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.Pattern;
 import jakarta.validation.constraints.Size;
+import org.springframework.web.multipart.MultipartFile;
 
 
 public class UserEditBindingModel {
     @NotEmpty(message = "Field must be filled")
     @Size(min = 2, max = 20, message = "Length must be between 2 and 20 characters")
     private String firstName;
+
     @NotEmpty(message = "Field must be filled")
     @Size(min = 2, max = 20, message = "Length must be between 2 and 20 characters")
     private String lastName;
+
     @NotEmpty(message = "Field must be filled")
     @Email
     private String email;
+
     @NotEmpty(message = "Field must be filled")
     @Pattern(regexp = "\\+*[0-9]{10,12}")
     private String phoneNumber;
 
-    private String planStyle;
+    private String profession;
+    private MultipartFile profilePicture;
 
 
     public UserEditBindingModel() {
@@ -63,12 +68,21 @@ public class UserEditBindingModel {
         return this;
     }
 
-    public String getPlanStyle() {
-        return planStyle;
+    public MultipartFile getProfilePicture() {
+        return profilePicture;
     }
 
-    public UserEditBindingModel setPlanStyle(String planStyle) {
-        this.planStyle = planStyle;
+    public UserEditBindingModel setProfilePicture(MultipartFile profilePicture) {
+        this.profilePicture = profilePicture;
+        return this;
+    }
+
+    public String getProfession() {
+        return profession;
+    }
+
+    public UserEditBindingModel setProfession(String profession) {
+        this.profession = profession;
         return this;
     }
 }

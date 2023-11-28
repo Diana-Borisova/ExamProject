@@ -30,9 +30,9 @@ public class PictureServiceImpl implements PictureService {
     }
 
     @Override
-    public void uploadRecipeImages(List<MultipartFile> pictures, Long hotelId) {
+    public void uploadRecipeImages(List<MultipartFile> pictures, Long recipeId) {
 
-        Recipe recipe = recipeService.getRecipeById(hotelId);
+        Recipe recipe = recipeService.getRecipeById(recipeId);
         Collections.reverse(pictures);
         pictures.forEach(p -> {
             String url = null;

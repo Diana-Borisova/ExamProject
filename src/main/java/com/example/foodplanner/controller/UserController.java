@@ -6,7 +6,7 @@ import com.example.foodplanner.model.binding.UserRegisterBindingModel;
 import com.example.foodplanner.model.entity.User;
 import com.example.foodplanner.model.enumeration.RoleEnum;
 import com.example.foodplanner.service.UserService;
-import com.example.foodplanner.service.UserServiceModel;
+import com.example.foodplanner.model.sevice.UserServiceModel;
 import com.example.foodplanner.view.UserEditViewModel;
 import com.example.foodplanner.view.UserProfileViewModel;
 import jakarta.validation.Valid;
@@ -64,6 +64,7 @@ public class UserController {
 
     @GetMapping("/login")
     public String login() {
+
         return "login";
     }
 

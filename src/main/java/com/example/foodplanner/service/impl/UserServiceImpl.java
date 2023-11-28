@@ -1,13 +1,15 @@
 package com.example.foodplanner.service.impl;
 
 
+import com.example.foodplanner.model.entity.Recipe;
 import com.example.foodplanner.model.entity.Role;
 import com.example.foodplanner.model.entity.User;
 import com.example.foodplanner.model.enumeration.RoleEnum;
 import com.example.foodplanner.repository.UserRepository;
 import com.example.foodplanner.repository.UserRoleRepository;
+import com.example.foodplanner.service.CloudinaryService;
 import com.example.foodplanner.service.UserService;
-import com.example.foodplanner.service.UserServiceModel;
+import com.example.foodplanner.model.sevice.UserServiceModel;
 import com.example.foodplanner.view.UserRoleViewModel;
 import jakarta.persistence.EntityNotFoundException;
 import org.modelmapper.ModelMapper;
@@ -27,13 +29,15 @@ public class UserServiceImpl implements UserService {
     private final UserRoleRepository userRoleRepository;
     private final PasswordEncoder passwordEncoder;
 
+    private final CloudinaryService cloudinaryService;
     private final ModelMapper modelMapper;
 
 
-    public UserServiceImpl(UserRepository userRepository, UserRoleRepository userRoleRepository, PasswordEncoder passwordEncoder, ModelMapper modelMapper) {
+    public UserServiceImpl(UserRepository userRepository, UserRoleRepository userRoleRepository, PasswordEncoder passwordEncoder, CloudinaryService cloudinaryService, ModelMapper modelMapper) {
         this.userRepository = userRepository;
         this.userRoleRepository = userRoleRepository;
         this.passwordEncoder = passwordEncoder;
+        this.cloudinaryService = cloudinaryService;
 
         this.modelMapper = modelMapper;
 
@@ -56,7 +60,7 @@ public class UserServiceImpl implements UserService {
                     setRoles(List.of(
                             userRoleRepository.getUserRoleByName(RoleEnum.ADMIN).orElseThrow(() -> new EntityNotFoundException("UserRole")),
                             userRoleRepository.getUserRoleByName(RoleEnum.USER).orElseThrow(() -> new EntityNotFoundException("UserRole"))
-                    )).setPlanStyle("krtt");
+                    ));
             userRepository.save(admin);
         }
     }
@@ -68,7 +72,7 @@ public class UserServiceImpl implements UserService {
                 encode(userServiceModel.getPassword()));
 
 
-        if (userServiceModel.isOwner()) {
+        if (userServiceModel.isRecipeOwner()) {
             user.setRoles(List.of(userRoleRepository.getUserRoleByName(RoleEnum.USER).
                             orElseThrow(() -> new EntityNotFoundException("UserRole")),
                     userRoleRepository.getUserRoleByName(RoleEnum.RECIPE_OWNER).
@@ -103,7 +107,14 @@ public class UserServiceImpl implements UserService {
         user.setLastName(userServiceModel.getLastName());
         user.setEmail(userServiceModel.getEmail());
         user.setPhoneNumber(userServiceModel.getPhoneNumber());
-        user.setPlanStyle(userServiceModel.getPlanStyle());
+        user.setProfession(userServiceModel.getProfession());
+        if (userServiceModel.getProfilePicture() != null) {
+            if (!"".equals(userServiceModel.getProfilePicture().getOriginalFilename())) {
+                cloudinaryService.deleteByUrl(userServiceModel.getProfilePicture().getOriginalFilename());
+                user.setProfilePicture(cloudinaryService.uploadImage(userServiceModel.getProfilePicture()));
+            }
+        }
+        user.setFavoriteRecipes(userServiceModel.getFavoriteRecipes());
         userRepository.save(user);
     }
 
@@ -165,6 +176,19 @@ public class UserServiceImpl implements UserService {
 
         return new Role().setName(roleEnum);
     }
+    @Override
+    public List<Recipe> getFavoriteRecipesForUser(Long userId) {
+        User user = userRepository.findById(userId).orElseThrow(() -> new EntityNotFoundException("User"));
+        return user.getFavoriteRecipes();
+    }
 
+    @Override
+    public List<User> findAll() {
+        return userRepository.findAll();
+    }
 
+    @Override
+    public String getProfilePicture(String username) {
+        return this.userRepository.findByEmail(username).get().getProfilePicture();
+    }
 }

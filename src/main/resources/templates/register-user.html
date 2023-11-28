@@ -58,15 +58,10 @@
                             </p>
                         </div>
                         <div class="form-group col-md-6 mb-3">
-                            <label for="birthDate" class="text-white font-weight-bold">Birth Date</label>
-                            <input id="birthDate" type="date" class="form-control" th:field="*{birthDate}"
-                                   required
-                                   max="2003-12-31"
+                            <label for="profession" class="text-white font-weight-bold">Profession:</label>
+                            <input id="profession" class="form-control" th:field="*{profession}"
                                    th:errorclass="is-invalid"
-                                   placeholder="Birth Date"/>
-                            <p class="errors alert alert-danger invalid-feedback">
-                                You must be 18 years old or older.
-                            </p>
+                                   placeholder="Profession">
                         </div>
                     </div>
                     <div class="row">
@@ -99,17 +94,18 @@
                                 Phone Number is required.
                             </p>
                         </div>
-                         <div class="form-group col-md-6 mb-3">
-                            <label for="planStyle" class="text-white font-weight-bold">Profession:</label>
-                            <input id="planStyle" type="tel" class="form-control" th:field="*{planStyle}"
-                                   th:errorclass="is-invalid" required minlength="7" maxlength="15"
-                                   placeholder="Profession">
+
+                        <div class="form-group col-md-6 mb-3">
+                            <label for="avatar" class="text-white font-weight-bold">Choose a profile picture:</label>
+                            <input type="file" th:field="*{profilePicture}" th:errorclass="is-invalid"
+                                   id="avatar" name="avatar"
+                                   accept="image/png, image/jpeg" class="form-control">
                         </div>
                     </div>
                     <div class="row justify-content-center">
                         <div class="form-group col-md-6 mb-3 ">
-                            <label for="recipeOwner" class="text-white font-weight-bold">I am going to list my own
-                                recipes on the website?</label>
+                            <label for="recipeOwner" class="text-white font-weight-bold">Yes, I am going to post my own
+                                recipes on the website!</label>
                             <input type="checkbox" th:field="*{recipeOwner}" th:errorclass="is-invalid"
                                    id="recipeOwner" name="recipeOwner"
                                    value=true>

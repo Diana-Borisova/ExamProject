@@ -18,22 +18,25 @@
         </div>
         <div class="card-body bg-primary">
             <div class="container">
-                <h2 class="text-center text-white">Edit Recipe</h2>
-                <form th:action="@{/recipes/edit/{id}(id=${id})}" th:method="patch" th:object="${recipe}"
+                <h2 class="text-center text-white"></h2>
+                <form th:action="@{/recipes/edit-recipe/{id}(id=${id})}" th:method="patch" th:object="${recipe}"
                       enctype="multipart/form-data"
                       class="main-form mx-auto col-md-8 d-flex flex-column justify-content-center">
                     <div class="row">
-                        <div class="form-group col-md-6 mb-3">
+                        <div class="form-group mb-3">
                             <label for="title" class="text-white font-weight-bold">Title</label>
                             <input th:value="${recipe.title}" name="title" th:errorclass="is-invalid" required
                                    id="title" type="text"
                                    minlength="2"
                                    maxlength="50" class="form-control"
-                                   placeholder="Title"/>
+                                   placeholder="Add Title"/>
                             <p class="errors alert alert-danger invalid-feedback">
                                 title name is required.
                             </p>
                         </div>
+
+                    </div>
+                    <div class="row">
                         <div class="form-group col-md-6 mb-3">
                             <label for="stars" class="text-white font-weight-bold">Stars</label>
                             <select id="stars" required class="form-control"
@@ -50,9 +53,31 @@
                                 Star count is required.
                             </p>
                         </div>
+                        <div class="form-group col-md-6 mb-3">
+                            <label for="cookingTime" class="text-white font-weight-bold">Cooking time</label>
+                            <input id="cookingTime" name="cookingTime" type="text" class="form-control"
+                                   th:value="${recipe.cookingTime}"
+                                   th:errorclass="is-invalid"
+                                   required
+                                   minlength="1"
+                                   placeholder="Cooking time"/>
+                            <p class="errors alert alert-danger invalid-feedback">
+                                Recipe preparation must be valid.
+                            </p>
+                        </div>
+
                     </div>
                     <div class="row">
-
+                        <div class="form-group col-md-6 mb-3">
+                            <label for="image" class="text-white font-weight-bold">Main Picture</label>
+                            <input id="image" type="text" class="form-control" th:field="*{image}"
+                                   th:errorclass="is-invalid"
+                                   minlength="5" maxlength="50"
+                                   placeholder="Add picture..."/>
+                            <p class="errors alert alert-danger invalid-feedback">
+                                Image is not valid
+                            </p>
+                        </div>
 
                         <div class="form-group col-md-6 mb-3">
                             <label for="pictures" class="text-white font-weight-bold">Add more pictures of your
@@ -65,31 +90,7 @@
                                 Upload at least one picture.
                             </p>
                         </div>
-                    </div>
-                    <div class="row">
-<!--                        <div class="form-group col-md-6 mb-3">-->
-<!--                            <label for="image" class="text-white font-weight-bold">YouTube Video</label>-->
-<!--                            <input id="image" name="videoUrl" type="text" class="form-control"-->
-<!--                                   th:value="${recipeData.image}"-->
-<!--                                   th:errorclass="is-invalid"-->
-<!--                                   minlength="5" maxlength="50"-->
-<!--                                   placeholder="watch?v={YOUR CODE}"/>-->
-<!--                            <p class="errors alert alert-danger invalid-feedback">-->
-<!--                                Video url is not valid-->
-<!--                            </p>-->
-<!--                        </div>-->
-                        <div class="form-group col-md-6 mb-3">
-                            <label for="cookingTime" class="text-white font-weight-bold">Recipe preparation</label>
-                            <input id="cookingTime" name="cookingTime" type="text" class="form-control"
-                                   th:value="${recipe.cookingTime}"
-                                   th:errorclass="is-invalid"
-                                   required
-                                   minlength="1"
-                                   placeholder="Cooking time"/>
-                            <p class="errors alert alert-danger invalid-feedback">
-                                Recipe preparation must be valid.
-                            </p>
-                        </div>
+
                     </div>
                     <div class="row">
                         <div class="form-group mb-3">
@@ -115,8 +116,7 @@
                                 Description must be between 15 and 1000 characters.
                             </p>
                         </div>
-                    </div>
-                    <div class="row">
+                        <div class="row">
                         <div class="form-group col-md-6 mb-3">
                             <label for="shared" class="text-white font-weight-bold">Share this recipe</label>
                             <input type="checkbox" th:field="*{shared}" th:errorclass="is-invalid"
@@ -124,17 +124,19 @@
                                    value=true>
                         </div>
                     </div>
-                    <div>
+                        <div class="row">
                         <label class="text-white font-weight-bold">Uploaded images</label>
-                        <ul class="row-cols-auto">
-                            <li th:each="i:${recipe.pictures}" class="image-cont">
+
+                            <button type="button" id="removeBtn" class="text text-white">Remove</button>
+
+
+                            <th:block th:each="i:${recipe.imageUrls}" class="image-cont">
                                 <img th:src="${i}"
                                      alt="Avatar" class="image">
-                                <div class="middle">
-                                    <button type="button" id="removeBtn" class="text text-white">Remove</button>
-                                </div>
-                            </li>
-                        </ul>
+
+                            </th:block>
+
+
                     </div>
                     <div class="row">
                         <div class="col col-md-4">
@@ -151,18 +153,24 @@
 <footer class="footer bg-blur" th:replace="/fragments/fragments::footer">
 </footer>
 <script>
-    document.querySelectorAll("#removeBtn").forEach(e => e.addEventListener('click', removeImage));
 
-    function removeImage(e) {
-        fetch('http://localhost:8080/picture/delete',
-            {
-                method: 'delete',
-                body: e.target.parentElement.parentElement.children.item(0).getAttribute('src')
 
-            }).then(res => {
-            console.log(res);
-            e.target.parentElement.parentElement.remove();
-        });
+    function removeImage(event) {
+        const imageUrl = event.currentTarget.parentElement.querySelector('.image').getAttribute('src');
+
+        fetch('http://localhost:8080/picture/delete', {
+            method: 'DELETE',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({ imageUrl }),
+        })
+            .then(response => {
+                console.log(response);
+                // Remove the button or handle UI changes as needed
+                event.currentTarget.remove();
+            })
+            .catch(error => console.error('Error:', error));
     }
 </script>
 </body>

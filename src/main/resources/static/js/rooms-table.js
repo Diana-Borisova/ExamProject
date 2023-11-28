@@ -30,7 +30,7 @@ function showRecipes(recipes) {
         const a = document.createElement('a');
         a.type = 'button';
         a.className = 'btn btn-danger w-100';
-        a.href = '/recipes/edit-recipe/' + r.id;
+        a.href = '/recipes/details/manage/' + r.id;
         a.innerText = 'EDIT';
         btn.appendChild(a);
         const tr = document.createElement('tr');

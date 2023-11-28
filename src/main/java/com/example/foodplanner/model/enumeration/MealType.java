@@ -11,7 +11,7 @@ public enum MealType {
 	
 	public final String label;
 	
-	private MealType(String label) {
+	MealType(String label) {
 		this.label = label;
 	}
 	

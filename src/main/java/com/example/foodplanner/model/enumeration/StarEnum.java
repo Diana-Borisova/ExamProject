@@ -3,7 +3,7 @@ package com.example.foodplanner.model.enumeration;
 public enum StarEnum {
     ONE("⭐"),TWO("⭐⭐"),THREE("⭐⭐⭐"),FOUR("⭐⭐⭐⭐"),FIVE("⭐⭐⭐⭐⭐");
 
-    private String value;
+    private final String value;
 
     StarEnum(String value) {
         this.value = value;

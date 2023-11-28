@@ -3,9 +3,11 @@ package com.example.foodplanner.service;
 
 
 
+import com.example.foodplanner.model.entity.Recipe;
 import com.example.foodplanner.model.entity.Role;
 import com.example.foodplanner.model.entity.User;
 import com.example.foodplanner.model.enumeration.RoleEnum;
+import com.example.foodplanner.model.sevice.UserServiceModel;
 import com.example.foodplanner.view.UserRoleViewModel;
 
 import java.io.IOException;
@@ -13,7 +15,7 @@ import java.util.List;
 
 public interface UserService{
 	
-	public User findByUsername(String username);
+	User findByUsername(String username);
 	
 
 	void populateInitialUsers();
@@ -33,11 +35,17 @@ public interface UserService{
 
 	void setUserRoles(Long userId, List<RoleEnum> roles);
 
-	public User getCurrentUser();
-	public Long getCurrentUserId();
+	User getCurrentUser();
+	Long getCurrentUserId();
 
-	public boolean hasCurrentUserRole(String role);
+	boolean hasCurrentUserRole(String role);
 
 
 	Role getUserRoleByName(RoleEnum  roleEnum);
+
+	List<Recipe> getFavoriteRecipesForUser(Long userId);
+
+	List<User> findAll();
+
+	String getProfilePicture(String username);
 }

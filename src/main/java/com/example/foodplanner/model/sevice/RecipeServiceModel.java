@@ -1,8 +1,12 @@
 package com.example.foodplanner.model.sevice;
 
 
+import com.example.foodplanner.model.entity.Picture;
 import com.example.foodplanner.model.entity.User;
 import com.example.foodplanner.model.enumeration.StarEnum;
+import org.springframework.web.multipart.MultipartFile;
+
+import java.util.List;
 
 public class RecipeServiceModel {
     private Long id;
@@ -16,6 +20,8 @@ public class RecipeServiceModel {
     private User recipeOwner;
 
     private boolean shared;
+
+    private List<MultipartFile> pictures;
 
     public RecipeServiceModel() {
     }
@@ -98,6 +104,15 @@ public class RecipeServiceModel {
 
     public RecipeServiceModel setShared(boolean shared) {
         this.shared = shared;
+        return this;
+    }
+
+    public List<MultipartFile> getPictures() {
+        return pictures;
+    }
+
+    public RecipeServiceModel setPictures(List<MultipartFile> pictures) {
+        this.pictures = pictures;
         return this;
     }
 }

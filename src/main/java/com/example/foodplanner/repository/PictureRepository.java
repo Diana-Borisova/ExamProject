@@ -1,6 +1,5 @@
 package com.example.foodplanner.repository;
 
-;
 import com.example.foodplanner.model.entity.Picture;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;

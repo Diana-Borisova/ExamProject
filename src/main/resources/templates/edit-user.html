@@ -74,14 +74,19 @@
                     </div>
                     <div class="row">
                         <div class="form-group col-md-12 mb-3">
-                            <label for="planStyle" class="text-white font-weight-bold">Profession</label>
-                            <input id="planStyle" type="text" name="planStyle" th:value="${userData.planStyle}"
-                                   th:errorclass="is-invalid" min="2"
-                                   max="20" class="form-control text-center"
-                                   placeholder="PlanStyle"/>
-                            <p class="errors alert alert-danger invalid-feedback">
-                                PlanStyle is required.
-                            </p>
+                            <label for="profession" class="text-white font-weight-bold">Profession</label>
+                            <input id="profession" type="text" name="profession" th:value="${userData.profession}"
+                                   th:errorclass="is-invalid"  class="form-control text-center"
+                                   placeholder="Profession"/>
+
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="form-group col-md-6 mb-3">
+                            <label for="avatar" class="text-white font-weight-bold">Choose new profile picture:</label>
+                            <input type="file" th:field="*{profilePicture}" th:errorclass="is-invalid"
+                                   id="avatar" name="avatar"
+                                   accept="image/png, image/jpeg" class="form-control">
                         </div>
                     </div>
                     <div class="row">

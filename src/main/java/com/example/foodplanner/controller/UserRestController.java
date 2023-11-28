@@ -1,10 +1,14 @@
 package com.example.foodplanner.controller;
 
 
+import com.example.foodplanner.model.entity.Recipe;
 import com.example.foodplanner.service.UserService;
 import com.example.foodplanner.view.UserRoleViewModel;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -25,5 +29,24 @@ public class UserRestController {
         return ResponseEntity.ok().body(userService.getAllUsers());
     }
 
+    @GetMapping("/profile-pic")
+    public ResponseEntity<String> getProfilePicture(@AuthenticationPrincipal UserDetails principal) {
+        String profilePic = userService.getUserByEmail(principal.getUsername()).getProfilePicture();
+        return ResponseEntity.ok().body(profilePic);
+    }
+
+    @GetMapping("/{userId}/favorites")
+    public ResponseEntity<List<Recipe>> getFavoriteRecipesForUser(@PathVariable Long userId) {
+        return ResponseEntity.ok().body(userService.getFavoriteRecipesForUser(userId));
+    }
+
+//    @GetMapping("/favorites/{id}")
+//    public String favorites(Model model, @PathVariable Long id) {
+//        List<ReservationHotelViewModel> reservations = reservationService.getReservationsByHotelId(id).
+//                stream().map(r -> modelMapper.map(r, ReservationHotelViewModel.class)).
+//                collect(Collectors.toList());
+//        model.addAttribute("reservations", reservations);
+//        return "hotel-reservations";
+//    }
 
 }

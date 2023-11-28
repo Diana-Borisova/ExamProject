@@ -32,8 +32,7 @@ public class SecurityConfiguration {
                                 "/",
                                 "/users/login",
                                 "/users/register",
-                                "/users/login-error",
-                                "/users/sendMail").permitAll()
+                                "/users/login-error").permitAll()
                         .requestMatchers(HttpMethod.GET, "/recipe/**").permitAll()
                         .requestMatchers("/error").permitAll()
                         .requestMatchers(
@@ -42,10 +41,12 @@ public class SecurityConfiguration {
                                 "/recipes/api/owned",
                                 "/picture/delete").hasRole("RECIPE_OWNER")
                         .requestMatchers(
+                                "/recipes/edit/**",
+                                "/picture/delete",
                                 "/admin/**",
                                 "/users/change-roles/**",
                                 "/users/all",
-                                "/foodProduct/add-food").hasRole("ADMIN")
+                                "/recipes/manage/**").hasRole("ADMIN")
                         .anyRequest().authenticated()
         ).formLogin(
                 formLogin -> {

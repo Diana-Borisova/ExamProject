@@ -7,7 +7,7 @@
 <header th:replace="/fragments/fragments::navbar"></header>
 <main class="p-5 align-content-center bg-blur main">
 
-    <div class="container-fluid bg-white">
+    <div class="container-fluid bg-white" th:action="@{/recipes/details/manage/{recipeId}(recipeId=${recipe.id})}" th:method="patch">
         <div class="row">
             <main role="main" class="col-md-12 ml-sm-auto col-lg-12 px-4 pb-4">
                 <div class="chartjs-size-monitor"
@@ -23,32 +23,32 @@
                 </div>
                 <div class="d-inline-block pt-3">
                     <h1 id="recipe" th:recipeId="${recipe.id}" th:text="${recipe.title}" class="text-dark me-3 fw-bold"></h1>
-                    <h2 class="text-dark me-3">Recipes</h2>
+                    <h2 class="text-dark me-3"></h2>
                 </div>
                 <div class="table-responsive text-light">
                     <table class="table-bordered table table-striped table-sm">
                         <thead>
                         <tr>
-                            <th>ID</th>
-                            <th>Title</th>
+                            <th >ID</th>
+                            <th >Title</th>
                             <th>Cooking Time</th>
-                            <th>Products</th>
-                            <th>Description</th>
-                            <th>Rating</th>
-                            <th>Shared</th>
+                            <th >Products</th>
+                            <th >Description</th>
+                            <th >Rating</th>
+                            <th >Shared</th>
                             <th>Edit</th>
                         </tr>
                         </thead>
                         <tbody>
                         <tr>
-                            <td>1</td>
-                            <td>DOUBLE</td>
-                            <td>President Apartment</td>
-                            <td>80.00</td>
-                            <td>4</td>
-                            <td>1</td>
-                            <td>10</td>
-                            <td><a class="btn btn-danger w-100" type="button" href="/recipes/edit/{id}">EDIT</a>
+                            <td th:recipeId="${recipe.id}"></td>
+                            <td th:text="${recipe.title}"></td>
+                            <td th:text="${recipe.cookingTime}"></td>
+                            <td th:text="${recipe.products}"></td>
+                            <td th:text="${recipe.description}"></td>
+                            <td th:text="${recipe.stars}"></td>
+                            <td th:text="${recipe.shared}"></td>
+                            <td><a class="btn btn-danger w-100" type="button" th:href="@{/recipes/edit/{recipeId}(recipeId=${recipe.id})}">EDIT</a>
                             </td>
                         </tr>
                         </tbody>

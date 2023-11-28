@@ -31,7 +31,7 @@ public class Recipe extends BaseEntity {
 	@Column(name = "image")
 	private String image;
 
-	@ManyToOne(fetch = FetchType.LAZY)
+	@ManyToOne()
 	@JoinColumn(name = "recipe_owner_id")
 	private User recipeOwner;
 
@@ -40,9 +40,20 @@ public class Recipe extends BaseEntity {
 	private boolean shared;
 
 
+    @ManyToMany(mappedBy = "favoriteRecipes")
+    private List<User> favoritedByUsers;
 	public Recipe() {
 
 	}
+
+    public List<User> getFavoritedByUsers() {
+        return favoritedByUsers;
+    }
+
+    public Recipe setFavoritedByUsers(List<User> favoritedByUsers) {
+        this.favoritedByUsers = favoritedByUsers;
+        return this;
+    }
 
     public String getTitle() {
         return title;
@@ -114,5 +125,9 @@ public class Recipe extends BaseEntity {
     public Recipe setShared(boolean shared) {
         this.shared = shared;
         return this;
+    }
+    void addPicture(List<String> pictures){
+        Picture picture = new Picture();
+        pictures.add(picture.getUrl());
     }
 }

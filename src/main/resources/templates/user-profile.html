@@ -8,8 +8,8 @@
 <main class="main">
     <div id="containerDetails">
         <div class="row d-inline-flex mb-3" th:object="${user}">
-<!--            <img th:src="*{profilePicture}"-->
-<!--                 class="d-block profile-pic">-->
+            <img th:src="*{profilePicture}"
+                 class="d-block profile-pic">
             <div id="description" class="col">
                 <p class="h1 fw-bold" th:text="|*{firstName} *{lastName}|">Title</p>
                 <dl class="d-block">
