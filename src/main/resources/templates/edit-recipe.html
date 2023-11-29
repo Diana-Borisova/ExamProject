@@ -127,15 +127,20 @@
                         <div class="row">
                         <label class="text-white font-weight-bold">Uploaded images</label>
 
+
+
+<ul>
+    <li th:each="i:${recipe.imageUrls}" class="image-cont">
+        <img th:src="${i}"
+             alt="Avatar" class="image">
+    </li>
+<!--</ul>-->
+<!--                            <th:block th:each="i:${recipe.imageUrls}" class="image-cont">-->
+<!--                                <img th:src="${i}"-->
+<!--                                     alt="Avatar" class="image">-->
+
+<!--                            </th:block>-->
                             <button type="button" id="removeBtn" class="text text-white">Remove</button>
-
-
-                            <th:block th:each="i:${recipe.imageUrls}" class="image-cont">
-                                <img th:src="${i}"
-                                     alt="Avatar" class="image">
-
-                            </th:block>
-
 
                     </div>
                     <div class="row">
@@ -153,24 +158,18 @@
 <footer class="footer bg-blur" th:replace="/fragments/fragments::footer">
 </footer>
 <script>
+    document.querySelectorAll("#removeBtn").forEach(e => e.addEventListener('click', removeImage));
 
+    function removeImage(e) {
+        fetch('http://localhost:8080/picture/delete',
+            {
+                method: 'delete',
+                body: e.target.parentElement.parentElement.children.item(0).getAttribute('src')
 
-    function removeImage(event) {
-        const imageUrl = event.currentTarget.parentElement.querySelector('.image').getAttribute('src');
-
-        fetch('http://localhost:8080/picture/delete', {
-            method: 'DELETE',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({ imageUrl }),
-        })
-            .then(response => {
-                console.log(response);
-                // Remove the button or handle UI changes as needed
-                event.currentTarget.remove();
-            })
-            .catch(error => console.error('Error:', error));
+            }).then(res => {
+            console.log(res);
+            e.target.parentElement.remove();
+        });
     }
 </script>
 </body>

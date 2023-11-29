@@ -33,14 +33,18 @@ public class SecurityConfiguration {
                                 "/users/login",
                                 "/users/register",
                                 "/users/login-error").permitAll()
-                        .requestMatchers(HttpMethod.GET, "/recipe/**").permitAll()
+                        .requestMatchers(HttpMethod.GET, "/recipes/**").permitAll()
                         .requestMatchers("/error").permitAll()
                         .requestMatchers(
                                 "/recipes/edit/**",
                                 "/recipes/my-recipes",
                                 "/recipes/api/owned",
+                                "/recipes/owned",
                                 "/picture/delete").hasRole("RECIPE_OWNER")
                         .requestMatchers(
+                                "/users/api/owned",
+                                "/recipes/owned",
+                                "/recipes/api/owned",
                                 "/recipes/edit/**",
                                 "/picture/delete",
                                 "/admin/**",

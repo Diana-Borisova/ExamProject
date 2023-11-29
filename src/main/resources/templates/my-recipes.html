@@ -6,13 +6,13 @@
 <body>
 <nav th:replace="/fragments/fragments::navbar"></nav>
 <main class="main p-5 align-content-center bg-blur">
-    <h1 class="text-light border-bottom mt-2 mb-4">Your Recipes</h1>
+    <h1 class="text-light border-bottom mt-2 mb-4">My Recipes</h1>
     <div id="cardsList" class="container">
     </div>
 </main>
 <footer th:replace="/fragments/fragments::footer"></footer>
 <script>
-    const recipeList = document.getElementById('cardsList');
+    const recipesList = document.getElementById('cardsList');
     const recipes = [];
     fetch("http://localhost:8080/recipes/api/owned")
         .then(response => response.json())
@@ -24,44 +24,80 @@
         .then(p => displayRecipes(recipes));
 
     const displayRecipes = (recipes) => {
-        recipeList.innerHTML = '';
+        recipesList.innerHTML = '';
         let row = [];
         for (let i = 0; i < recipes.length; i++) {
             let card = document.createElement('div');
             card.classList.add('card');
             card.classList.add('my-card');
+
+            // Apply flex styles for centering
+            card.style.display = 'flex';
+            card.style.flexDirection = 'column';
+            card.style.justifyContent = 'center';
+            card.style.alignItems = 'center';
+
+            // Add margin to create space between cards
+            card.style.marginBottom = '20px'; // Adjust the value to set your desired space
+
             let img = document.createElement('img');
             img.className = 'card-img-top card-image';
             img.src = recipes[i].image;
             img.alt = 'Card image cap';
+
+            // Set specific width and height
+            img.width = 200;
+            img.height = 250;
+
             let cardBody = document.createElement('div');
             cardBody.className = 'card-body';
+
+            let textContainer = document.createElement('div');
+            textContainer.style.display = 'flex';
+            textContainer.style.flexDirection = 'column';
+            textContainer.style.alignItems = 'center';
+
             let cardTitle = document.createElement('h5');
             cardTitle.className = 'card-title';
             cardTitle.innerText = recipes[i].title;
+            cardTitle.style.fontWeight = 'bold';
+            cardTitle.style.fontSize = '28px';
+            cardTitle.style.paddingBottom = '15px';
+
             let cardText = document.createElement('p');
             cardText.className = 'card-text';
-            cardText.innerText = recipes[i].cookingTime;
-            let buttonRow = document.createElement('div');
-            buttonRow.classList.add('d-grid');
-            buttonRow.classList.add('gap-2');
-            buttonRow.classList.add('d-md-block');
-            let visitBtn = document.createElement('a');
-            visitBtn.className = 'btn btn-primary';
-            visitBtn.href = '/recipes/details/' + recipes[i].id;
-            visitBtn.innerText = 'Visit';
-            let favoriteBtn = document.createElement('a');
-            favoriteBtn.className = 'btn btn-danger m-1';
-            favoriteBtn.href = 'users/favorites' + recipes[i].id;
-            favoriteBtn.innerText = 'Favorites';
-            buttonRow.appendChild(visitBtn);
-            buttonRow.appendChild(favoriteBtn);
-            cardBody.appendChild(cardTitle);
-            cardBody.appendChild(cardText);
-            cardBody.appendChild(buttonRow);
+            let cookingTimeIcon = document.createElement('i');
+            cookingTimeIcon.className = 'fa-regular fa-clock';
+            cookingTimeIcon.style.marginRight = '5px';
+            let cookingTimeText = document.createElement('span');
+            cookingTimeText.innerText = ` ${recipes[i].cookingTime} min.`; // Add a space before cookingTime
+
+            let buttonContainer = document.createElement('div');
+            buttonContainer.style.display = 'flex';
+            buttonContainer.style.justifyContent = 'center'; // Center the button horizontally
+            buttonContainer.style.marginTop = '10px'; // Adjust the value to set your desired space
+
+            let a = document.createElement('a');
+            a.className = 'btn btn-success';
+            a.href = '/recipes/details/' + recipes[i].id;
+            a.innerText = 'See more...';
+
+            // Apply flex styles for centering
+            cardTitle.style.margin = '0'; // Reset default margin
+            cardText.style.margin = '0';
+
+            textContainer.appendChild(cardTitle);
+            textContainer.appendChild(cardText);
+            cardText.appendChild(cookingTimeIcon);
+            cardText.appendChild(cookingTimeText);
+            buttonContainer.appendChild(a);
+
+            cardBody.appendChild(textContainer);
+            cardBody.appendChild(buttonContainer);
             card.appendChild(img);
             card.appendChild(cardBody);
             row.push(card);
+
             if ((i + 1) % 3 === 0 || recipes.length - i === 1) {
                 let cardGroup = document.createElement('div');
                 cardGroup.classList.add('card-group');
@@ -75,6 +111,8 @@
             }
         }
     }
+
+
 </script>
 </body>
 </html>

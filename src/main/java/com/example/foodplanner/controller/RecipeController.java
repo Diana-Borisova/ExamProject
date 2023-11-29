@@ -11,6 +11,7 @@ import com.example.foodplanner.model.sevice.RecipeServiceModel;
 import com.example.foodplanner.service.PictureService;
 import com.example.foodplanner.service.RecipeService;
 import com.example.foodplanner.service.UserService;
+import com.example.foodplanner.view.RecipeCardViewModel;
 import com.example.foodplanner.view.RecipeDetailsViewModel;
 import com.example.foodplanner.view.RecipeEditViewModel;
 import jakarta.persistence.EntityNotFoundException;
@@ -26,6 +27,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
@@ -105,14 +107,15 @@ public class RecipeController {
     }
 
     @GetMapping("/edit/{id}")
-    private String editRoom(RecipeEditViewModel recipeEditViewModel, Model model, @PathVariable Long id) {
+    private String editRecipe(RecipeEditViewModel recipeEditViewModel, Model model, @PathVariable Long id) {
         RecipeEditViewModel recipe = modelMapper.map(recipeService.getRecipeById(id), RecipeEditViewModel.class);
+        recipeEditViewModel.setImageUrls(pictureService.getPicturesByRecipeId(id));
         model.addAttribute("recipe", recipe);
         return "edit-recipe";
     }
 
     @PatchMapping("/edit/{recipeId}")
-    public String editRoomPatch(@Valid RecipeCreateBindingModel recipeCreateBindingModel,
+    public String editRecipePatch(@Valid RecipeCreateBindingModel recipeCreateBindingModel,
                                 BindingResult bindingResult,
                                 RedirectAttributes redirectAttributes,
                                 @PathVariable Long recipeId) {
@@ -184,14 +187,14 @@ public class RecipeController {
         return "recipe-details";
     }
 
-    @PostMapping("/details/{id}")
-    public String reservePost(@PathVariable Long id, Model model) {
-        RecipeDetailsViewModel recipeDetailsViewModel = modelMapper.map(recipeService.getRecipeById(id), RecipeDetailsViewModel.class);
-
-        model.addAttribute("recipeData", recipeDetailsViewModel);
-
-        return "redirect:/recipes/owned/" + id;
-    }
+//    @PostMapping("/details/{id}")
+//    public String reservePost(@PathVariable Long id, Model model) {
+//        RecipeDetailsViewModel recipeDetailsViewModel = modelMapper.map(recipeService.getRecipeById(id), RecipeDetailsViewModel.class);
+//
+//        model.addAttribute("recipeData", recipeDetailsViewModel);
+//
+//        return "redirect:/recipes/owned/" + id;
+//    }
 
 //    @GetMapping("/details/{id}")
 //    public String getDetails() {
@@ -235,8 +238,30 @@ public class RecipeController {
 
     @GetMapping("/owned")
     public String ownedRecipes() {
+
         return "my-recipes";
     }
+
+//    @PostMapping("/api/owned")
+//    public String ownedRecipes(
+//            @PathVariable Long id,
+//            Model model,
+//            @AuthenticationPrincipal UserDetails principal,
+//            RedirectAttributes redirectAttributes) {
+//
+//        List<RecipeCardViewModel> recipeCardViewModels = recipeService
+//                .getRecipesByRecipeOwnerEmail(principal.getUsername())
+//                .stream()
+//                .map(recipe -> {
+//                    RecipeCardViewModel model1 = modelMapper.map(recipe, RecipeCardViewModel.class);
+//                    model1.setImage(pictureService.getPicturesByRecipeId(recipe.getId()).get(0));
+//                    return model1;
+//                })
+//                .collect(Collectors.toList());
+//
+//        redirectAttributes.addFlashAttribute("myRecipes", recipeCardViewModels);
+//        return "redirect:/recipes/owned-all";
+//    }
 
 //
 

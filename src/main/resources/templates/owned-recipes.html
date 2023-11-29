@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head th:replace="/fragments/fragments::head"></head>
+<body>
+<nav th:replace="/fragments/fragments::navbar"></nav>
+<main class="main container">
+    <div class="container bg-white p-4 rounded-1" th:action="@{/recipes/api/owned}" th:method="post" th:object="${myRecipes}">
+        <div class="row">
+            <div class="form-group col-md-3 mb-3">
+                <label for="title" class="text-black-50 font-weight-bold"></label>
+                <input id="title" type="search" min="2" max="20" class="form-control"
+                       placeholder="Title"/>
+            </div>
+            <div class="form-group col-md-3 mb-3">
+                <label for="stars" class="text-black-50 font-weight-bold"></label>
+                <select id="stars" class="form-control">
+                    <option value="">- Choose a rating -</option>
+                    <option th:each="s:${T(com.example.foodplanner.model.enumeration.StarEnum).values()}"
+                            th:value="${s.name()}"
+                            th:text="${s}"></option>
+                </select>
+            </div>
+            <div class="form-group col-md-5 mb-3">
+                <label for="cookingTime" class="text-black-50 font-weight-bold"></label>
+                <input id="cookingTime" type="search" minlength="1" class="form-control"
+                       placeholder="Cooking time"/>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col col-md-4">
+                <div class="button-holder d-flex">
+                    <input id="searchBtn" type="button" class="btn btn-info btn-lg" value="Search"/>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="d-inline-block pt-3">
+        <h1 id="user" th:user="${principal}" th:text="${principal.getUsername()}" class="text-dark me-3 fw-bold"></h1>
+        <h2 class="text-dark me-3">Rooms</h2>
+    </div>
+    <div id="cardsList">
+    </div>
+</main>
+<footer th:replace="/fragments/fragments::footer"></footer>
+<script src="/js/my-recipes.js"></script>
+</body>
+</html>
