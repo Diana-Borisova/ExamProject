@@ -1,18 +1,17 @@
 package com.example.foodplanner.model.entity;
 
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.ManyToOne;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 
 @Entity
 @Table(name = "pictures")
-public class Picture extends BaseEntity {
+public class
+Picture extends BaseEntity {
 
     @Column(nullable = false)
     private String url;
-    @ManyToOne
+
+    @ManyToOne()
     private Recipe recipe;
 
     public Picture() {

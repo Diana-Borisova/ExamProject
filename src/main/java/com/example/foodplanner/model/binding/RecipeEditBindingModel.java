@@ -24,8 +24,8 @@ public class RecipeEditBindingModel {
     @NotBlank(message = "Field cannot be blank")
     @Size(min = 15,max = 1000,message = "Length must be between 15 and 1000 characters")
     private String products;
-    @Size(min = 0,max = 50)
-    private String image;
+//    @Size(min = 0,max = 50)
+//    private String image;
 
     private boolean shared;
 
@@ -79,14 +79,14 @@ public class RecipeEditBindingModel {
         return this;
     }
 
-    public String getImage() {
-        return image;
-    }
-
-    public RecipeEditBindingModel setImage(String image) {
-        this.image = image;
-        return this;
-    }
+//    public String getImage() {
+//        return image;
+//    }
+//
+//    public RecipeEditBindingModel setImage(String image) {
+//        this.image = image;
+//        return this;
+//    }
 
     public boolean isShared() {
         return shared;

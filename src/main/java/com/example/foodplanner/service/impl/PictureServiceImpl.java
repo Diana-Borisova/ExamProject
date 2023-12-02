@@ -58,4 +58,12 @@ public class PictureServiceImpl implements PictureService {
         cloudinaryService.deleteByUrl(url);
     }
 
+    @Override
+    public void deleteById(Long id) {
+        pictureRepository.
+                delete(pictureRepository.findById(id)
+                        .orElseThrow(() -> new EntityNotFoundException("Picture")));
+    }
+
+
 }

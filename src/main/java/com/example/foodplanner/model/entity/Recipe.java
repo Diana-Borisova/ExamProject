@@ -28,8 +28,9 @@ public class Recipe extends BaseEntity {
 	@Column(name = "star")
 	@Enumerated(EnumType.STRING)
 	private StarEnum stars;
-	@Column(name = "image")
-	private String image;
+//	@Column(name = "image")
+//	private String image;
+
 
 	@ManyToOne()
 	@JoinColumn(name = "recipe_owner_id")
@@ -100,14 +101,14 @@ public class Recipe extends BaseEntity {
         return this;
     }
 
-    public String getImage() {
-        return image;
-    }
-
-    public Recipe setImage(String image) {
-        this.image = image;
-        return this;
-    }
+//    public String getImage() {
+//        return image;
+//    }
+//
+//    public Recipe setImage(String image) {
+//        this.image = image;
+//        return this;
+//    }
 
     public User getRecipeOwner() {
         return recipeOwner;
@@ -126,8 +127,6 @@ public class Recipe extends BaseEntity {
         this.shared = shared;
         return this;
     }
-    void addPicture(List<String> pictures){
-        Picture picture = new Picture();
-        pictures.add(picture.getUrl());
-    }
+
+
 }

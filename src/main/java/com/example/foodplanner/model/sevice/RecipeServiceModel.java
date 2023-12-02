@@ -16,7 +16,7 @@ public class RecipeServiceModel {
 
     private String products;
     private int cookingTime;
-    private String image;
+   // private String image;
     private User recipeOwner;
 
     private boolean shared;
@@ -80,14 +80,14 @@ public class RecipeServiceModel {
         return this;
     }
 
-    public String getImage() {
-        return image;
-    }
-
-    public RecipeServiceModel setImage(String image) {
-        this.image = image;
-        return this;
-    }
+//    public String getImage() {
+//        return image;
+//    }
+//
+//    public RecipeServiceModel setImage(String image) {
+//        this.image = image;
+//        return this;
+//    }
 
     public User getRecipeOwner() {
         return recipeOwner;

@@ -3,18 +3,17 @@ package com.example.foodplanner.controller;
 
 import com.example.foodplanner.model.binding.RecipeCreateBindingModel;
 import com.example.foodplanner.model.binding.RecipeEditBindingModel;
+import com.example.foodplanner.model.entity.Picture;
 import com.example.foodplanner.model.entity.Recipe;
-import com.example.foodplanner.model.entity.Role;
 import com.example.foodplanner.model.enumeration.RoleEnum;
 import com.example.foodplanner.model.enumeration.StarEnum;
 import com.example.foodplanner.model.sevice.RecipeServiceModel;
+import com.example.foodplanner.repository.PictureRepository;
 import com.example.foodplanner.service.PictureService;
 import com.example.foodplanner.service.RecipeService;
 import com.example.foodplanner.service.UserService;
-import com.example.foodplanner.view.RecipeCardViewModel;
 import com.example.foodplanner.view.RecipeDetailsViewModel;
 import com.example.foodplanner.view.RecipeEditViewModel;
-import jakarta.persistence.EntityNotFoundException;
 import jakarta.validation.Valid;
 import org.modelmapper.ModelMapper;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -23,14 +22,14 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 
+import java.io.IOException;
 import java.util.Arrays;
-import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
-import java.util.stream.Collectors;
 
 @Controller
 @RequestMapping("/recipes")
@@ -39,16 +38,17 @@ public class RecipeController {
     private final ModelMapper modelMapper;
     private final RecipeService recipeService;
     private final PictureService pictureService;
-
+    private final PictureRepository pictureRepository;
     private final UserService userService;
 
 
-    public RecipeController(ModelMapper modelMapper, PictureService pictureService, UserService userService, RecipeService recipeService) {
+    public RecipeController(ModelMapper modelMapper, PictureService pictureService, UserService userService, RecipeService recipeService, PictureRepository pictureRepository) {
         this.modelMapper = modelMapper;
         this.pictureService = pictureService;
         this.recipeService = recipeService;
         this.userService = userService;
 
+        this.pictureRepository = pictureRepository;
     }
 
     @ModelAttribute("recipeCreateBindingModel")
@@ -62,29 +62,29 @@ public class RecipeController {
     }
 
     @ModelAttribute("recipeDetailsViewModel")
-    public RecipeDetailsViewModel recipeDetailsViewModel(){
+    public RecipeDetailsViewModel recipeDetailsViewModel() {
         return new RecipeDetailsViewModel();
     }
+
     @GetMapping("/create")
     public String addRecipe() {
         return "add-recipe";
     }
 
-    
-        
+
     @PostMapping("/create")
     public String addRecipePost(@Valid RecipeCreateBindingModel recipeCreateBindingModel,
-                               BindingResult bindingResult,
-                               RedirectAttributes redirectAttributes,
-                               @AuthenticationPrincipal UserDetails principal) {
+                                BindingResult bindingResult,
+                                RedirectAttributes redirectAttributes,
+                                @AuthenticationPrincipal UserDetails principal) {
         if (bindingResult.hasErrors()) {
-            redirectAttributes.addFlashAttribute("recipeCreateBindingModel",recipeCreateBindingModel);
+            redirectAttributes.addFlashAttribute("recipeCreateBindingModel", recipeCreateBindingModel);
             redirectAttributes.addFlashAttribute("org.springframework.validation.BindingResult.recipeCreateBindingModel", bindingResult);
             return "redirect:/recipes/create";
         }
-        if (recipeCreateBindingModel.getImage().isEmpty()){
-            recipeCreateBindingModel.setImage(null);
-        }
+//        if (recipeCreateBindingModel.getImage().isEmpty()){
+//            recipeCreateBindingModel.setImage(null);
+//        }
         RecipeServiceModel recipeServiceModel = modelMapper.map(recipeCreateBindingModel, RecipeServiceModel.class);
         setStarEnum(recipeCreateBindingModel.getStars(), recipeServiceModel);
         recipeServiceModel.setRecipeOwner(userService.getUserByEmail(principal.getUsername()));
@@ -92,7 +92,7 @@ public class RecipeController {
         userService.getUserById(recipeServiceModel.getRecipeOwner().getId())
                 .setRoles(List.of(userService.getUserRoleByName(RoleEnum.RECIPE_OWNER)));
         setShared(recipeCreateBindingModel.isShared(), recipeServiceModel);
-        recipeServiceModel.setImage(recipeCreateBindingModel.getImage());
+        //   recipeServiceModel.setImage(recipeCreateBindingModel.getImage());
         Long recipeId = recipeService.createRecipe(recipeServiceModel);
         pictureService.uploadRecipeImages(recipeCreateBindingModel.getPictures(), recipeId);
 
@@ -110,31 +110,34 @@ public class RecipeController {
     private String editRecipe(RecipeEditViewModel recipeEditViewModel, Model model, @PathVariable Long id) {
         RecipeEditViewModel recipe = modelMapper.map(recipeService.getRecipeById(id), RecipeEditViewModel.class);
         recipeEditViewModel.setImageUrls(pictureService.getPicturesByRecipeId(id));
-        model.addAttribute("recipe", recipe);
+        model.addAttribute("recipe", recipeEditViewModel);
+        model.addAttribute("recipeData", recipe);
         return "edit-recipe";
     }
 
     @PatchMapping("/edit/{recipeId}")
-    public String editRecipePatch(@Valid RecipeCreateBindingModel recipeCreateBindingModel,
-                                BindingResult bindingResult,
-                                RedirectAttributes redirectAttributes,
-                                @PathVariable Long recipeId) {
+    public String editRecipePatch(@Valid RecipeEditBindingModel recipeEditBindingModel,
+                                  BindingResult bindingResult,
+                                  RedirectAttributes redirectAttributes,
+                                  @PathVariable Long recipeId) {
         if (bindingResult.hasErrors()) {
-            redirectAttributes.addFlashAttribute("recipeCreateBindingModel", recipeCreateBindingModel);
-            redirectAttributes.addFlashAttribute("org.springframework.validation.BindingResult.recipeCreateBindingModel", bindingResult);
+            redirectAttributes.addFlashAttribute("recipeEditBindingModel", recipeEditBindingModel);
+            redirectAttributes.addFlashAttribute("org.springframework.validation.BindingResult.recipeEditBindingModel", bindingResult);
             return "redirect:/users/edit-recipe/" + recipeId;
         }
-        RecipeServiceModel recipe = modelMapper.map(recipeCreateBindingModel, RecipeServiceModel.class);
+//        if (recipeEditBindingModel.getImage().length()==0){
+//            recipeEditBindingModel.setImage(null);
+//        }
+        RecipeServiceModel recipe = modelMapper.map(recipeEditBindingModel, RecipeServiceModel.class);
         recipe.setId(recipeId);
-        recipe.setShared(recipeCreateBindingModel.isShared());
-        recipe.setDescription(recipeCreateBindingModel.getDescription());
-        setStarEnum(recipeCreateBindingModel.getStars(), recipe);
-        recipe.setImage(recipeCreateBindingModel.getImage());
+        recipe.setShared(recipeEditBindingModel.isShared());
+        recipe.setDescription(recipeEditBindingModel.getDescription());
+        setStarEnum(recipeEditBindingModel.getStars(), recipe);
+//        recipe.setImage(recipeCreateBindingModel.getImage());
         recipe.setRecipeOwner(userService.getCurrentUser());
-        pictureService.uploadRecipeImages(recipeCreateBindingModel.getPictures(), recipeId);
-      // recipe.setPictures(recipeCreateBindingModel.getPictures());
-         recipeService.patchChanges(recipe);
-        return "redirect:/details/manage/" +recipeId;
+        pictureService.uploadRecipeImages(recipeEditBindingModel.getPictures(), recipeId);
+        recipeService.patchChanges(recipe);
+        return "redirect:/details/manage/" + recipeId;
     }
 //
 //    @GetMapping("/add-room/{id}")
@@ -172,12 +175,12 @@ public class RecipeController {
         List<String> pictureUrls = pictureService.getPicturesByRecipeId(id);
         recipeDetailsViewModel.setImage(pictureUrls.remove(0));
         recipeDetailsViewModel.setPictures(pictureUrls);
-        if (recipe.getRecipeOwner().getId() != null){
+        if (recipe.getRecipeOwner().getId() != null) {
             model.addAttribute("isOwner", userService.getUserByEmail(userDetails.getUsername()).getId().equals(recipe.getRecipeOwner().getId()));
 
         }
 
-       model.addAttribute("recipe", recipeDetailsViewModel);
+        model.addAttribute("recipe", recipeDetailsViewModel);
         model.addAttribute("isAdmin", userService.getCurrentUser().getId() == 1);
 
 //        model.addAttribute("foods", foodService.getHotelsRooms(id).
@@ -196,7 +199,7 @@ public class RecipeController {
 //        return "redirect:/recipes/owned/" + id;
 //    }
 
-//    @GetMapping("/details/{id}")
+    //    @GetMapping("/details/{id}")
 //    public String getDetails() {
 //        return "recipe-details";
 //    }
@@ -210,9 +213,9 @@ public class RecipeController {
 
     @PatchMapping("/edit-recipe/{id}")
     public String editRecipePost(@Valid RecipeEditBindingModel recipeEditBindingModel,
-                                BindingResult bindingResult,
-                                RedirectAttributes redirectAttributes,
-                                @PathVariable Long id) {
+                                 BindingResult bindingResult,
+                                 RedirectAttributes redirectAttributes,
+                                 @PathVariable Long id) throws IOException {
 
         if (bindingResult.hasErrors()) {
             redirectAttributes.addFlashAttribute("recipeEditBindingModel", recipeEditBindingModel);
@@ -220,10 +223,7 @@ public class RecipeController {
             return "redirect:/recipes/edit/" + id;
         }
 
-        if (recipeEditBindingModel.getPictures().size()==0){
-            recipeEditBindingModel.setImage(null);
-        }
-        RecipeServiceModel recipeServiceModel = modelMapper.map(recipeEditBindingModel, RecipeServiceModel.class).
+       RecipeServiceModel recipeServiceModel = modelMapper.map(recipeEditBindingModel, RecipeServiceModel.class).
                 setId(id);
         setStarEnum(recipeEditBindingModel.getStars(), recipeServiceModel);
 
@@ -241,6 +241,8 @@ public class RecipeController {
 
         return "my-recipes";
     }
+
+
 
 //    @PostMapping("/api/owned")
 //    public String ownedRecipes(

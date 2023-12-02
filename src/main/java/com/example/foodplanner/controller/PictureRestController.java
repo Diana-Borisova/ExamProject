@@ -3,9 +3,7 @@ package com.example.foodplanner.controller;
 import com.example.foodplanner.model.entity.Picture;
 import com.example.foodplanner.service.PictureService;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.io.IOException;
 
@@ -22,4 +20,10 @@ public class PictureRestController {
         pictureService.deleteByUrl(url);
         return ResponseEntity.status(204).build();
     }
+
+//    @DeleteMapping("/picture/delete{id}")
+//    public ResponseEntity<Picture> deletePicture(@PathVariable Long id) throws IOException {
+//        pictureService.deleteById(id);
+//        return ResponseEntity.status(204).build();
+//    }
 }

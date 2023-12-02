@@ -11,4 +11,9 @@ public interface PictureService {
     List<String>  getPicturesByRecipeId(Long id);
 
     void deleteByUrl(String url) throws IOException;
+
+
+    void deleteById(Long id);
+
+
 }

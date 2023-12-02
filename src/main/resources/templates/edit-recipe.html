@@ -19,13 +19,13 @@
         <div class="card-body bg-primary">
             <div class="container">
                 <h2 class="text-center text-white"></h2>
-                <form th:action="@{/recipes/edit-recipe/{id}(id=${id})}" th:method="patch" th:object="${recipe}"
+                <form th:action="@{/recipes/edit-recipe/{id}(id=${id})}" th:method="patch" th:object="${recipeData}"
                       enctype="multipart/form-data"
                       class="main-form mx-auto col-md-8 d-flex flex-column justify-content-center">
                     <div class="row">
                         <div class="form-group mb-3">
                             <label for="title" class="text-white font-weight-bold">Title</label>
-                            <input th:value="${recipe.title}" name="title" th:errorclass="is-invalid" required
+                            <input th:value="${recipeData.title}" name="title" th:errorclass="is-invalid" required
                                    id="title" type="text"
                                    minlength="2"
                                    maxlength="50" class="form-control"
@@ -42,7 +42,7 @@
                             <select id="stars" required class="form-control"
                                     name="stars"
                                     th:errorclass="is-invalid">
-                                <option th:value="${recipe.stars}" th:text="${recipe.stars}">- Rating
+                                <option th:value="${recipeData.stars}" th:text="${recipeData.stars}">- Rating
                                     -
                                 </option>
                                 <option th:each="s:${T(com.example.foodplanner.model.enumeration.StarEnum).values()}"
@@ -56,7 +56,7 @@
                         <div class="form-group col-md-6 mb-3">
                             <label for="cookingTime" class="text-white font-weight-bold">Cooking time</label>
                             <input id="cookingTime" name="cookingTime" type="text" class="form-control"
-                                   th:value="${recipe.cookingTime}"
+                                   th:value="${recipeData.cookingTime}"
                                    th:errorclass="is-invalid"
                                    required
                                    minlength="1"
@@ -68,16 +68,16 @@
 
                     </div>
                     <div class="row">
-                        <div class="form-group col-md-6 mb-3">
-                            <label for="image" class="text-white font-weight-bold">Main Picture</label>
-                            <input id="image" type="text" class="form-control" th:field="*{image}"
-                                   th:errorclass="is-invalid"
-                                   minlength="5" maxlength="50"
-                                   placeholder="Add picture..."/>
-                            <p class="errors alert alert-danger invalid-feedback">
-                                Image is not valid
-                            </p>
-                        </div>
+<!--                        <div class="form-group col-md-6 mb-3">-->
+<!--                            <label for="image" class="text-white font-weight-bold">Main Picture</label>-->
+<!--                            <input id="image" type="text" class="form-control" th:field="*{image}"-->
+<!--                                   th:errorclass="is-invalid"-->
+<!--                                   minlength="5" maxlength="50"-->
+<!--                                   placeholder="Add picture..."/>-->
+<!--                            <p class="errors alert alert-danger invalid-feedback">-->
+<!--                                Image is not valid-->
+<!--                            </p>-->
+<!--                        </div>-->
 
                         <div class="form-group col-md-6 mb-3">
                             <label for="pictures" class="text-white font-weight-bold">Add more pictures of your
@@ -95,7 +95,7 @@
                     <div class="row">
                         <div class="form-group mb-3">
                             <label for="description" class="text-white font-weight-bold">Description</label>
-                            <textarea name="description" th:text="${recipe.description}" id="description"
+                            <textarea name="description" th:text="${recipeData.description}" id="description"
                                       class="form-control"
                                       minlength="15" maxlength="1000" required
                                       th:errorclass="is-invalid"
@@ -124,25 +124,23 @@
                                    value=true>
                         </div>
                     </div>
-                        <div class="row">
-                        <label class="text-white font-weight-bold">Uploaded images</label>
-
-
-
-<ul>
-    <li th:each="i:${recipe.imageUrls}" class="image-cont">
-        <img th:src="${i}"
-             alt="Avatar" class="image">
-    </li>
-<!--</ul>-->
-<!--                            <th:block th:each="i:${recipe.imageUrls}" class="image-cont">-->
-<!--                                <img th:src="${i}"-->
-<!--                                     alt="Avatar" class="image">-->
-
-<!--                            </th:block>-->
-                            <button type="button" id="removeBtn" class="text text-white">Remove</button>
-
                     </div>
+                    <div>
+                        <label class="text-white font-weight-bold">Uploaded images</label>
+                        <ul class="row-cols-auto">
+                            <li th:each="i:${recipe.imageUrls}" class="image-cont">
+                                <img th:src="${i}"
+                                     alt="Avatar" class="image">
+                                <div class="middle">
+                                    <button th:action="@{/picture/delete}" th:method="patch"  th:object="${recipeEditBindingModel}" type="button" id="removeBtn" class="text text-white">Remove</button>
+                                </div>
+                            </li>
+                        </ul>
+                    </div>
+<!--                            <button type="button" id="removeBtn" class="text text-white">Remove</button>-->
+
+
+<!--                        </div>-->
                     <div class="row">
                         <div class="col col-md-4">
                             <div class="button-holder d-flex">
@@ -150,6 +148,7 @@
                             </div>
                         </div>
                     </div>
+
                 </form>
             </div>
         </div>
@@ -159,18 +158,34 @@
 </footer>
 <script>
     document.querySelectorAll("#removeBtn").forEach(e => e.addEventListener('click', removeImage));
+    let csrfToken;
 
+    // Fetch the CSRF token value from the meta tag
+    const csrfMetaTag = document.querySelector('meta[name="_csrf"]');
+    if (csrfMetaTag) {
+        csrfToken = csrfMetaTag.content;
+    }
+    function getCsrfToken() {
+        const csrfCookie = document.cookie.split('; ')
+            .find(cookie => cookie.startsWith('XSRF-TOKEN='));
+        return csrfCookie ? csrfCookie.split('=')[1] : null;
+    }
     function removeImage(e) {
         fetch('http://localhost:8080/picture/delete',
             {
                 method: 'delete',
-                body: e.target.parentElement.parentElement.children.item(0).getAttribute('src')
-
+                body: e.target.parentElement.parentElement.children.item(0).getAttribute('src'),
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRF-TOKEN': csrfToken,
+                },
             }).then(res => {
             console.log(res);
-            e.target.parentElement.remove();
+            e.target.parentElement.parentElement.remove();
         });
     }
+
+
 </script>
 </body>
 </html>

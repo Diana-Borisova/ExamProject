@@ -4,6 +4,7 @@ package com.example.foodplanner.service.impl;
 import com.example.foodplanner.model.entity.Recipe;
 import com.example.foodplanner.model.sevice.RecipeServiceModel;
 import com.example.foodplanner.repository.RecipeRepository;
+import com.example.foodplanner.service.PictureService;
 import com.example.foodplanner.service.RecipeService;
 import com.example.foodplanner.service.UserService;
 import jakarta.persistence.EntityNotFoundException;
@@ -20,11 +21,13 @@ public class RecipeServiceImpl implements RecipeService {
 
     private final RecipeRepository recipeRepository;
 
+
     private final UserService userService;
     private final ModelMapper modelMapper;
 
     public RecipeServiceImpl(RecipeRepository recipeRepository, UserService userService, ModelMapper modelMapper) {
         this.recipeRepository = recipeRepository;
+
         this.userService = userService;
         this.modelMapper = modelMapper;
     }
@@ -44,15 +47,14 @@ public class RecipeServiceImpl implements RecipeService {
     public void saveChanges(RecipeServiceModel recipeServiceModel) {
         Recipe recipe = recipeRepository.findById(recipeServiceModel.getId())
                 .orElseThrow(() -> new EntityNotFoundException("Recipe"));
-
         recipe.setTitle(recipeServiceModel.getTitle());
         recipe.setDescription(recipeServiceModel.getDescription());
         recipe.setStars(recipeServiceModel.getStars());
-       // recipe.setRecipeOwner(recipeServiceModel.getRecipeOwner());
-        recipe.setImage(recipeServiceModel.getImage());
+
         recipe.setCookingTime(recipeServiceModel.getCookingTime());
         recipe.setShared(recipeServiceModel.isShared());
         recipe.setProducts(recipeServiceModel.getProducts());
+
         recipeRepository.save(recipe);
 
     }
