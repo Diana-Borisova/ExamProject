@@ -67,19 +67,9 @@
                         </div>
 
                     </div>
-                    <div class="row">
-<!--                        <div class="form-group col-md-6 mb-3">-->
-<!--                            <label for="image" class="text-white font-weight-bold">Main Picture</label>-->
-<!--                            <input id="image" type="text" class="form-control" th:field="*{image}"-->
-<!--                                   th:errorclass="is-invalid"-->
-<!--                                   minlength="5" maxlength="50"-->
-<!--                                   placeholder="Add picture..."/>-->
-<!--                            <p class="errors alert alert-danger invalid-feedback">-->
-<!--                                Image is not valid-->
-<!--                            </p>-->
-<!--                        </div>-->
+                    <div class="row justify-content-center" >
 
-                        <div class="form-group col-md-6 mb-3">
+                        <div class="form-group col-md-6 mb-3 ">
                             <label for="pictures" class="text-white font-weight-bold">Add more pictures of your
                                 recipe</label>
                             <input type="file"
@@ -132,19 +122,16 @@
                                 <img th:src="${i}"
                                      alt="Avatar" class="image">
                                 <div class="middle">
-                                    <button th:action="@{/picture/delete}" th:method="patch"  th:object="${recipeEditBindingModel}" type="button" id="removeBtn" class="text text-white">Remove</button>
+                                    <button th:object="${i}" th:method="patch" th:action="@{/picture/delete}" type="button" id="removeBtn" class="text text-white">Remove</button>
                                 </div>
                             </li>
                         </ul>
                     </div>
-<!--                            <button type="button" id="removeBtn" class="text text-white">Remove</button>-->
 
-
-<!--                        </div>-->
                     <div class="row">
                         <div class="col col-md-4">
                             <div class="button-holder d-flex">
-                                <input type="submit" class="btn btn-warning btn-lg" value="Save Changes"/>
+                                <input th:id="${recipe.id}" type="submit" class="btn btn-warning btn-lg" value="Save Changes"/>
                             </div>
                         </div>
                     </div>
@@ -156,36 +143,23 @@
 </main>
 <footer class="footer bg-blur" th:replace="/fragments/fragments::footer">
 </footer>
+<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
+        integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
+        crossorigin="anonymous"></script>
 <script>
     document.querySelectorAll("#removeBtn").forEach(e => e.addEventListener('click', removeImage));
-    let csrfToken;
 
-    // Fetch the CSRF token value from the meta tag
-    const csrfMetaTag = document.querySelector('meta[name="_csrf"]');
-    if (csrfMetaTag) {
-        csrfToken = csrfMetaTag.content;
-    }
-    function getCsrfToken() {
-        const csrfCookie = document.cookie.split('; ')
-            .find(cookie => cookie.startsWith('XSRF-TOKEN='));
-        return csrfCookie ? csrfCookie.split('=')[1] : null;
-    }
     function removeImage(e) {
         fetch('http://localhost:8080/picture/delete',
             {
                 method: 'delete',
-                body: e.target.parentElement.parentElement.children.item(0).getAttribute('src'),
-                headers: {
-                    'Content-Type': 'application/json',
-                    'X-CSRF-TOKEN': csrfToken,
-                },
+                body: e.target.parentElement.parentElement.children.item(0).getAttribute('src')
+
             }).then(res => {
             console.log(res);
             e.target.parentElement.parentElement.remove();
         });
     }
-
-
 </script>
 </body>
 </html>

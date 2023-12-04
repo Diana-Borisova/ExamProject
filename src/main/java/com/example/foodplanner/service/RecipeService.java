@@ -6,6 +6,7 @@ import com.example.foodplanner.model.entity.Recipe;
 import com.example.foodplanner.model.sevice.RecipeServiceModel;
 import com.example.foodplanner.view.RecipeDetailsViewModel;
 
+import java.io.IOException;
 import java.util.List;
 
 public interface RecipeService {
@@ -13,7 +14,7 @@ public interface RecipeService {
 
     Recipe getRecipeById(Long id);
 
-    void saveChanges(RecipeServiceModel recipeServiceModel);
+    void saveChanges(RecipeServiceModel recipeServiceModel) throws IOException;
 
     List<RecipeServiceModel> getAllRecipes();
 

@@ -14,18 +14,14 @@ function showRecipes(recipes) {
     for (let r of recipes) {
         const id = document.createElement('td');
         id.innerText = r.id;
-        const type = document.createElement('td');
-        type.innerText = r.title;
-        const name = document.createElement('td');
-        name.innerText = r.shared;
-        const price = document.createElement('td');
-        price.innerText = r.cookingTime;
-        const singleBeds = document.createElement('td');
-        singleBeds.innerText = r.description;
-        // const twinBeds = document.createElement('td');
-        // twinBeds.innerText = r.products;
-        // const count = document.createElement('td');
-        // count.innerText = r.count;
+        const title = document.createElement('td');
+        title.innerText = r.title;
+        const shared = document.createElement('td');
+        shared.innerText = r.shared;
+        const cookingTime = document.createElement('td');
+        cookingTime.innerText = r.cookingTime;
+        const description = document.createElement('td');
+        description.innerText = r.description;
         const btn = document.createElement('td');
         const a = document.createElement('a');
         a.type = 'button';
@@ -35,12 +31,10 @@ function showRecipes(recipes) {
         btn.appendChild(a);
         const tr = document.createElement('tr');
         tr.appendChild(id);
-        tr.appendChild(type);
-        tr.appendChild(name);
-        tr.appendChild(price);
-        tr.appendChild(singleBeds);
-        // tr.appendChild(twinBeds);
-        // tr.appendChild(count);
+        tr.appendChild(title);
+        tr.appendChild(shared);
+        tr.appendChild(cookingTime);
+        tr.appendChild(description);
         tr.appendChild(btn);
         tbody.appendChild(tr);
     }

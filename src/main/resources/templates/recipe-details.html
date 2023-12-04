@@ -1,7 +1,8 @@
 <!DOCTYPE html>
 <html lang="en"
       xmlns:th="http://www.thymeleaf.org"
-      xmlns:sec="http://www.thymeleaf.org/extras/spring-security" xmlns="http://www.w3.org/1999/html">
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
+      xmlns="http://www.w3.org/1999/html">
 <head th:replace="/fragments/fragments::head"></head>
 <body>
 <header th:replace="/fragments/fragments::navbar"></header>
@@ -126,28 +127,28 @@
 <!--                <input type="submit" value="Reserve" class="btn btn-warning">-->
 <!--            </form>-->
         </div>
-        <div class="container mt-5">
-            <div class="row justify-content-center">
-                <div class="col-md-8">
-                    <div class="headings d-flex justify-content-between align-items-center mb-3">
-                        <h5 id="commentCount">Comments(6)</h5>
-                    </div>
-                    <div class="input-group mb-3">
-                        <input id="commentInput" type="text" class="form-control" placeholder="Leave a comment here..."
-                               aria-label="Leave a comment here..."
-                               aria-describedby="button-addon2">
-                        <button class="btn btn-outline-secondary btn-danger" type="button" th:value="${id}"
-                                id="button-addon2">Post
-                        </button>
-                    </div>
-                    <div id="commentSection"></div>
-                </div>
-            </div>
-        </div>
-        </div>
+<!--        <div class="container mt-5">-->
+<!--            <div class="row justify-content-center">-->
+<!--                <div class="col-md-8">-->
+<!--                    <div class="headings d-flex justify-content-between align-items-center mb-3">-->
+<!--                        <h5 id="commentCount">Comments(6)</h5>-->
+<!--                    </div>-->
+<!--                    <div class="input-group mb-3">-->
+<!--                        <input id="commentInput" type="text" class="form-control" placeholder="Leave a comment here..."-->
+<!--                               aria-label="Leave a comment here..."-->
+<!--                               aria-describedby="button-addon2">-->
+<!--                        <button class="btn btn-outline-secondary btn-danger" type="button" th:value="${id}"-->
+<!--                                id="button-addon2">Post-->
+<!--                        </button>-->
+<!--                    </div>-->
+<!--                    <div id="commentSection"></div>-->
+<!--                </div>-->
+<!--            </div>-->
+<!--        </div>-->
+<!--        </div>-->
     </div>
 </main>
-<footer th:replace="/fragments/fragments::footer"></footer>
-<script src="/js/comment-logic.js"></script>
+
+
 </body>
 </html>

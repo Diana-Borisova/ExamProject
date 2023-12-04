@@ -4,15 +4,20 @@ package com.example.foodplanner.service.impl;
 import com.example.foodplanner.model.entity.Recipe;
 import com.example.foodplanner.model.sevice.RecipeServiceModel;
 import com.example.foodplanner.repository.RecipeRepository;
+import com.example.foodplanner.service.CloudinaryService;
 import com.example.foodplanner.service.PictureService;
 import com.example.foodplanner.service.RecipeService;
 import com.example.foodplanner.service.UserService;
+import jakarta.annotation.PostConstruct;
 import jakarta.persistence.EntityNotFoundException;
 import org.modelmapper.ModelMapper;
-import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
 import java.util.List;
+import java.util.Objects;
 import java.util.stream.Collectors;
 
 
@@ -25,11 +30,18 @@ public class RecipeServiceImpl implements RecipeService {
     private final UserService userService;
     private final ModelMapper modelMapper;
 
-    public RecipeServiceImpl(RecipeRepository recipeRepository, UserService userService, ModelMapper modelMapper) {
+
+
+
+
+    @Autowired
+    public RecipeServiceImpl(RecipeRepository recipeRepository, UserService userService, ModelMapper modelMapper){
         this.recipeRepository = recipeRepository;
 
         this.userService = userService;
         this.modelMapper = modelMapper;
+
+
     }
 
     @Override
@@ -43,8 +55,9 @@ public class RecipeServiceImpl implements RecipeService {
                 orElseThrow(() -> new EntityNotFoundException("Recipe"));
     }
 
+
     @Override
-    public void saveChanges(RecipeServiceModel recipeServiceModel) {
+    public void saveChanges(RecipeServiceModel recipeServiceModel) throws IOException {
         Recipe recipe = recipeRepository.findById(recipeServiceModel.getId())
                 .orElseThrow(() -> new EntityNotFoundException("Recipe"));
         recipe.setTitle(recipeServiceModel.getTitle());

@@ -30,22 +30,15 @@
             let card = document.createElement('div');
             card.classList.add('card');
             card.classList.add('my-card');
-
-            // Apply flex styles for centering
             card.style.display = 'flex';
             card.style.flexDirection = 'column';
             card.style.justifyContent = 'center';
             card.style.alignItems = 'center';
-
-            // Add margin to create space between cards
-            card.style.marginBottom = '20px'; // Adjust the value to set your desired space
-
+            card.style.marginBottom = '20px';
             let img = document.createElement('img');
             img.className = 'card-img-top card-image';
             img.src = recipes[i].image;
             img.alt = 'Card image cap';
-
-            // Set specific width and height
             img.width = 200;
             img.height = 250;
 
@@ -70,20 +63,19 @@
             cookingTimeIcon.className = 'fa-regular fa-clock';
             cookingTimeIcon.style.marginRight = '5px';
             let cookingTimeText = document.createElement('span');
-            cookingTimeText.innerText = ` ${recipes[i].cookingTime} min.`; // Add a space before cookingTime
+            cookingTimeText.innerText = ` ${recipes[i].cookingTime} min.`;
 
             let buttonContainer = document.createElement('div');
             buttonContainer.style.display = 'flex';
-            buttonContainer.style.justifyContent = 'center'; // Center the button horizontally
-            buttonContainer.style.marginTop = '10px'; // Adjust the value to set your desired space
+            buttonContainer.style.justifyContent = 'center';
+            buttonContainer.style.marginTop = '10px';
 
             let a = document.createElement('a');
             a.className = 'btn btn-success';
             a.href = '/recipes/details/' + recipes[i].id;
             a.innerText = 'See more...';
 
-            // Apply flex styles for centering
-            cardTitle.style.margin = '0'; // Reset default margin
+            cardTitle.style.margin = '0';
             cardText.style.margin = '0';
 
             textContainer.appendChild(cardTitle);

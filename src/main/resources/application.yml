@@ -24,8 +24,15 @@ spring:
         enabled: true
 
 
-cloudinary:
+
+  spring:
+    main:
+      allow-circular-references: true
+
+  cloudinary:
 
   cloud_name: "dmd3mttpc"
   api_key: "799357567129288"
   api_secret: "-0ZR-Nt4ESQJ_BVBqAzyryTUAO0"
+
+

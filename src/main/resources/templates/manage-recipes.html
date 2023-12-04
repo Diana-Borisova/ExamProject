@@ -41,7 +41,7 @@
                         </thead>
                         <tbody>
                         <tr>
-                            <td th:recipeId="${recipe.id}"></td>
+                            <td th:text="${recipe.id}"></td>
                             <td th:text="${recipe.title}"></td>
                             <td th:text="${recipe.cookingTime}"></td>
                             <td th:text="${recipe.products}"></td>
@@ -59,9 +59,15 @@
         </div>
     </div>
 </main>
-<footer th:replace="/fragments/fragments::footer"></footer>
+<footer  class="footer bg-blur fixed-bottom" >
+    <div class="container-fluid text-center">
+        <div class="footer bg-blur text-black-50">
+            &copy;Diana's Food Blog 2023. All rights reserved.
+        </div>
+    </div>
+</footer>
 </body>
 
-<script src="/js/rooms-table.js"></script>
+<script src="/js/manage-recipes-table.js"></script>
 
 </html>

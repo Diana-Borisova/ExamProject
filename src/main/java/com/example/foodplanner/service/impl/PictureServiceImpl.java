@@ -8,6 +8,7 @@ import com.example.foodplanner.service.CloudinaryService;
 import com.example.foodplanner.service.PictureService;
 import com.example.foodplanner.service.RecipeService;
 import jakarta.persistence.EntityNotFoundException;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -22,6 +23,7 @@ public class PictureServiceImpl implements PictureService {
     private final PictureRepository pictureRepository;
     private final RecipeService recipeService;
 
+    @Autowired
     public PictureServiceImpl(CloudinaryService cloudinaryService, PictureRepository pictureRepository, RecipeService recipeService) {
         this.cloudinaryService = cloudinaryService;
         this.pictureRepository = pictureRepository;

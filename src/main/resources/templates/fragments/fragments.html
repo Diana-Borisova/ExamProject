@@ -18,31 +18,29 @@
 <header th:fragment="navbar">
     <nav class="navbar navbar-expand-md navbar-dark fixed-top bg-primary">
         <div class="container-fluid">
-            <a class="navbar-brand" href="/"> <span class="spinner-border">🌱 </span> Meal Planning</a>
+            <a class="navbar-brand" href="/"> <span class="spinner-border">🌱 </span>  My Food</a>
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse"
                     aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
             </button>
-            <div sec:authorize="hasRole('ADMIN')">
-                <button class="btn btn-secondary" type="button">
-                    Admin Profile
-                </button>
-            </div>
+
             <div class="collapse navbar-collapse justify-content-end" id="navbarCollapse">
-                <ul class="navbar-nav row d-inline-flex">
-                    <li class="nav-item m-auto col-md-4" sec:authorize="isAuthenticated()">
-                        <a class="nav-link active" aria-current="page" href="/">Recipes</a>
+                <ul class="navbar-nav row ">
+                    <li class="nav-item m-auto col-md-5" sec:authorize="isAuthenticated()">
+                        <a class="nav-link active" aria-current="page" href="/">All Recipes</a>
                     </li>
-                    <li class="nav-item m-auto col-md-4" sec:authorize="isAuthenticated()">
+                    <li class="nav-item m-auto col-md-5" sec:authorize="isAuthenticated()">
                         <a class="nav-link active" href="/recipes/create">Post Recipe</a>
                     </li>
-                    <li class="nav-item col-md-4 m-auto " sec:authorize="!isAuthenticated()">
+                    <li class="nav-item col-md-6 m-auto " sec:authorize="!isAuthenticated()">
                         <a class="nav-link active " href="/users/register">Register</a>
                     </li>
-                    <li class="nav-item col-md-4 m-auto" sec:authorize="!isAuthenticated()">
+                    <li class="nav-item col-md-6 m-auto" sec:authorize="!isAuthenticated()">
                         <a class="nav-link active " href="/users/login">Login</a>
                     </li>
-                    <li sec:authorize="isAuthenticated()" class="nav-item mr-auto col-md-4 dropdown" >
+                </ul>
+                <ul class="navbar-nav row ">
+                    <li sec:authorize="isAuthenticated()" class="nav-item mr-auto col-md-3 justify-content-end dropdown" >
                         <a class="nav-link active dropdown-toggle" href="#" id="navbarDropdown" role="button"
                            data-bs-toggle="dropdown" aria-expanded="false">
                             <img id="avatar-pic"
@@ -82,7 +80,7 @@
     </nav>
 </header>
 
-<footer th:fragment="footer" class="footer bg-blur">
+<footer th:fragment="footer" class="footer bg-blur" >
     <div class="container-fluid text-center">
         <div class="footer bg-blur text-black-50">
             &copy;Diana's Food Blog 2023. All rights reserved.

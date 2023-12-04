@@ -9,6 +9,7 @@ import com.example.foodplanner.model.enumeration.RoleEnum;
 import com.example.foodplanner.model.enumeration.StarEnum;
 import com.example.foodplanner.model.sevice.RecipeServiceModel;
 import com.example.foodplanner.repository.PictureRepository;
+import com.example.foodplanner.service.CloudinaryService;
 import com.example.foodplanner.service.PictureService;
 import com.example.foodplanner.service.RecipeService;
 import com.example.foodplanner.service.UserService;
@@ -30,6 +31,7 @@ import java.io.IOException;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
+import java.util.stream.Collectors;
 
 @Controller
 @RequestMapping("/recipes")
@@ -38,17 +40,19 @@ public class RecipeController {
     private final ModelMapper modelMapper;
     private final RecipeService recipeService;
     private final PictureService pictureService;
-    private final PictureRepository pictureRepository;
+
     private final UserService userService;
 
 
-    public RecipeController(ModelMapper modelMapper, PictureService pictureService, UserService userService, RecipeService recipeService, PictureRepository pictureRepository) {
+
+
+    public RecipeController(ModelMapper modelMapper, PictureService pictureService, UserService userService, RecipeService recipeService) {
         this.modelMapper = modelMapper;
         this.pictureService = pictureService;
         this.recipeService = recipeService;
         this.userService = userService;
 
-        this.pictureRepository = pictureRepository;
+
     }
 
     @ModelAttribute("recipeCreateBindingModel")
@@ -226,10 +230,25 @@ public class RecipeController {
        RecipeServiceModel recipeServiceModel = modelMapper.map(recipeEditBindingModel, RecipeServiceModel.class).
                 setId(id);
         setStarEnum(recipeEditBindingModel.getStars(), recipeServiceModel);
+//        if (recipeServiceModel.getPictures().size() != pictureService.getPicturesByRecipeId(id).size()
+//                && pictureService.getPicturesByRecipeId(id).size()>=1) {
+//            List<String> pictures = pictureService.getPicturesByRecipeId(recipeServiceModel.getId()).stream().toList();
+//            List<MultipartFile> deletedPictures = recipeServiceModel.getPictures().stream().toList();
+//            for (String pic : pictures) {
+//                if(!deletedPictures.contains(pic)){
+//                    pictureService.deleteByUrl(pic);
+//                }
+//
+//            }
+//
+//        } else {
+            if (!Objects.equals(recipeServiceModel.getPictures().get(0).getOriginalFilename(), "")) {
+                pictureService.uploadRecipeImages(recipeServiceModel.getPictures(), recipeServiceModel.getId());
+            }
+ //       }
 
-        if (!Objects.equals(recipeEditBindingModel.getPictures().get(0).getOriginalFilename(), "")) {
-            pictureService.uploadRecipeImages(recipeEditBindingModel.getPictures(), id);
-        }
+
+
         recipeService.saveChanges(recipeServiceModel);
 
         return "redirect:/recipes/details/" + id;
