@@ -10,7 +10,8 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.web.client.RestTemplate;
-
+import org.springframework.web.reactive.function.client.WebClient;
+//import org.springframework.web.reactive.function.client.WebClient;
 import java.util.List;
 
 @Configuration
@@ -20,7 +21,13 @@ public class ApplicationConfig {
         return new ModelMapper();
     }
 
-
+    @Bean
+    public WebClient formPostWebClient() {
+        return WebClient
+                .builder()
+                .defaultHeader(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_FORM_URLENCODED_VALUE)
+                .build();
+    }
 
     @Bean
     public RestTemplate restTemplate(RestTemplateBuilder restTemplateBuilder) {
@@ -29,6 +36,11 @@ public class ApplicationConfig {
                 .build();
     }
 
-
+    @Bean
+    public WebClient binaryContentWebClient() {
+        return WebClient.builder()
+                .defaultHeader(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_OCTET_STREAM_VALUE)
+                .build();
+    }
 
 }

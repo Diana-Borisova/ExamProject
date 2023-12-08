@@ -3,11 +3,12 @@ package com.example.foodplanner.service.impl;
 
 import com.example.foodplanner.model.entity.Picture;
 import com.example.foodplanner.model.entity.Recipe;
+import com.example.foodplanner.model.exception.EntityNotFoundException;
 import com.example.foodplanner.repository.PictureRepository;
 import com.example.foodplanner.service.CloudinaryService;
 import com.example.foodplanner.service.PictureService;
 import com.example.foodplanner.service.RecipeService;
-import jakarta.persistence.EntityNotFoundException;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
@@ -15,6 +16,7 @@ import org.springframework.web.multipart.MultipartFile;
 import java.io.IOException;
 import java.util.Collections;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class PictureServiceImpl implements PictureService {
@@ -61,10 +63,12 @@ public class PictureServiceImpl implements PictureService {
     }
 
     @Override
-    public void deleteById(Long id) {
+    public void deleteById(Long id) throws IOException {
+        Optional<Picture> picture = pictureRepository.findById(id);
         pictureRepository.
                 delete(pictureRepository.findById(id)
                         .orElseThrow(() -> new EntityNotFoundException("Picture")));
+        cloudinaryService.deleteByUrl(picture.get().getUrl());
     }
 
 

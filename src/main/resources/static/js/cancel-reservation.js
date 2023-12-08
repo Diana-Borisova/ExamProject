@@ -1,7 +1,7 @@
 document.querySelectorAll('button').forEach(b => b.addEventListener('click', cancelReservation));
 
 function cancelReservation(e) {
-    fetch('http://localhost:8080/reservations/delete/'+e.target.id,
+    fetch('http://localhost:8080/picture/delete/'+e.target.id,
         {
             method: 'delete',
         }).

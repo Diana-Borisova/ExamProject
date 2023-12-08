@@ -4,6 +4,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
 import java.util.List;
+import java.util.stream.Stream;
 
 public interface PictureService {
     void uploadRecipeImages(List<MultipartFile> pictures, Long recipeId);
@@ -13,7 +14,8 @@ public interface PictureService {
     void deleteByUrl(String url) throws IOException;
 
 
-    void deleteById(Long id);
+    void deleteById(Long id) throws IOException;
+
 
 
 }

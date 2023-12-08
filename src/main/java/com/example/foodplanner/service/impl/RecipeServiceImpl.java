@@ -2,6 +2,7 @@ package com.example.foodplanner.service.impl;
 
 
 import com.example.foodplanner.model.entity.Recipe;
+import com.example.foodplanner.model.enumeration.RoleEnum;
 import com.example.foodplanner.model.sevice.RecipeServiceModel;
 import com.example.foodplanner.repository.RecipeRepository;
 import com.example.foodplanner.service.CloudinaryService;
@@ -25,8 +26,6 @@ import java.util.stream.Collectors;
 public class RecipeServiceImpl implements RecipeService {
 
     private final RecipeRepository recipeRepository;
-
-
     private final UserService userService;
     private final ModelMapper modelMapper;
 
@@ -110,6 +109,16 @@ public class RecipeServiceImpl implements RecipeService {
         recipe.setRecipeOwner(userService.getUserById(userId));
         recipeRepository.save(recipe);
         return recipe.getRecipeOwner().getId();
+    }
+
+    @Override
+    public void deleteById(Long recipeId) {
+        Recipe recipe = this.recipeRepository.findById(recipeId).
+        orElseThrow(() -> new EntityNotFoundException("Recipe"));
+        recipe.setRecipeOwner(null);
+        this.recipeRepository.delete(recipeRepository.findById(recipeId)
+                .orElseThrow(() -> new EntityNotFoundException("Recipe")));
+        this.recipeRepository.saveAndFlush(recipe);
     }
 
 }

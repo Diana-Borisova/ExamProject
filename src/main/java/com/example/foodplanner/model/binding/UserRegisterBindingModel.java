@@ -26,10 +26,10 @@ public class UserRegisterBindingModel {
     @Pattern(regexp = "\\+*[0-9]{10,12}")
     private String phoneNumber;
     @NotEmpty(message = "Field must be filled")
-    @Size(min = 5, max = 20, message = "Length must be between 2 and 20 characters")
+    @Size(min = 5, max = 20, message = "Length must be between 5 and 20 characters")
     private String password;
     @NotEmpty(message = "Field must be filled")
-    @Size(min = 5, max = 20, message = "Length must be between 2 and 20 characters")
+    @Size(min = 5, max = 20, message = "Length must be between 5 and 20 characters")
     private String confirmPassword;
 
     private MultipartFile profilePicture;

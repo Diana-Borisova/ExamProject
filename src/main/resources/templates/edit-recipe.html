@@ -122,7 +122,8 @@
                                 <img th:src="${i}"
                                      alt="Avatar" class="image">
                                 <div class="middle">
-                                    <button th:object="${i}" th:method="patch" th:action="@{/picture/delete}" type="button" id="removeBtn" class="text text-white">Remove</button>
+                                    <button  type="button" id="removeBtn" class="text text-white">Remove</button>
+
                                 </div>
                             </li>
                         </ul>
@@ -146,6 +147,7 @@
 <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
         integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
         crossorigin="anonymous"></script>
+<!--<script src="/js/cancel-reservation.js"></script>-->
 <script>
     document.querySelectorAll("#removeBtn").forEach(e => e.addEventListener('click', removeImage));
 

@@ -24,4 +24,5 @@ public interface RecipeService {
 
     Long patchChanges(RecipeServiceModel recipeServiceModel);
 
+    void deleteById(Long recipeId);
 }

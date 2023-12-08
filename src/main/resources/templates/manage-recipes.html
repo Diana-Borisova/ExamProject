@@ -22,7 +22,7 @@
                     </div>
                 </div>
                 <div class="d-inline-block pt-3">
-                    <h1 id="recipe" th:recipeId="${recipe.id}" th:text="${recipe.title}" class="text-dark me-3 fw-bold"></h1>
+                    <h1 id="recipe"  th:recipeId="${recipe.id}" th:text="${recipe.title}" class="text-dark me-3 fw-bold"></h1>
                     <h2 class="text-dark me-3"></h2>
                 </div>
                 <div class="table-responsive text-light">
@@ -40,7 +40,7 @@
                         </tr>
                         </thead>
                         <tbody>
-                        <tr>
+                        <tr id="table">
                             <td th:text="${recipe.id}"></td>
                             <td th:text="${recipe.title}"></td>
                             <td th:text="${recipe.cookingTime}"></td>
@@ -53,7 +53,7 @@
                         </tr>
                         </tbody>
                     </table>
-                    <a type="button" class="btn btn-success" th:href="@{/recipes/add-recipe/{recipeId}(recipeId=${recipe.id})}">Add Recipe</a>
+                    <a type="button" id="removeBtn" class="btn btn-success" th:href="@{/recipes/delete/{recipeId}(recipeId=${recipe.id})}"  >Delete Recipe</a>
                 </div>
             </main>
         </div>
@@ -69,5 +69,20 @@
 </body>
 
 <script src="/js/manage-recipes-table.js"></script>
+<!--<script src="/js/rooms-table.js"></script>-->
+<script>
+    document.querySelectorAll("#removeBtn").forEach(b => b.addEventListener('click', deleteRecipe));
+    const id = document.getElementById('recipe').getAttribute('recipeId');
+    function deleteRecipe(e) {
+        fetch('http://localhost:8080/recipes/delete/' + id,
+            {
+                method: 'delete',
 
+            }).then(res => {
+            console.log(res);
+            e.target.parentElement.parentElement.remove();
+        });
+    }
+
+</script>
 </html>

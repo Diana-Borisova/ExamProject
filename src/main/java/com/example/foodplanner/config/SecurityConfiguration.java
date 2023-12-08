@@ -4,15 +4,18 @@ package com.example.foodplanner.config;
 
 import com.example.foodplanner.repository.UserRepository;
 import com.example.foodplanner.service.FoodPlannerUserDetailsService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.actuate.autoconfigure.security.servlet.EndpointRequest;
 import org.springframework.boot.autoconfigure.security.servlet.PathRequest;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
+import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.WebSecurityConfigurer;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
+import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.crypto.password.Pbkdf2PasswordEncoder;
@@ -23,15 +26,22 @@ import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
 import java.util.Arrays;
-@EnableWebSecurity
-@EnableGlobalMethodSecurity(prePostEnabled = true, securedEnabled = true, jsr250Enabled = true)
+
+import static org.springframework.security.config.Customizer.withDefaults;
+import static org.springframework.security.config.http.SessionCreationPolicy.STATELESS;
+
 @Configuration
+@EnableMethodSecurity
+
 public class SecurityConfiguration {
+
+
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity httpSecurity) throws Exception {
         return httpSecurity.
 
-                authorizeHttpRequests(
+        cors(withDefaults()).
+        authorizeHttpRequests(
                 // Define which urls are visible by which users
                 authorizeRequests -> authorizeRequests
                         // All static resources which are situated in js, images, css are available for anyone
@@ -45,23 +55,25 @@ public class SecurityConfiguration {
                                 "/users/register",
                                 "/users/login-error").permitAll()
                         .requestMatchers(HttpMethod.GET, "/recipes/**").permitAll()
-                        .requestMatchers(HttpMethod.DELETE, "/picture/**").permitAll()
+                        .requestMatchers(HttpMethod.DELETE, "/picture/**").hasRole("ADMIN")
+                        .requestMatchers(HttpMethod.DELETE, "/recipes/**").hasRole("ADMIN")
                         .requestMatchers("/error").permitAll()
                         .requestMatchers(
                                 "/recipes/edit/**",
                                 "/recipes/my-recipes",
                                 "/recipes/api/owned",
                                 "/recipes/owned",
-                                "/picture/delete/**").hasRole("RECIPE_OWNER")
+                                "/picture/api/delete").hasRole("RECIPE_OWNER")
                         .requestMatchers(
                                 "/users/api/owned",
                                 "/recipes/owned",
                                 "/recipes/api/owned",
                                 "/recipes/edit/**",
-                                "/picture/delete/**",
+                                "/picture/api/delete",
                                 "/admin/**",
                                 "/users/change-roles/**",
                                 "/users/all",
+                                "recipes/api/delete/*",
                                 "/recipes/manage/**").hasRole("ADMIN")
                         .anyRequest().authenticated()
         ).formLogin(
@@ -84,7 +96,9 @@ public class SecurityConfiguration {
                             .invalidateHttpSession(true)
                             .deleteCookies("JSESSIONID");
                 }
-        ).build();
+        ). csrf(AbstractHttpConfigurer::disable)
+                .cors(AbstractHttpConfigurer::disable)
+                .build();
     }
 
 

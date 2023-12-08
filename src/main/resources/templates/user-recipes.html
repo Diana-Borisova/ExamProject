@@ -11,7 +11,7 @@
         <table class="table table-light border-3 table-striped">
             <thead>
             <tr class="table-dark">
-                <th scope="col"></th>
+                <th scope="col">Id</th>
                 <th scope="col">Title</th>
                 <th scope="col">Products</th>
                 <th scope="col">Cooking Time</th>
@@ -20,17 +20,20 @@
             </tr>
             </thead>
             <tbody>
-            <tr th:each="r:${favorites}">
+            <tr th:object="${recipes}">
                 <th scope="row"></th>
-                <td><a class="text-dark" th:href="@{/recipes/details/{id}(id=${r.recipe.id})}"
-                       th:text="${r.recipe.title}"></a></td>
-                <td th:text="${#temporals.format(r.arriveDate,'dd-MM-yyyy')}"></td>
-                <td th:text="${#temporals.format(r.leaveDate,'dd-MM-yyyy')}"></td>
-                <td th:text="|${r.room.type}(${r.room.name})x${r.countOfRooms}|"></td>
+                <td><a class="text-dark" th:href="@{/recipes/delete/{id}(id=${recipes.id})}"
+                       th:text="${recipes.title}"></a></td>
+<!--                <td th:text="${#temporals.format(r.arriveDate,'dd-MM-yyyy')}"></td>-->
+<!--                <td th:text="${#temporals.format(r.leaveDate,'dd-MM-yyyy')}"></td>-->
+<!--                <td th:text="|${r.room.type}(${r.room.name})x${r.countOfRooms}|"></td>-->
                 <td>
-                    <button th:id="${r.id}" class="btn-danger rounded-2">Cancel</button>
+                    <button th:id="${id}" class="btn-danger rounded-2">Cancel</button>
                 </td>
             </tr>
+            <div class="button-holder d-flex">
+                <input th:id="${recipes.id}" th:method="delete" href="@{/}" type="submit" class="btn btn-warning btn-lg" value="Save Changes"/>
+            </div>
             </tbody>
         </table>
     </div>
@@ -40,7 +43,7 @@
     document.querySelectorAll('button').forEach(b => b.addEventListener('click', cancelFavorite));
 
     function cancelFavorite(e) {
-        fetch('http://localhost:8080/favorites/delete/'+e.target.id,
+        fetch('http://localhost:8080/recipes/delete/'+e.target.id,
             {
                 method: 'delete',
             }).

@@ -1,6 +1,7 @@
 package com.example.foodplanner.service.impl;
 
 
+import com.example.foodplanner.model.Constants;
 import com.example.foodplanner.model.entity.Recipe;
 import com.example.foodplanner.model.entity.Role;
 import com.example.foodplanner.model.entity.User;
@@ -59,7 +60,8 @@ public class UserServiceImpl implements UserService {
 
                     setRoles(List.of(
                             userRoleRepository.getUserRoleByName(RoleEnum.ADMIN).orElseThrow(() -> new EntityNotFoundException("UserRole")),
-                            userRoleRepository.getUserRoleByName(RoleEnum.USER).orElseThrow(() -> new EntityNotFoundException("UserRole"))
+                            userRoleRepository.getUserRoleByName(RoleEnum.USER).orElseThrow(() -> new EntityNotFoundException("UserRole")),
+                            userRoleRepository.getUserRoleByName(RoleEnum.RECIPE_OWNER).orElseThrow(() -> new EntityNotFoundException("UserRole"))
                     ));
             userRepository.save(admin);
         }
@@ -67,7 +69,13 @@ public class UserServiceImpl implements UserService {
     @Override
     public Long registerUser(UserServiceModel userServiceModel) throws IOException {
         User user = modelMapper.map(userServiceModel, User.class);
-
+        if (userServiceModel.getProfilePicture()!=null && !userServiceModel.getProfilePicture().isEmpty()) {
+            user.setProfilePicture(cloudinaryService.
+                    uploadImage(userServiceModel.
+                            getProfilePicture()));
+        } else {
+            user.setProfilePicture(Constants.DEFAULT_PROFILE_PICTURE);
+        }
         user.setPassword(passwordEncoder.
                 encode(userServiceModel.getPassword()));
 

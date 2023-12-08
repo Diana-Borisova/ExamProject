@@ -23,16 +23,23 @@ spring:
       filter:
         enabled: true
 
-
-
-  spring:
-    main:
-      allow-circular-references: true
-
   cloudinary:
 
   cloud_name: "dmd3mttpc"
   api_key: "799357567129288"
   api_secret: "-0ZR-Nt4ESQJ_BVBqAzyryTUAO0"
 
+management:
+  server:
+    port: 8080
+  endpoints:
+    web:
+      base-path: /actuator
+      exposure:
+        include: "*"
 
+        spring:
+          mvc:
+            hiddenmethod:
+              filter:
+                enabled=true:

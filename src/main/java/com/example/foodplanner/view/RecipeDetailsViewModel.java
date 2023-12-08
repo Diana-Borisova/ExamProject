@@ -97,4 +97,5 @@ public class RecipeDetailsViewModel {
         return this;
     }
 
+
 }

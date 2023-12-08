@@ -68,7 +68,7 @@
                         <div class="form-group col-md-6 mb-3">
                             <label for="password" class="text-white font-weight-bold">Password</label>
                             <input id="password" type="password" th:field="*{password}" th:errorclass="is-invalid"
-                                   minlength="2" maxlength="20" required class="form-control"
+                                   minlength="5" maxlength="20" required class="form-control"
                                    placeholder="Password"/>
                             <p class="errors alert alert-danger invalid-feedback">
                                 Password is required.
@@ -77,7 +77,7 @@
                         <div class="form-group col-md-6 mb-3">
                             <label for="confirmPassword" class="text-white font-weight-bold">Confirm Password</label>
                             <input id="confirmPassword" type="password" th:field="*{confirmPassword}"
-                                   th:errorclass="is-invalid" minlength="2" maxlength="20" required class="form-control"
+                                   th:errorclass="is-invalid" minlength="5" maxlength="20" required class="form-control"
                                    placeholder="Confirm Password"/>
                             <p class="errors alert alert-danger invalid-feedback">
                                 Password is required.
