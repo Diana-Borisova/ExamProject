@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head th:replace="/fragments/fragments::head"></head>
+<body>
+<nav th:replace="/fragments/fragments::navbar"></nav>
+<main class="main p-5 align-content-center bg-blur">
+    <h1 class="text-light border-bottom mt-2 mb-4">Non-Shared Recipes</h1>
+    <div id="cardsList" class="container">
+    </div>
+</main>
+<footer th:replace="/fragments/fragments::footer"></footer>
+<script>
+    const recipesList = document.getElementById('cardsList');
+    const recipes = [];
+    fetch("http://localhost:8080/recipes/api/non-shared")
+        .then(response => response.json())
+        .then(data => {
+            for (let d of data) {
+                recipes.push(d);
+            }
+        })
+        .then(p => displayRecipes(recipes));
+
+    const displayRecipes = (recipes) => {
+        recipesList.innerHTML = '';
+        let row = [];
+        for (let i = 0; i < recipes.length; i++) {
+            let card = document.createElement('div');
+            card.classList.add('card');
+            card.classList.add('my-card');
+            card.style.display = 'flex';
+            card.style.flexDirection = 'column';
+            card.style.justifyContent = 'center';
+            card.style.alignItems = 'center';
+            card.style.marginBottom = '20px';
+            let img = document.createElement('img');
+            img.className = 'card-img-top card-image';
+            img.src = recipes[i].image;
+            img.alt = 'Card image cap';
+            img.width = 200;
+            img.height = 250;
+
+            let cardBody = document.createElement('div');
+            cardBody.className = 'card-body';
+
+            let textContainer = document.createElement('div');
+            textContainer.style.display = 'flex';
+            textContainer.style.flexDirection = 'column';
+            textContainer.style.alignItems = 'center';
+
+            let cardTitle = document.createElement('h5');
+            cardTitle.className = 'card-title';
+            cardTitle.innerText = recipes[i].title;
+            cardTitle.style.fontWeight = 'bold';
+            cardTitle.style.fontSize = '28px';
+            cardTitle.style.paddingBottom = '15px';
+
+            let cardText = document.createElement('p');
+            cardText.className = 'card-text';
+            let cookingTimeIcon = document.createElement('i');
+            cookingTimeIcon.className = 'fa-regular fa-clock';
+            cookingTimeIcon.style.marginRight = '5px';
+            let cookingTimeText = document.createElement('span');
+            cookingTimeText.innerText = ` ${recipes[i].cookingTime} min.`;
+
+            let buttonContainer = document.createElement('div');
+            buttonContainer.style.display = 'flex';
+            buttonContainer.style.justifyContent = 'center';
+            buttonContainer.style.marginTop = '10px';
+
+            let a = document.createElement('a');
+            a.className = 'btn btn-success';
+            a.href = '/recipes/details/' + recipes[i].id;
+            a.innerText = 'See more...';
+
+            cardTitle.style.margin = '0';
+            cardText.style.margin = '0';
+
+            textContainer.appendChild(cardTitle);
+            textContainer.appendChild(cardText);
+            cardText.appendChild(cookingTimeIcon);
+            cardText.appendChild(cookingTimeText);
+            buttonContainer.appendChild(a);
+
+            cardBody.appendChild(textContainer);
+            cardBody.appendChild(buttonContainer);
+            card.appendChild(img);
+            card.appendChild(cardBody);
+            row.push(card);
+
+            if ((i + 1) % 3 === 0 || recipes.length - i === 1) {
+                let cardGroup = document.createElement('div');
+                cardGroup.classList.add('card-group');
+                cardGroup.classList.add('align-content-center');
+                cardGroup.classList.add('mx-auto');
+                for (let j = 0; j < row.length; j++) {
+                    cardGroup.appendChild(row[j]);
+                }
+                recipesList.appendChild(cardGroup);
+                row = [];
+            }
+        }
+    }
+
+
+</script>
+</body>
+</html>

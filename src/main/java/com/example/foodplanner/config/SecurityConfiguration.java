@@ -73,7 +73,8 @@ public class SecurityConfiguration {
                                 "/admin/**",
                                 "/users/change-roles/**",
                                 "/users/all",
-                                "recipes/api/delete/*",
+                                "recipes/api/non-shared",
+                                "recipes/delete/*",
                                 "/recipes/manage/**").hasRole("ADMIN")
                         .anyRequest().authenticated()
         ).formLogin(

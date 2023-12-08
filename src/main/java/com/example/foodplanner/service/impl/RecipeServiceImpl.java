@@ -11,6 +11,7 @@ import com.example.foodplanner.service.RecipeService;
 import com.example.foodplanner.service.UserService;
 import jakarta.annotation.PostConstruct;
 import jakarta.persistence.EntityNotFoundException;
+import jakarta.transaction.Transactional;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -76,7 +77,7 @@ public class RecipeServiceImpl implements RecipeService {
         return recipeRepository.
                 findAll().
                 stream().
-                map(h -> modelMapper.map(h, RecipeServiceModel.class)).
+                map(r -> modelMapper.map(r, RecipeServiceModel.class)).
                 collect(Collectors.toList());
     }
 
@@ -85,7 +86,7 @@ public class RecipeServiceImpl implements RecipeService {
         return recipeRepository.
                 getAllByRecipeOwnerEmail(email).
                 stream().
-                map(h -> modelMapper.map(h, RecipeServiceModel.class)).
+                map(r -> modelMapper.map(r, RecipeServiceModel.class)).
                 collect(Collectors.toList());
     }
 
@@ -116,9 +117,28 @@ public class RecipeServiceImpl implements RecipeService {
         Recipe recipe = this.recipeRepository.findById(recipeId).
         orElseThrow(() -> new EntityNotFoundException("Recipe"));
         recipe.setRecipeOwner(null);
+
         this.recipeRepository.delete(recipeRepository.findById(recipeId)
                 .orElseThrow(() -> new EntityNotFoundException("Recipe")));
-        this.recipeRepository.saveAndFlush(recipe);
+
+    }
+
+    @Override
+    public List<RecipeServiceModel> findAllBySharedIsTrue() {
+        return recipeRepository.
+                getAllBySharedIsTrue().
+                stream().
+                map(r -> modelMapper.map(r, RecipeServiceModel.class)).
+                collect(Collectors.toList());
+    }
+
+    @Override
+    public List<RecipeServiceModel> findAllBySharedIsFalse() {
+        return recipeRepository.
+                getAllBySharedIsFalse().
+                stream().
+                map(r -> modelMapper.map(r, RecipeServiceModel.class)).
+                collect(Collectors.toList());
     }
 
 }

@@ -3,20 +3,14 @@ package com.example.foodplanner.controller;
 
 import com.example.foodplanner.model.binding.RecipeCreateBindingModel;
 import com.example.foodplanner.model.binding.RecipeEditBindingModel;
-import com.example.foodplanner.model.binding.RemoveRecipeBindingModel;
-import com.example.foodplanner.model.entity.Picture;
 import com.example.foodplanner.model.entity.Recipe;
 import com.example.foodplanner.model.enumeration.RoleEnum;
 import com.example.foodplanner.model.enumeration.StarEnum;
 import com.example.foodplanner.model.sevice.RecipeServiceModel;
-import com.example.foodplanner.model.sevice.RemoveServiceModel;
-import com.example.foodplanner.repository.PictureRepository;
-import com.example.foodplanner.service.CloudinaryService;
-import com.example.foodplanner.service.PictureService;
-import com.example.foodplanner.service.RecipeService;
-import com.example.foodplanner.service.UserService;
+import com.example.foodplanner.service.*;
 import com.example.foodplanner.view.RecipeDetailsViewModel;
 import com.example.foodplanner.view.RecipeEditViewModel;
+import jakarta.transaction.Transactional;
 import jakarta.validation.Valid;
 import org.modelmapper.ModelMapper;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -25,7 +19,6 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 
@@ -33,7 +26,6 @@ import java.io.IOException;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
-import java.util.stream.Collectors;
 
 @Controller
 @RequestMapping("/recipes")
@@ -42,19 +34,20 @@ public class RecipeController {
     private final ModelMapper modelMapper;
     private final RecipeService recipeService;
     private final PictureService pictureService;
-
+    private final CommentService commentService;
     private final UserService userService;
 
 
 
 
-    public RecipeController(ModelMapper modelMapper, PictureService pictureService, UserService userService, RecipeService recipeService) {
+    public RecipeController(ModelMapper modelMapper, PictureService pictureService, UserService userService, RecipeService recipeService, CommentService commentService) {
         this.modelMapper = modelMapper;
         this.pictureService = pictureService;
         this.recipeService = recipeService;
         this.userService = userService;
 
 
+        this.commentService = commentService;
     }
 
     @ModelAttribute("recipeCreateBindingModel")
@@ -257,8 +250,13 @@ public class RecipeController {
 
 
         RecipeServiceModel recipeServiceModel = modelMapper.map(recipeEditBindingModel, RecipeServiceModel.class)
-                        .setId(id)
-                        .setPictures(recipeEditBindingModel.getPictures());
+                        .setId(id);
+        if(!recipeEditBindingModel.getPictures().isEmpty()){
+            recipeServiceModel.setPictures(recipeEditBindingModel.getPictures());
+        } else {
+            return "redirect:/recipes/edit/" + id;
+        }
+
    // pictureService.uploadRecipeImages(recipeEditBindingModel.getPictures(),id);
         setStarEnum(recipeEditBindingModel.getStars(), recipeServiceModel);
 
@@ -277,6 +275,12 @@ public class RecipeController {
     public String ownedRecipes() {
 
         return "my-recipes";
+    }
+
+    @GetMapping("/non-shared")
+    public String nonSharedRecipes() {
+
+        return "non-shared-recipes";
     }
 
 //    @GetMapping("/delete/{id}")
@@ -347,13 +351,27 @@ public class RecipeController {
 //        return new ReservationCreateBindingModel();
 //    }
 
+
     @GetMapping("/delete/{id}")
-    public String deleteRecipe(Model model, @PathVariable Long id) {
+    public String deleteRecipe(Model model, @PathVariable Long id) throws IOException {
         RecipeEditViewModel recipeEditViewModel = modelMapper.map(recipeService.getRecipeById(id), RecipeEditViewModel.class);
 
+        RecipeServiceModel recipeServiceModel = modelMapper.map(recipeEditViewModel, RecipeServiceModel.class);
+       List<String> pictures = pictureService.getPicturesByRecipeId(recipeServiceModel.getId());
+        if (!pictures.isEmpty()){
+            for (int i = 0; i <pictures.size() ; i++) {
+                pictureService.deleteByUrl(pictures.get(i));
+            }
+        }
 
+        if(!commentService.getCommentsByRecipe(recipeService.getRecipeById(id)).isEmpty()){
+
+            commentService.deleteCommentsByRecipe(recipeService.getRecipeById(id));
+        }
+
+        recipeService.deleteById(recipeServiceModel.getId());
        model.addAttribute("recipes", recipeEditViewModel);
-        return "user-recipes";
+        return "/home";
     }
 
 

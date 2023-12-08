@@ -13,4 +13,6 @@ public interface RecipeRepository extends JpaRepository<Recipe,Long> {
 
     List<Recipe> getRecipesByRecipeOwnerIdOrderByTitle(Long userId);
 
+    List<Recipe> getAllBySharedIsTrue();
+    List<Recipe> getAllBySharedIsFalse();
 }

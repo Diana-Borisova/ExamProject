@@ -40,7 +40,22 @@ public class RecipeRestController {
     @GetMapping("/all")
     public ResponseEntity<List<RecipeCardViewModel>> getAll() {
         List<RecipeCardViewModel> recipeCardViewModels = recipeService.
-                getAllRecipes().
+                findAllBySharedIsTrue().
+                stream().
+                map(r -> {
+                    RecipeCardViewModel model = modelMapper.map(r, RecipeCardViewModel.class);
+                    model.setImage(pictureService.getPicturesByRecipeId(r.getId()).get(0));
+                    return model;
+                }).
+                collect(Collectors.toList());
+
+        return ResponseEntity.ok().body(recipeCardViewModels);
+    }
+
+    @GetMapping("/api/non-shared")
+    public ResponseEntity<List<RecipeCardViewModel>> getNonSharedRecipes() {
+        List<RecipeCardViewModel> recipeCardViewModels = recipeService.
+                findAllBySharedIsFalse().
                 stream().
                 map(r -> {
                     RecipeCardViewModel model = modelMapper.map(r, RecipeCardViewModel.class);

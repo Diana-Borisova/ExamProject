@@ -65,6 +65,12 @@
                                     <hr class="dropdown-divider">
                                 </li>
                             </th:block>
+                            <th:block sec:authorize="hasRole('ADMIN')">
+                                <li><a class="dropdown-item" href="/recipes/non-shared">Non-Shared Recipes</a></li>
+                                <li>
+                                    <hr class="dropdown-divider">
+                                </li>
+                            </th:block>
                             <li class="dropdown-item" sec:authorize="isAuthenticated()">
                                 <form th:action="@{/users/logout}" method="post">
                                     <button type="submit" class="active border-0 bg-white">

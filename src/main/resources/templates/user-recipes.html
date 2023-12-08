@@ -22,7 +22,7 @@
             <tbody>
             <tr th:object="${recipes}">
                 <th scope="row"></th>
-                <td><a class="text-dark" th:href="@{/recipes/delete/{id}(id=${recipes.id})}"
+                <td><a class="text-dark"
                        th:text="${recipes.title}"></a></td>
 <!--                <td th:text="${#temporals.format(r.arriveDate,'dd-MM-yyyy')}"></td>-->
 <!--                <td th:text="${#temporals.format(r.leaveDate,'dd-MM-yyyy')}"></td>-->
@@ -32,7 +32,7 @@
                 </td>
             </tr>
             <div class="button-holder d-flex">
-                <input th:id="${recipes.id}" th:method="delete" href="@{/}" type="submit" class="btn btn-warning btn-lg" value="Save Changes"/>
+                <input type="submit" class="btn btn-warning btn-lg" value="Save Changes"/>
             </div>
             </tbody>
         </table>

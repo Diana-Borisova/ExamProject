@@ -5,10 +5,13 @@ import com.example.foodplanner.model.entity.Recipe;
 import com.example.foodplanner.model.sevice.CommentServiceModel;
 import com.example.foodplanner.repository.CommentRepository;
 import com.example.foodplanner.service.CommentService;
+import jakarta.transaction.Transactional;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -35,4 +38,21 @@ public class CommentServiceImpl implements CommentService {
                 map(c -> modelMapper.map(c, CommentServiceModel.class)).
                 collect(Collectors.toList());
     }
+    @Transactional
+    @Override
+    public void deleteCommentsByRecipe(Recipe recipe) {
+//        CommentServiceModel commentServiceModel = new CommentServiceModel();
+//        commentServiceModel.getRecipe().setRecipeOwner(null);
+//        commentServiceModel.getUser().setId(null);
+        commentRepository.deleteAllByRecipe(recipe);
+    }
+
+
+
+    @Override
+    public void deletePastComments() {
+        commentRepository.deleteCommentsByPostedOnBefore(LocalDate.now().minusYears(1));
+    }
+
+
 }

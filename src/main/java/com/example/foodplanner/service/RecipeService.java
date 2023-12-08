@@ -25,4 +25,7 @@ public interface RecipeService {
     Long patchChanges(RecipeServiceModel recipeServiceModel);
 
     void deleteById(Long recipeId);
+
+    List<RecipeServiceModel> findAllBySharedIsTrue();
+    List<RecipeServiceModel> findAllBySharedIsFalse();
 }

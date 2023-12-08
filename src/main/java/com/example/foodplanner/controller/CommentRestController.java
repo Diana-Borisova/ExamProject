@@ -59,7 +59,7 @@ public class CommentRestController {
                 map(c -> {
                     CommentViewModel commentViewModel = modelMapper.map(c, CommentViewModel.class);
                     commentViewModel.setUserNames(c.getUser().getFirstName() + " " + c.getUser().getLastName());
-                    commentViewModel.setUserPic("");
+                    commentViewModel.setUserPic(c.getUser().getProfilePicture());
                     commentViewModel.setPostedOn(formatPostedOn(c.getPostedOn()));
                     return commentViewModel;
                 }).collect(Collectors.toList());
