@@ -16,7 +16,6 @@ import java.util.stream.Collectors;
 
 @Service
 public class CommentServiceImpl implements CommentService {
-
     private final CommentRepository commentRepository;
     private final ModelMapper modelMapper;
 
@@ -41,9 +40,6 @@ public class CommentServiceImpl implements CommentService {
     @Transactional
     @Override
     public void deleteCommentsByRecipe(Recipe recipe) {
-//        CommentServiceModel commentServiceModel = new CommentServiceModel();
-//        commentServiceModel.getRecipe().setRecipeOwner(null);
-//        commentServiceModel.getUser().setId(null);
         commentRepository.deleteAllByRecipe(recipe);
     }
 

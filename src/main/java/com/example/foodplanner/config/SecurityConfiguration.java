@@ -44,11 +44,9 @@ public class SecurityConfiguration {
         authorizeHttpRequests(
                 // Define which urls are visible by which users
                 authorizeRequests -> authorizeRequests
-                        // All static resources which are situated in js, images, css are available for anyone
                         .requestMatchers(PathRequest.toStaticResources().atCommonLocations()).permitAll()
                         // allow actuator endpoints
                         .requestMatchers( EndpointRequest.toAnyEndpoint()).permitAll()
-                        // Allow anyone to see the home page, the registration page and the login form
                         .requestMatchers(
                                 "/",
                                 "/users/login",
@@ -89,7 +87,6 @@ public class SecurityConfiguration {
         ).logout(
                 logout -> {
                     logout
-                            // the URL where we should POST something in order to perform the logout
                             .logoutUrl("/users/logout")
                             // where to go when logged out?
                             .logoutSuccessUrl("/")
@@ -107,8 +104,6 @@ public class SecurityConfiguration {
 
     @Bean
     public UserDetailsService userDetailsService(UserRepository userRepository) {
-        // This service translates the mobilele users and roles
-        // to representation which spring security understands.
         return new FoodPlannerUserDetailsService(userRepository);
     }
 

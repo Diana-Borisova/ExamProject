@@ -9,8 +9,6 @@ import jakarta.persistence.*;
 @Table(name = "roles")
 public class Role extends BaseEntity{
 
-
-
 	@Column(nullable = false)
 	@Enumerated(EnumType.STRING)
 	private RoleEnum name;

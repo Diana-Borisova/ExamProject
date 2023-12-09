@@ -3,12 +3,8 @@ package com.example.foodplanner.model.binding;
 
 
 import com.example.foodplanner.validation.FieldsMatch;
-import com.example.foodplanner.validation.IsAdult;
 import jakarta.validation.constraints.*;
-import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.web.multipart.MultipartFile;
-
-import java.time.LocalDate;
 
 @FieldsMatch(first = "password", second = "confirmPassword", message = "Passwords should match")
 public class UserRegisterBindingModel {

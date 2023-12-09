@@ -28,33 +28,18 @@ public class Recipe extends BaseEntity {
 	@Column(name = "star")
 	@Enumerated(EnumType.STRING)
 	private StarEnum stars;
-//	@Column(name = "image")
-//	private String image;
-
 
 	@ManyToOne()
 	@JoinColumn(name = "recipe_owner_id")
 	private User recipeOwner;
 
-	// requested to be made public so everyone could see
 	@Column(name = "shared")
 	private boolean shared;
 
 
-    @ManyToMany(mappedBy = "favoriteRecipes")
-    private List<User> favoritedByUsers;
 	public Recipe() {
 
 	}
-
-    public List<User> getFavoritedByUsers() {
-        return favoritedByUsers;
-    }
-
-    public Recipe setFavoritedByUsers(List<User> favoritedByUsers) {
-        this.favoritedByUsers = favoritedByUsers;
-        return this;
-    }
 
     public String getTitle() {
         return title;
@@ -100,15 +85,6 @@ public class Recipe extends BaseEntity {
         this.stars = stars;
         return this;
     }
-
-//    public String getImage() {
-//        return image;
-//    }
-//
-//    public Recipe setImage(String image) {
-//        this.image = image;
-//        return this;
-//    }
 
     public User getRecipeOwner() {
         return recipeOwner;

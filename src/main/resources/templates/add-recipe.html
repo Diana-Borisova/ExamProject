@@ -58,16 +58,7 @@
                                 Upload at least one picture.
                             </p>
                     </div>
-<!--                        <div class="form-group col-md-6 mb-3">-->
-<!--                            <label for="image" class="text-white font-weight-bold">Main Picture</label>-->
-<!--                            <input id="image" type="text" class="form-control" th:field="*{image}"-->
-<!--                                   th:errorclass="is-invalid"-->
-<!--                                   minlength="5" maxlength="50"-->
-<!--                                   placeholder="Add picture..."/>-->
-<!--                            <p class="errors alert alert-danger invalid-feedback">-->
-<!--                                Image is not valid-->
-<!--                            </p>-->
-<!--                        </div>-->
+
                     </div>
                     <div class="row ">
                         <div class="form-group mb-3">
@@ -94,13 +85,13 @@
                             </p>
                         </div>
                     </div>
-                    <div class="row">
-                        <div class="form-group mb-3">
+                    <div class="row justify-content-center">
+                        <div class="form-group col-md-3 mb-3">
                             <label for="products" class="text-white font-weight-bold">Needed Products:</label>
                             <textarea id="products" class="form-control" th:field="*{products}"
                                       minlength="15" maxlength="1000" required
                                       th:errorclass="is-invalid"
-                                      placeholder="List needed products here..."></textarea>
+                                      placeholder="List needed products here..." oninput="limitCharsPerLine(this, 25)"></textarea>
                             <p class="errors alert alert-danger invalid-feedback">
                                 Description must be between 15 and 1000 characters.
                             </p>
@@ -129,5 +120,29 @@
 </main>
 <footer class="footer bg-blur" th:replace="/fragments/fragments::footer">
 </footer>
+<script>
+    function limitCharsPerLine(textarea, charsPerLine) {
+        let lines = textarea.value.split('\n');
+
+        for (let i = 0; i < lines.length; i++) {
+            if (lines[i].length > charsPerLine) {
+                let j = 0;
+                let newLines = [];
+
+                // Split the line into chunks of charsPerLine
+                while (j < lines[i].length) {
+                    newLines.push(lines[i].substr(j, charsPerLine));
+                    j += charsPerLine;
+                }
+
+                // Join the chunks with newline characters
+                lines.splice(i, 1, ...newLines);
+            }
+        }
+
+        // Update the textarea value
+        textarea.value = lines.join('\n');
+    }
+</script>
 </body>
 </html>

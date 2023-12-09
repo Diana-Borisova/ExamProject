@@ -23,7 +23,7 @@ public class CommentEventTest {
     }
 
     @Test
-    public void testCleanReservations(){
+    public void testCleanComments(){
         commentsEvent.cleanOldComments();
 
         Mockito.verify(commentService).deletePastComments();

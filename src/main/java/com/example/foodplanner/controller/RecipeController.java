@@ -1,6 +1,7 @@
 package com.example.foodplanner.controller;
 
 
+import com.example.foodplanner.model.Constants;
 import com.example.foodplanner.model.binding.RecipeCreateBindingModel;
 import com.example.foodplanner.model.binding.RecipeEditBindingModel;
 import com.example.foodplanner.model.entity.Recipe;
@@ -19,6 +20,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 
@@ -26,6 +28,8 @@ import java.io.IOException;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
+
+import static com.example.foodplanner.model.Constants.DEFAULT_RECIPE_PICTURE;
 
 @Controller
 @RequestMapping("/recipes")
@@ -86,9 +90,7 @@ public class RecipeController {
             redirectAttributes.addFlashAttribute("org.springframework.validation.BindingResult.recipeCreateBindingModel", bindingResult);
             return "redirect:/recipes/create";
         }
-//        if (recipeCreateBindingModel.getImage().isEmpty()){
-//            recipeCreateBindingModel.setImage(null);
-//        }
+
         RecipeServiceModel recipeServiceModel = modelMapper.map(recipeCreateBindingModel, RecipeServiceModel.class);
         setStarEnum(recipeCreateBindingModel.getStars(), recipeServiceModel);
         recipeServiceModel.setRecipeOwner(userService.getUserByEmail(principal.getUsername()));
@@ -111,26 +113,6 @@ public class RecipeController {
     }
 
 
-//
-//
-//    @PostMapping("/delete-recipe/{recipeId}")
-//    public String removeRecipePost(@Valid RecipeEditViewModel recipeEditViewModel,
-//                                   BindingResult bindingResult,
-//                                   RedirectAttributes redirectAttributes,
-//                                   @PathVariable Long recipeId) {
-//        if (bindingResult.hasErrors()) {
-//            redirectAttributes.addFlashAttribute("recipeEditViewModel", recipeEditViewModel);
-//            redirectAttributes.addFlashAttribute("org.springframework.validation.BindingResult.recipeEditViewModel", bindingResult);
-//            return "redirect:/recipes/delete-recipe/" + recipeId;
-//        }
-//        RecipeServiceModel recipe = modelMapper.map(recipeEditViewModel, RecipeServiceModel.class);
-//
-//        recipeService.deleteById(recipe.getId());
-//
-//
-//        return "redirect:/home";
-//    }
-
     @GetMapping("/edit/{id}")
     private String editRecipe(RecipeEditViewModel recipeEditViewModel, Model model, @PathVariable Long id) {
         RecipeEditViewModel recipe = modelMapper.map(recipeService.getRecipeById(id), RecipeEditViewModel.class);
@@ -150,9 +132,7 @@ public class RecipeController {
             redirectAttributes.addFlashAttribute("org.springframework.validation.BindingResult.recipeEditBindingModel", bindingResult);
             return "redirect:/users/edit-recipe/" + recipeId;
         }
-//        if (recipeEditBindingModel.getImage().length()==0){
-//            recipeEditBindingModel.setImage(null);
-//        }
+
         RecipeServiceModel recipe = modelMapper.map(recipeEditBindingModel, RecipeServiceModel.class);
         recipe.setId(recipeId);
         recipe.setShared(recipeEditBindingModel.isShared());
@@ -164,31 +144,6 @@ public class RecipeController {
         recipeService.patchChanges(recipe);
         return "redirect:/details/manage/" + recipeId;
     }
-//
-//    @GetMapping("/add-room/{id}")
-//    public String addRoom(@PathVariable String id, Model model) {
-//        model.addAttribute("hotelId", id);
-//        return "add-room";
-//    }
-//
-//
-//    @PostMapping("/add-room/{hotelId}")
-//    public String addRoomPost(@Valid RoomAddBindingModel roomAddBindingModel,
-//                              BindingResult bindingResult,
-//                              RedirectAttributes redirectAttributes,
-//                              @PathVariable Long hotelId) {
-//        if (bindingResult.hasErrors()) {
-//            redirectAttributes.addFlashAttribute("roomAddBindingModel", roomAddBindingModel);
-//            redirectAttributes.addFlashAttribute("org.springframework.validation.BindingResult.roomAddBindingModel", bindingResult);
-//            return "redirect:/hotels/add-room/" + hotelId;
-//        }
-//        RoomServiceModel roomServiceModel = modelMapper.map(roomAddBindingModel, RoomServiceModel.class).
-//                setHotel(hotelService.getHotelById(hotelId));
-//        roomService.createRoom(roomServiceModel);
-//
-//
-//        return "redirect:/hotels/rooms/manage/" + hotelId;
-//    }
 
 
     @GetMapping("/details/{id}")
@@ -208,26 +163,9 @@ public class RecipeController {
         model.addAttribute("recipe", recipeDetailsViewModel);
         model.addAttribute("isAdmin", userService.getCurrentUser().getId() == 1);
 
-//        model.addAttribute("foods", foodService.getHotelsRooms(id).
-//                stream().
-//                map(r -> modelMapper.map(r, RoomReserveViewModel.class)).
-//                collect(Collectors.toList()));
         return "recipe-details";
     }
 
-//    @PostMapping("/details/{id}")
-//    public String reservePost(@PathVariable Long id, Model model) {
-//        RecipeDetailsViewModel recipeDetailsViewModel = modelMapper.map(recipeService.getRecipeById(id), RecipeDetailsViewModel.class);
-//
-//        model.addAttribute("recipeData", recipeDetailsViewModel);
-//
-//        return "redirect:/recipes/owned/" + id;
-//    }
-
-    //    @GetMapping("/details/{id}")
-//    public String getDetails() {
-//        return "recipe-details";
-//    }
     @GetMapping("/edit-recipe/{id}")
     public String editRecipe(@PathVariable Long id, Model model) {
         RecipeEditViewModel recipeEditViewModel = modelMapper.map(recipeService.getRecipeById(id), RecipeEditViewModel.class);
@@ -251,25 +189,19 @@ public class RecipeController {
 
         RecipeServiceModel recipeServiceModel = modelMapper.map(recipeEditBindingModel, RecipeServiceModel.class)
                         .setId(id);
-        if(!recipeEditBindingModel.getPictures().isEmpty()){
-            recipeServiceModel.setPictures(recipeEditBindingModel.getPictures());
-        } else {
-            return "redirect:/recipes/edit/" + id;
-        }
 
-   // pictureService.uploadRecipeImages(recipeEditBindingModel.getPictures(),id);
+
         setStarEnum(recipeEditBindingModel.getStars(), recipeServiceModel);
 
         if (!Objects.equals(recipeServiceModel.getPictures().get(0).getOriginalFilename(), "")) {
-            pictureService.uploadRecipeImages(recipeServiceModel.getPictures(), recipeServiceModel.getId());
+            pictureService.uploadRecipeImages(recipeEditBindingModel.getPictures(), recipeServiceModel.getId());
         }
+
 
         recipeService.saveChanges(recipeServiceModel);
 
         return "redirect:/recipes/details/" + id;
     }
-
-
 
     @GetMapping("/owned")
     public String ownedRecipes() {
@@ -283,51 +215,6 @@ public class RecipeController {
         return "non-shared-recipes";
     }
 
-//    @GetMapping("/delete/{id}")
-//    public String deleteRecipeGet(@PathVariable Long id) {
-//
-//        return "manage-recipes";
-//    }
-
-//    @GetMapping("/delete/{id}")
-//    public String removeRecipe( Model model, @PathVariable("id") Long id) {
-//
-//        recipeService.deleteById(id);
-//        return "redirect:/";
-//    }
-//    @DeleteMapping("/delete/{recipeId}")
-//    public String removeRecipePost( Model model, @PathVariable Long recipeId) {
-//
-//        model.addAttribute("recipe", recipeId);
-//        recipeService.deleteById(recipeId);
-//
-//
-//        return "redirect:/";
-//    }
-
-//    @PostMapping("/api/owned")
-//    public String ownedRecipes(
-//            @PathVariable Long id,
-//            Model model,
-//            @AuthenticationPrincipal UserDetails principal,
-//            RedirectAttributes redirectAttributes) {
-//
-//        List<RecipeCardViewModel> recipeCardViewModels = recipeService
-//                .getRecipesByRecipeOwnerEmail(principal.getUsername())
-//                .stream()
-//                .map(recipe -> {
-//                    RecipeCardViewModel model1 = modelMapper.map(recipe, RecipeCardViewModel.class);
-//                    model1.setImage(pictureService.getPicturesByRecipeId(recipe.getId()).get(0));
-//                    return model1;
-//                })
-//                .collect(Collectors.toList());
-//
-//        redirectAttributes.addFlashAttribute("myRecipes", recipeCardViewModels);
-//        return "redirect:/recipes/owned-all";
-//    }
-
-//
-
     private void setStarEnum(String stars, RecipeServiceModel recipeServiceModel) {
         Arrays.stream(StarEnum.values()).forEach(v -> {
             if (stars.equals(v.toString())) {
@@ -339,18 +226,6 @@ public class RecipeController {
     private void setShared(boolean shared, RecipeServiceModel recipeServiceModel) {
         recipeServiceModel.setShared(shared);
     }
-
-
-//    @ModelAttribute("foodBindingModel")
-//    public RoomAddBindingModel roomAddBindingModel() {
-//        return new RoomAddBindingModel();
-//    }
-
-//    @ModelAttribute("reservationCreateBindingModel")
-//    public ReservationCreateBindingModel reservationCreateBindingModel() {
-//        return new ReservationCreateBindingModel();
-//    }
-
 
     @GetMapping("/delete/{id}")
     public String deleteRecipe(Model model, @PathVariable Long id) throws IOException {
@@ -371,29 +246,9 @@ public class RecipeController {
 
         recipeService.deleteById(recipeServiceModel.getId());
        model.addAttribute("recipes", recipeEditViewModel);
-        return "/home";
+        return "redirect:/";
     }
 
-
-//    @DeleteMapping("/delete/{id}")
-//    public String deleteRecipePost(@Valid RecipeEditViewModel recipeEditViewModel,
-//                                 BindingResult bindingResult,
-//                                 RedirectAttributes redirectAttributes,
-//                                 @PathVariable Long id) throws IOException {
-//
-//        if (bindingResult.hasErrors()) {
-//            redirectAttributes.addFlashAttribute("recipeEditViewModel", recipeEditViewModel);
-//            redirectAttributes.addFlashAttribute("org.springframework.validation.BindingResult.recipeEditViewModel", bindingResult);
-//            return "redirect:/recipes/delete/" + id;
-//        }
-//
-//
-//        RecipeServiceModel recipeServiceModel = modelMapper.map(recipeEditViewModel, RecipeServiceModel.class);
-//
-//        recipeService.deleteById(recipeServiceModel.getId());
-//
-//        return "redirect:/";
-//    }
 }
 
 

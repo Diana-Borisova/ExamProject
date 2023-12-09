@@ -16,7 +16,7 @@ public class UserServiceModel {
     private String profession;
     private boolean recipeOwner;
     private MultipartFile profilePicture;
-    private List<Recipe> favoriteRecipes;
+
     public UserServiceModel() {
     }
 
@@ -103,12 +103,4 @@ public class UserServiceModel {
         return this;
     }
 
-    public List<Recipe> getFavoriteRecipes() {
-        return favoriteRecipes;
-    }
-
-    public UserServiceModel setFavoriteRecipes(List<Recipe> favoriteRecipes) {
-        this.favoriteRecipes = favoriteRecipes;
-        return this;
-    }
 }

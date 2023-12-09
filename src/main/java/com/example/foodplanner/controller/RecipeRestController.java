@@ -93,16 +93,6 @@ public class RecipeRestController {
         return ResponseEntity.ok().body(recipes);
     }
 
-//    @GetMapping("/set-cookie")
-//    public String setCookie(HttpServletResponse response) {
-//        ResponseCookie cookie = ResponseCookie.from("JSESSIONID", "8DEE7DFB6C8063CA5BA8D6E5F188618D")
-//                .sameSite("None")
-//                .secure(true)
-//                .build();
-//
-//        response.addHeader("Set-Cookie", cookie.toString());
-//        return "Cookie set successfully";
-//    }
     @DeleteMapping("/delete/{id}")
     public ResponseEntity<Recipe> removeRecipe(@PathVariable Long id) {
 

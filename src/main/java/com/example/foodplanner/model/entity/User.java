@@ -24,22 +24,7 @@ public class User extends BaseEntity {
 	@ManyToMany(fetch = FetchType.EAGER)
 	private List<Role> roles;
 
-	@ManyToMany
-	@JoinTable(
-			name = "user_favorite_recipes",
-			joinColumns = @JoinColumn(name = "user_id"),
-			inverseJoinColumns = @JoinColumn(name = "recipe_id"))
-	private List<Recipe> favoriteRecipes;
 	public User() {
-	}
-
-	public List<Recipe> getFavoriteRecipes() {
-		return favoriteRecipes;
-	}
-
-	public User setFavoriteRecipes(List<Recipe> favoriteRecipes) {
-		this.favoriteRecipes = favoriteRecipes;
-		return this;
 	}
 
 	public String getFirstName() {

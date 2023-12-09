@@ -19,7 +19,6 @@ import java.util.List;
 public class UserRestController {
 
     private final UserService userService;
-
     public UserRestController(UserService userService) {
         this.userService = userService;
     }
@@ -35,18 +34,6 @@ public class UserRestController {
         return ResponseEntity.ok().body(profilePic);
     }
 
-    @GetMapping("/{userId}/favorites")
-    public ResponseEntity<List<Recipe>> getFavoriteRecipesForUser(@PathVariable Long userId) {
-        return ResponseEntity.ok().body(userService.getFavoriteRecipesForUser(userId));
-    }
 
-//    @GetMapping("/favorites/{id}")
-//    public String favorites(Model model, @PathVariable Long id) {
-//        List<ReservationHotelViewModel> reservations = reservationService.getReservationsByHotelId(id).
-//                stream().map(r -> modelMapper.map(r, ReservationHotelViewModel.class)).
-//                collect(Collectors.toList());
-//        model.addAttribute("reservations", reservations);
-//        return "hotel-reservations";
-//    }
 
 }

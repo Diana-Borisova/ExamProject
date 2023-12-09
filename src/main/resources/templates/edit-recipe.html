@@ -38,11 +38,11 @@
                     </div>
                     <div class="row">
                         <div class="form-group col-md-6 mb-3">
-                            <label for="stars" class="text-white font-weight-bold">Stars</label>
+                            <label for="stars" class="text-white font-weight-bold">Difficulty</label>
                             <select id="stars" required class="form-control"
                                     name="stars"
                                     th:errorclass="is-invalid">
-                                <option th:value="${recipeData.stars}" th:text="${recipeData.stars}">- Rating
+                                <option th:value="${recipeData.stars}" th:text="${recipeData.stars}">- Difficulty
                                     -
                                 </option>
                                 <option th:each="s:${T(com.example.foodplanner.model.enumeration.StarEnum).values()}"
@@ -82,7 +82,7 @@
                         </div>
 
                     </div>
-                    <div class="row">
+                    <div class="row ">
                         <div class="form-group mb-3">
                             <label for="description" class="text-white font-weight-bold">Description</label>
                             <textarea name="description" th:text="${recipeData.description}" id="description"
@@ -95,13 +95,15 @@
                             </p>
                         </div>
                     </div>
-                    <div class="row">
-                        <div class="form-group mb-3">
+                    <div class="row justify-content-center">
+                        <div class="form-group col-md-3 mb-3">
                             <label for="products" class="text-white font-weight-bold">Needed Products:</label>
-                            <textarea id="products" class="form-control" th:field="*{products}"
+
+                            <textarea id="products" class="form-control narrower-textarea" th:field="*{products}"
                                       minlength="15" maxlength="1000" required
                                       th:errorclass="is-invalid"
                                       placeholder="List needed products here..."></textarea>
+
                             <p class="errors alert alert-danger invalid-feedback">
                                 Description must be between 15 and 1000 characters.
                             </p>
@@ -118,12 +120,10 @@
                     <div>
                         <label class="text-white font-weight-bold">Uploaded images</label>
                         <ul class="row-cols-auto">
-                            <li th:each="i:${recipe.imageUrls}" class="image-cont">
-                                <img th:src="${i}"
-                                     alt="Avatar" class="image">
-                                <div class="middle">
+                            <li th:each="imageUrl, iterStat : ${recipe.imageUrls}" class="image-cont">
+                                <img th:src="${imageUrl}" alt="Avatar" class="image">
+                                <div sec:authorize="hasRole('ADMIN')" class="middle" th:if="${iterStat.index > 0}">
                                     <button type="button" id="removeBtn" class="text text-white">Remove</button>
-
                                 </div>
                             </li>
                         </ul>
@@ -146,8 +146,15 @@
 </footer>
 <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
         integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
-        crossorigin="anonymous"></script>
-<!--<script src="/js/cancel-reservation.js"></script>-->
+        crossorigin="anonymous">
+
+</script>
+<style>
+    .narrower-textarea {
+        width: 200px;
+        white-space: pre-line;
+    }
+</style>
 <script>
     document.querySelectorAll("#removeBtn").forEach(e => e.addEventListener('click', removeImage));
 

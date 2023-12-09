@@ -29,7 +29,6 @@ public class UserServiceImpl implements UserService {
     private final UserRepository userRepository;
     private final UserRoleRepository userRoleRepository;
     private final PasswordEncoder passwordEncoder;
-
     private final CloudinaryService cloudinaryService;
     private final ModelMapper modelMapper;
 
@@ -39,7 +38,6 @@ public class UserServiceImpl implements UserService {
         this.userRoleRepository = userRoleRepository;
         this.passwordEncoder = passwordEncoder;
         this.cloudinaryService = cloudinaryService;
-
         this.modelMapper = modelMapper;
 
     }
@@ -57,7 +55,7 @@ public class UserServiceImpl implements UserService {
                     setLastName("Admin").
                     setEmail("admin@abv.bg").
                     setPassword(passwordEncoder.encode("topsecret")).
-
+                    setProfilePicture(Constants.DEFAULT_PROFILE_PICTURE).
                     setRoles(List.of(
                             userRoleRepository.getUserRoleByName(RoleEnum.ADMIN).orElseThrow(() -> new EntityNotFoundException("UserRole")),
                             userRoleRepository.getUserRoleByName(RoleEnum.USER).orElseThrow(() -> new EntityNotFoundException("UserRole")),
@@ -122,7 +120,6 @@ public class UserServiceImpl implements UserService {
                 user.setProfilePicture(cloudinaryService.uploadImage(userServiceModel.getProfilePicture()));
             }
         }
-        user.setFavoriteRecipes(userServiceModel.getFavoriteRecipes());
         userRepository.save(user);
     }
 
@@ -183,11 +180,6 @@ public class UserServiceImpl implements UserService {
     public Role getUserRoleByName(RoleEnum roleEnum) {
 
         return new Role().setName(roleEnum);
-    }
-    @Override
-    public List<Recipe> getFavoriteRecipesForUser(Long userId) {
-        User user = userRepository.findById(userId).orElseThrow(() -> new EntityNotFoundException("User"));
-        return user.getFavoriteRecipes();
     }
 
     @Override

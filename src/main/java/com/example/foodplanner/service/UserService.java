@@ -16,7 +16,6 @@ import java.util.List;
 public interface UserService{
 	
 	User findByUsername(String username);
-	
 
 	void populateInitialUsers();
 
@@ -25,7 +24,6 @@ public interface UserService{
 	boolean usernameExists(String email);
 
 	User getUserByEmail(String username);
-
 
 	void updateUser(UserServiceModel userServiceModel) throws IOException;
 
@@ -40,10 +38,7 @@ public interface UserService{
 
 	boolean hasCurrentUserRole(String role);
 
-
 	Role getUserRoleByName(RoleEnum  roleEnum);
-
-	List<Recipe> getFavoriteRecipesForUser(Long userId);
 
 	List<User> findAll();
 

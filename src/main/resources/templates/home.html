@@ -16,7 +16,7 @@
             <div class="form-group col-md-3 mb-3">
                 <label for="stars" class="text-black-50 font-weight-bold"></label>
                 <select id="stars" class="form-control">
-                    <option value="">- Choose a rating -</option>
+                    <option value="">- Choose a difficulty -</option>
                     <option th:each="s:${T(com.example.foodplanner.model.enumeration.StarEnum).values()}"
                             th:value="${s.name()}"
                             th:text="${s}"></option>

@@ -13,7 +13,6 @@ public class RecipeCardViewModel {
     private Long id;
     private String title;
     private StarEnum stars;
-
     private int cookingTime;
     private String image;
 

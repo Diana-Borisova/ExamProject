@@ -9,7 +9,6 @@ import java.util.Optional;
 
 public interface CommentService {
     void addComment(CommentServiceModel commentServiceModel);
-
     List<CommentServiceModel> getCommentsByRecipe(Recipe recipe);
     void deleteCommentsByRecipe(Recipe recipe);
     void deletePastComments();

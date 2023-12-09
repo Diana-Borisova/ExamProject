@@ -1,7 +1,7 @@
 package com.example.foodplanner.service.impl;
 import com.example.foodplanner.model.entity.Recipe;
 import com.example.foodplanner.service.RecipeService;
-import jakarta.persistence.EntityNotFoundException;
+import com.example.foodplanner.model.exception.EntityNotFoundException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;

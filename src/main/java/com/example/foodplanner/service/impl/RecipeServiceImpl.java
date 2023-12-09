@@ -30,17 +30,11 @@ public class RecipeServiceImpl implements RecipeService {
     private final UserService userService;
     private final ModelMapper modelMapper;
 
-
-
-
-
     @Autowired
     public RecipeServiceImpl(RecipeRepository recipeRepository, UserService userService, ModelMapper modelMapper){
         this.recipeRepository = recipeRepository;
-
         this.userService = userService;
         this.modelMapper = modelMapper;
-
 
     }
 

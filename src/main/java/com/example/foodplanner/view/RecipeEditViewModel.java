@@ -8,16 +8,11 @@ public class RecipeEditViewModel {
 
     private Long id;
     private String title;
-
     private String stars;
-
     private String description;
-
     private String products;
     private int cookingTime;
-
     private String image;
-
     private boolean shared;
     private List<String> pictures;
     private List<String> imageUrls;
