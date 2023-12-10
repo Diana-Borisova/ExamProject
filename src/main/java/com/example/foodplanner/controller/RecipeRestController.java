@@ -5,6 +5,8 @@ import com.example.foodplanner.model.entity.Picture;
 import com.example.foodplanner.model.entity.Recipe;
 import com.example.foodplanner.service.PictureService;
 import com.example.foodplanner.service.RecipeService;
+import com.example.foodplanner.view.MyRecipeCardViewModel;
+import com.example.foodplanner.view.NonSharedRecipeCardViewModel;
 import com.example.foodplanner.view.RecipeCardViewModel;
 import com.example.foodplanner.view.RecipeDetailsViewModel;
 import jakarta.servlet.http.HttpServletResponse;
@@ -53,12 +55,12 @@ public class RecipeRestController {
     }
 
     @GetMapping("/api/non-shared")
-    public ResponseEntity<List<RecipeCardViewModel>> getNonSharedRecipes() {
-        List<RecipeCardViewModel> recipeCardViewModels = recipeService.
+    public ResponseEntity<List<NonSharedRecipeCardViewModel>> getNonSharedRecipes() {
+        List<NonSharedRecipeCardViewModel> recipeCardViewModels = recipeService.
                 findAllBySharedIsFalse().
                 stream().
                 map(r -> {
-                    RecipeCardViewModel model = modelMapper.map(r, RecipeCardViewModel.class);
+                    NonSharedRecipeCardViewModel model = modelMapper.map(r, NonSharedRecipeCardViewModel.class);
                     model.setImage(pictureService.getPicturesByRecipeId(r.getId()).get(0));
                     return model;
                 }).
@@ -68,12 +70,12 @@ public class RecipeRestController {
     }
 
     @GetMapping("/api/owned")
-    public ResponseEntity<List<RecipeCardViewModel>> getOwnedRecipes(@AuthenticationPrincipal UserDetails principal) {
-        List<RecipeCardViewModel> recipeCardViewModels = recipeService.
+    public ResponseEntity<List<MyRecipeCardViewModel>> getOwnedRecipes(@AuthenticationPrincipal UserDetails principal) {
+        List<MyRecipeCardViewModel> recipeCardViewModels = recipeService.
                 getRecipesByRecipeOwnerEmail(principal.getUsername()).
                 stream().
                 map(r -> {
-                    RecipeCardViewModel model = modelMapper.map(r, RecipeCardViewModel.class);
+                    MyRecipeCardViewModel model = modelMapper.map(r, MyRecipeCardViewModel.class);
                     model.setImage(pictureService.getPicturesByRecipeId(r.getId()).get(0));
                     return model;
                 }).

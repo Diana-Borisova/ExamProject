@@ -1,8 +1,5 @@
 package com.example.foodplanner.view;
 
-import com.example.foodplanner.model.entity.Picture;
-
-import java.util.ArrayList;
 import java.util.List;
 
 public class RecipeDetailsViewModel {

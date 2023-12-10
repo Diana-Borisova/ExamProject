@@ -1,7 +1,6 @@
 package com.example.foodplanner.controller;
 
 
-import com.example.foodplanner.model.Constants;
 import com.example.foodplanner.model.binding.RecipeCreateBindingModel;
 import com.example.foodplanner.model.binding.RecipeEditBindingModel;
 import com.example.foodplanner.model.entity.Recipe;
@@ -11,7 +10,6 @@ import com.example.foodplanner.model.sevice.RecipeServiceModel;
 import com.example.foodplanner.service.*;
 import com.example.foodplanner.view.RecipeDetailsViewModel;
 import com.example.foodplanner.view.RecipeEditViewModel;
-import jakarta.transaction.Transactional;
 import jakarta.validation.Valid;
 import org.modelmapper.ModelMapper;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -20,7 +18,6 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 
@@ -28,8 +25,6 @@ import java.io.IOException;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
-
-import static com.example.foodplanner.model.Constants.DEFAULT_RECIPE_PICTURE;
 
 @Controller
 @RequestMapping("/recipes")
@@ -205,13 +200,11 @@ public class RecipeController {
 
     @GetMapping("/owned")
     public String ownedRecipes() {
-
         return "my-recipes";
     }
 
     @GetMapping("/non-shared")
     public String nonSharedRecipes() {
-
         return "non-shared-recipes";
     }
 
